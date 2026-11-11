@@ -1,0 +1,12 @@
+/* title / ending */
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(ellipse at center,rgba(10,10,14,.55),rgba(5,5,8,.95))}
+.tfile{color:var(--gold);letter-spacing:.5em;font-size:clamp(11px,2cqw,15px)}
+.overlay h1{font-size:clamp(30px,8cqw,64px);letter-spacing:.25em;margin:.25em 0 .1em;text-shadow:0 0 30px rgba(214,176,97,.25)}
+.tsub{letter-spacing:.4em;color:var(--muted);margin-bottom:2em;font-size:clamp(12px,2.4cqw,18px)}
+.thelp{margin-top:2em;color:var(--muted);font-size:clamp(10px,1.7cqw,13px);line-height:1.9}
+#ending{overflow:auto;align-items:flex-start;cursor:pointer}
+.enext{text-align:center;margin-top:2.4em;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);letter-spacing:.15em;animation:blink 1.2s infinite}
+.einner{max-width:640px;padding:6% 7%;text-align:left;font-size:clamp(12px,2.2cqw,16px);line-height:1.95}
+.einner h2{color:var(--gold);letter-spacing:.2em;font-size:clamp(16px,3.4cqw,26px);text-align:center;margin:0 0 1em}
+.einner h3{color:var(--gold);font-size:1em;letter-spacing:.2em;margin:1.6em 0 .3em;border-bottom:1px solid var(--line);padding-bottom:.2em}

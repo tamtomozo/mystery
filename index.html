@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>隠された真実 ― 密室の書斎</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/dialog.css">
+<link rel="stylesheet" href="css/screens.css">
+<link rel="stylesheet" href="css/board.css">
+</head>
+<body>
+<div id="app">
+  <div id="top">
+    <div id="loc">隠された真実</div>
+    <span id="saved">✓ 保存</span>
+    <div id="evcount"></div>
+    <button class="btn small snd" id="bgmBtn" title="BGMのON/OFF">♪BGM</button>
+    <button class="btn small snd" id="seBtn" title="効果音のON/OFF">SE</button>
+    <button class="btn small" id="helpBtn">操作</button>
+    <button class="btn gold" id="boardBtn">捜査ボード<span class="kb"> [B]</span></button>
+  </div>
+  <div id="stage">
+    <canvas id="cv"></canvas>
+    <div id="bubble" class="hidden"><div id="bname"></div><div id="btext"><span id="btyped"></span><span id="brest"></span></div><div id="bnext">▼</div><div id="btail"></div></div>
+    <div id="dlg" class="hidden"><div id="dname"></div><div id="dtext"></div><div id="dchoices"></div><div id="dnext">▼</div></div>
+    <div id="toast"></div>
+    <button class="btn small hidden" id="skip">スキップ ▶▶</button>
+    <div id="band" class="hidden"><div class="strip">
+      <div id="bandLabel"></div><div id="bandTitle"></div><div id="bandSub"></div>
+      <div id="bandRows"></div><div id="bandNote"></div><div id="bandHint">クリック / Space で閉じる ▼</div>
+    </div></div>
+    <div id="title" class="overlay">
+      <div>
+        <div class="tfile">FILE.01</div>
+        <h1>隠された真実</h1>
+        <div class="tsub">― 密室の書斎 ―</div>
+        <div class="tbtns">
+          <button class="btn gold big hidden" id="contBtn">続きから</button>
+          <button class="btn gold big" id="startBtn">はじめから</button>
+        </div>
+        <div id="saveinfo" class="thelp"></div>
+        <div class="thelp">移動：矢印キー / WASD / 行き先をタップ<br>調べる・話す・進む：Space / Enter / 対象をタップ<br>捜査ボード：B</div>
+      </div>
+    </div>
+    <div id="ending" class="overlay hidden"></div>
+    <div id="fade"></div>
+  </div>
+</div>
+
+<div id="board" class="hidden">
+  <div id="bwrap">
+    <div class="bhead"><span id="btitle">捜査ボード</span><button class="btn small" id="bclose">閉じる ✕</button></div>
+    <div id="bquote" class="hidden"><span id="bqname">柏木</span><p id="bqtext"></p></div>
+    <div class="bbody" id="bbody">
+      <section id="hypsec"><p class="sech">仮定</p><div id="htabs"></div><div id="hview"></div></section>
+      <section id="evsec"><p class="sech">物証 <span id="evnum"></span></p><div id="evgrid"></div><div id="evdetail"></div></section>
+    </div>
+    <div class="bfoot"><div id="bmsg"></div><div id="bact"></div></div>
+  </div>
+</div>
+
+<!--
+  スクリプトは通常の <script> で順番に読み込む（file:// で直接開いても動くように）。
+  すべて同じグローバルスコープを共有するので、読み込み順が大事：
+  1. core（定数・音・セーブ） 2. data（物証・仮定・マップ・人物…） 3. state
+  4. ui（会話・ガイド・HUD） 5. game（進行・移動・シーン・ボード・取調べ）
+  6. render（描画） 7. main（ループ・入力・タイトル。最後に読み込む）
+-->
+<script src="js/core/config.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/core/save.js"></script>
+<script src="js/data/evidence.js"></script>
+<script src="js/data/hypotheses.js"></script>
+<script src="js/core/state.js"></script>
+<script src="js/data/maps.js"></script>
+<script src="js/data/characters.js"></script>
+<script src="js/data/hotspots.js"></script>
+<script src="js/data/scenes.js"></script>
+<script src="js/data/interrogation.js"></script>
+<script src="js/ui/dialog.js"></script>
+<script src="js/ui/guides.js"></script>
+<script src="js/ui/hud.js"></script>
+<script src="js/game/progress.js"></script>
+<script src="js/game/player.js"></script>
+<script src="js/game/scene.js"></script>
+<script src="js/game/board.js"></script>
+<script src="js/game/interrogation.js"></script>
+<script src="js/render/draw-util.js"></script>
+<script src="js/render/backgrounds.js"></script>
+<script src="js/render/sprites.js"></script>
+<script src="js/render/render.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+/* board */
+#board{position:fixed;inset:0;z-index:20;background:rgba(5,6,8,.86);display:flex;justify-content:center;padding:10px}
+#bwrap{width:min(980px,100%);background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.bhead{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+#btitle{font-weight:700;letter-spacing:.2em;color:var(--gold)}
+/* 取調べで物証を選ぶとき：容疑者のセリフを上段に表示 */
+#bquote{position:relative;margin:14px 14px 4px;padding:16px 16px 12px;background:#26231e;border:1px solid rgba(214,176,97,.5);border-radius:10px}
+#bqname{position:absolute;top:-.8em;left:12px;background:var(--gold);color:#1a1408;font-size:12px;font-weight:700;padding:1px 10px;border-radius:3px;letter-spacing:.08em}
+#bqtext{margin:0;font-size:15px;line-height:1.8;color:#ece4d2}
+.bbody{flex:1;overflow:auto;display:grid;grid-template-columns:1.2fr 1fr}
+.bbody.single{grid-template-columns:1fr}
+@media (max-width:720px){.bbody{grid-template-columns:1fr}}
+.bbody section{padding:12px 14px;min-width:0}
+#hypsec{border-right:1px solid var(--line)}
+.sech{font-size:13px;color:var(--muted);letter-spacing:.15em;margin:0 0 8px}
+#htabs{display:flex;flex-wrap:wrap;gap:6px}
+.htab{font:inherit;font-size:13px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:4px 12px;cursor:pointer}
+.htab.sel{border-color:var(--gold);color:var(--gold)}
+.htab.refuted{text-decoration:line-through;opacity:.6}
+.htab.proven{border-color:var(--green)}
+.hcard{position:relative;margin-top:10px;padding:12px 14px;background:var(--panel2);border-radius:8px;border-left:3px solid #a8865a}
+.hno{font-size:12px;color:#a8865a;letter-spacing:.2em}
+.hcard h2{margin:.1em 0 .4em;font-size:19px;letter-spacing:.1em}
+.sum{margin:0 0 10px;font-size:14px;line-height:1.75}
+.stamp{position:absolute;top:10px;right:12px;border:3px solid var(--red);color:var(--red);font-weight:900;padding:1px 10px;transform:rotate(-12deg);font-size:20px;letter-spacing:.25em;opacity:.9}
+.stamp.ok{border-color:var(--green);color:var(--green)}
+.guide{font-size:13px;color:var(--muted);margin:12px 0 6px;line-height:1.6}
+.claims{list-style:none;padding:0;margin:0}
+.claim{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:6px;cursor:pointer;font-size:14px;line-height:1.6}
+.claim:hover{border-color:#6d6450}
+.claim.sel{border-color:var(--gold);background:rgba(214,176,97,.09)}
+.claim .mark{font-weight:900;width:1.2em;flex:none;text-align:center;color:var(--muted)}
+.claim.ok .mark{color:var(--green)} .claim.ng .mark{color:var(--red)}
+.claim.ng .ct{text-decoration:line-through;opacity:.75}
+.claim.ok,.claim.ng{cursor:default}
+.why{font-size:12.5px;color:var(--muted);margin-top:2px}
+.empty{color:var(--muted);font-size:14px;line-height:1.8}
+#evgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+#evgrid .empty{grid-column:1/-1;margin:0}
+.evc{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 3px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;cursor:pointer;color:var(--text);font:inherit;font-size:12px;line-height:1.3}
+.evc .k{width:34px;height:34px;display:grid;place-items:center;border:2px solid var(--gold);color:var(--gold);border-radius:50%;font-size:17px;font-weight:700}
+.evc.sel{border-color:var(--gold);background:rgba(214,176,97,.12)}
+.evc.new .k{box-shadow:0 0 0 3px rgba(214,176,97,.25)}
+#evdetail{margin-top:10px;padding:10px 12px;background:var(--panel2);border-radius:6px;min-height:76px;font-size:14px;line-height:1.75}
+#evdetail b{color:var(--gold)}
+.bfoot{border-top:1px solid var(--line);padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;min-height:58px}
+#bmsg{flex:1 1 260px;font-size:14px;line-height:1.65}
+.okc{color:var(--green)} .ngc{color:var(--red)} .muted{color:var(--muted)}
