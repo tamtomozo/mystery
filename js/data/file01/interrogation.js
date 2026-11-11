@@ -1,9 +1,9 @@
-/* データ：取調べの問いと配置 */
+/* データ：FILE.01 の取調べの問いと配置 */
 'use strict';
 
 // 柏木は嘘をつかない。否定も言い逃れもせず、「証明」を求める問いだけを投げかける。
 // プレイヤーは物証で、その問いに一つずつ答えていく。
-const ROUNDS=[
+defCase('file01',{ROUNDS:[
   {stmt:'昨夜、私が庭に出た――そう、おっしゃりたいのでしょう。……なぜ、そう言えるんです？',ans:['footprint'],
    win:[[ME,'雨が止んだ22時以降に、書斎の窓の下から勝手口へ続く足跡がついています。'],
         [ME,'勝手口のすぐ隣は、あなたの部屋。足跡は26cmの革靴――あなたの靴と同じサイズです。'],
@@ -20,12 +20,10 @@ const ROUNDS=[
    win:[[ME,'書斎の机にあった帳簿です。書き換えられた数字に赤丸。そして「柏木に問いただす」という書き込み。'],
         [ME,'昨夜、あなたは帳簿のことを問いただされた。そうですね？'],
         ['柏木','……はい。']]},
-];
+]});
 
-const INTERRO_Z=1.75, INTERRO_CY=0.5;   // 取調室の拡大率と、机を置く画面上の高さ（割合）
-const INTERRO_ACTORS=[
+defCase('file01',{INTERRO_ACTORS:[
   {x:10,y:5.2,look:LOOK.kashiwagi,dir:'down',label:'柏木',suspect:true},
   {x:12.7,y:7.3,look:LOOK.okochi,dir:'left',label:'大河内'},
   {x:10,y:8.95,look:LOOK.player,dir:'up',label:'あなた'},
-];
-
+]});

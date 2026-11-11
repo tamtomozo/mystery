@@ -36,8 +36,16 @@ $('#helpBtn').addEventListener('click',()=>{
   startDialog();
 });
 
-function continueGame(d){
-  $('#title').classList.add('hidden');
+/* ---------- 事件に入る（はじめから／続きから） ---------- */
+function enterCase(id){
+  useCase(id);
+  $('#title').classList.add('hidden'); $('#files').classList.add('hidden'); $('#app').classList.remove('menu');
+  $('#boardBtn').classList.remove('hidden');
+  S.ev=[]; S.hyps={}; S.flags={}; S.phaseShown=0; S.seenEv=new Set(); S.round=0;
+  B.hyp=null; dq.length=0; SCN=null; hideDlg();
+}
+function continueGame(id,d){
+  enterCase(id);
   S.ev=(d.ev||[]).filter(id=>EV[id]);
   S.hyps=d.hyps||{}; S.flags=d.flags||{}; S.phaseShown=d.phaseShown||0; S.seenEv=new Set(d.seen||[]);
   updateHud();
@@ -48,31 +56,20 @@ function continueGame(d){
     return;
   }
   S.mode='explore';
-  const map=MAPDEF[d.map]?d.map:'study';
-  setMap(map,d.x,d.y,d.dir||'down');
-  if(!walkable(P.x,P.y)) setMap('study',9,2,'down');
+  if(MAPDEF[d.map]&&HS[d.map]) setMap(d.map,d.x,d.y,d.dir||'down');
+  else setMap(...CASE.start);
+  if(!walkable(P.x,P.y)) setMap(...CASE.start);
   toast('前回の続きから再開します');
   if(!checkPhase()) checkUnlock();
 }
-function newGame(){
-  $('#title').classList.add('hidden');
-  setMap('study',9,2,'left'); S.mode='explore'; updateHud();
-  say('滝沢','来たか、新人。ここが現場――館の主人、黒崎宗一郎の書斎だ。');
-  say('滝沢','今朝、秘書の柏木から「書斎のドアが開かない、旦那様の返事がない」と通報があった。ドアは内側から施錠。警官が体当たりで破った。');
-  say('滝沢','窓も施錠済み。鍵は机の上。……つまり、密室だ。');
-  say('滝沢','遺体はもう運び出してある。現場を調べて、物証を集めてくれ。物証がつながれば、何が起きたのか「仮定」が見えてくるはずだ。');
+function newGame(id){
+  enterCase(id);
+  S.mode='explore'; setMap(...CASE.start); updateHud();
+  CASE.intro();
   guideBasic();
   startDialog();
 }
-$('#startBtn').addEventListener('click',()=>{AU.init(); AU.sfx('select'); newGame();});
-$('#contBtn').addEventListener('click',()=>{AU.init(); AU.sfx('select'); const d=readSave(); d?continueGame(d):newGame();});
-(function initTitle(){
-  const d=readSave(); if(!d) return;
-  $('#contBtn').classList.remove('hidden');
-  const when=new Date(d.time).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  const where=d.map==='interro'?'取調室':(MAPDEF[d.map]||MAPDEF.study).name.split(' ―')[0];
-  $('#saveinfo').innerHTML=`前回の記録：${when}　${where}　物証 ${(d.ev||[]).length}/${EV_TOTAL}<br>※「はじめから」を選ぶと、記録は上書きされます`;
-})();
+// タイトル・FILE選択の画面は js/ui/title.js
 
 /* ---------- サウンド切り替え ---------- */
 function soundButtons(){
@@ -85,9 +82,10 @@ soundButtons();
 // ブラウザの制約で、最初の操作のあとに音が鳴り始める
 window.addEventListener('pointerdown',()=>AU.init(),{once:true});
 window.addEventListener('keydown',()=>AU.init(),{once:true});
-// BGMは回想（仮定シーン）と、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面は無音
+// BGMはタイトル／FILE選択、回想（仮定シーン）、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面は無音
 function wantedBgm(){
-  if(SCN) return 'scene';
+  if(S.mode==='title'||S.mode==='files') return 'title';
+  if(SCN) return SCN.cctv?null:'scene';   // 監視カメラの映像は無音
   if(S.mode==='board') return 'think';
   return null;
 }
@@ -96,6 +94,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button'); if(b) 
 window.addEventListener('keydown',e=>{
   const k=e.key.length===1?e.key.toLowerCase():e.key;
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Tab'].includes(e.key)) e.preventDefault();
+  if(S.mode==='title'||S.mode==='files'){if(!e.repeat||e.key.startsWith('Arrow')) menuKey(k); return;}
   if(S.mode==='board'){if(k==='Escape'||k==='b'||k==='Tab') closeBoard(true); return;}
   if(k===' '||k==='Enter'||k==='z'){
     if(e.repeat) return;

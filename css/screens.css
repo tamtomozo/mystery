@@ -1,10 +1,89 @@
-/* title / ending */
+/* title / file select / ending */
 .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
   background:radial-gradient(ellipse at center,rgba(10,10,14,.55),rgba(5,5,8,.95))}
-.tfile{color:var(--gold);letter-spacing:.5em;font-size:clamp(11px,2cqw,15px)}
-.overlay h1{font-size:clamp(30px,8cqw,64px);letter-spacing:.25em;margin:.25em 0 .1em;text-shadow:0 0 30px rgba(214,176,97,.25)}
-.tsub{letter-spacing:.4em;color:var(--muted);margin-bottom:2em;font-size:clamp(12px,2.4cqw,18px)}
-.thelp{margin-top:2em;color:var(--muted);font-size:clamp(10px,1.7cqw,13px);line-height:1.9}
+
+/* ---------- タイトル ---------- */
+#title{cursor:pointer;background:radial-gradient(ellipse at center,rgba(10,10,14,.15),rgba(5,5,8,.75))}
+.tseries{color:var(--gold);letter-spacing:.8em;padding-left:.8em;font-size:clamp(10px,1.7cqw,14px);opacity:.85;animation:tFade 2.4s ease-out}
+#title h1{font-size:clamp(32px,9cqw,72px);letter-spacing:.3em;padding-left:.3em;margin:.2em 0 .15em;color:#f1e8d6;
+  text-shadow:0 0 30px rgba(214,176,97,.3),0 2px 0 rgba(0,0,0,.6);animation:titleIn 1.8s ease-out}
+.tline{width:min(46cqw,360px);height:1px;margin:0 auto;background:linear-gradient(90deg,transparent,#a8865a,transparent);animation:tLine 1.6s ease-out .3s both}
+.tsub{letter-spacing:.4em;padding-left:.4em;color:#b9ad97;margin-top:1em;font-size:clamp(12px,2.3cqw,18px);animation:tFade 2.6s ease-out}
+.tpress{margin-top:4.2em;color:var(--gold);letter-spacing:.3em;padding-left:.3em;font-size:clamp(11px,2cqw,15px);
+  animation:tFade 3.2s ease-out,blink 1.6s 3.2s infinite}
+@keyframes tFade{0%,40%{opacity:0}to{opacity:1}}
+@keyframes tLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---------- FILE選択 ---------- */
+#files{align-items:stretch;text-align:left;padding:3.6cqw 4.4cqw 2.6cqw;background:rgba(5,6,9,.62);animation:shadeIn .35s ease-out}
+.fwrap{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
+.fhead{display:flex;align-items:baseline;justify-content:space-between;gap:1em;padding-bottom:1.2cqw;border-bottom:1px solid rgba(168,134,90,.6)}
+.fh{font-size:clamp(15px,3.4cqw,26px);letter-spacing:.35em;font-weight:700;color:#ecd3a3}
+.fen{font-size:clamp(9px,1.5cqw,12px);letter-spacing:.4em;color:var(--muted)}
+.fbody{flex:1;min-height:0;display:grid;grid-template-columns:36% 1fr;gap:2.6cqw;margin-top:2.4cqw}
+
+#flist{display:flex;flex-direction:column;gap:1.3cqw;overflow:auto;padding:2px}
+.fcard{position:relative;display:flex;flex-direction:column;gap:.25em;text-align:left;font:inherit;color:var(--text);cursor:pointer;
+  padding:1.3cqw 1.8cqw;background:linear-gradient(rgba(30,33,40,.92),rgba(22,24,29,.92));
+  border:1px solid var(--line);border-left:3px solid #a8865a;border-radius:6px;transition:border-color .15s,background .15s}
+.fcard:hover{border-color:#6d6450;border-left-color:var(--gold)}
+.fcard .no{font-size:clamp(9px,1.5cqw,12px);letter-spacing:.3em;color:var(--gold)}
+.fcard .tt{font-size:clamp(12px,2.5cqw,19px);letter-spacing:.15em;font-weight:700}
+.fcard .badge{position:absolute;top:1.1cqw;right:1.3cqw;font-size:clamp(9px,1.4cqw,11px);letter-spacing:.1em;
+  padding:.05em .6em;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+.fcard.progress .badge{border-color:var(--gold);color:var(--gold)}
+.fcard.solved .badge{border-color:var(--red);color:var(--red)}
+.fcard.sel{border-color:rgba(214,176,97,.7);border-left-color:var(--gold);background:linear-gradient(rgba(58,48,30,.92),rgba(36,31,22,.92))}
+.fcard.cur{box-shadow:0 0 0 2px rgba(214,176,97,.55)}
+.fcard.locked{border-left-color:var(--line)}
+.fcard.locked .no,.fcard.locked .tt{color:#5d5a55}
+
+#fdetail{position:relative;overflow:auto;padding:2.2cqw 2.8cqw;border:1px solid rgba(168,134,90,.55);border-radius:8px;
+  background:linear-gradient(rgba(36,30,21,.94),rgba(24,20,14,.95));box-shadow:0 8px 30px rgba(0,0,0,.5)}
+#fdetail.locked{background:rgba(18,19,23,.92);border-color:var(--line);color:var(--muted)}
+.fd-no{font-size:clamp(10px,1.7cqw,13px);letter-spacing:.4em;color:var(--gold)}
+#fdetail h2{margin:.15em 0 .5em;font-size:clamp(17px,3.8cqw,30px);letter-spacing:.2em;color:#f1e8d6;
+  padding-bottom:.35em;border-bottom:1px solid rgba(168,134,90,.4)}
+#fdetail.locked h2{color:#6d6963;border-color:var(--line)}
+.fd-lead{margin:0 0 1.1em;font-size:clamp(11px,2cqw,15px);line-height:1.9;color:#ddd3bf}
+.fd-stat{font-size:clamp(11px,1.9cqw,14px);color:var(--muted)}
+.fd-stat b{color:var(--text);letter-spacing:.1em}
+#fdetail.progress .fd-stat b{color:var(--gold)}
+#fdetail.solved .fd-stat b{color:#e07a66}
+.fd-save{margin-top:.3em;font-size:clamp(10px,1.7cqw,13px);color:var(--muted)}
+.fd-acts{display:flex;flex-wrap:wrap;gap:1.4cqw;margin-top:1.6em}
+.fd-acts .btn{font-size:clamp(12px,2.2cqw,17px);padding:.45em 1.6em;letter-spacing:.15em}
+.fd-acts .btn.cur{background:rgba(214,176,97,.2);box-shadow:0 0 0 2px rgba(214,176,97,.45)}
+.fd-note{margin-top:.9em;font-size:clamp(9px,1.5cqw,12px);color:var(--muted)}
+.fstamp{position:absolute;top:2cqw;right:2.4cqw;border:3px solid var(--red);color:var(--red);font-weight:900;
+  padding:.05em .55em;transform:rotate(-12deg);font-size:clamp(14px,3cqw,24px);letter-spacing:.25em;opacity:.85;pointer-events:none}
+/* 解決して戻ってきた直後：判が押される */
+.fstamp.slam{animation:stampIn .45s cubic-bezier(.3,.9,.4,1.25) .5s both}
+@keyframes stampIn{from{opacity:0;transform:rotate(-12deg) scale(2.6)}to{opacity:.85;transform:rotate(-12deg) scale(1)}}
+
+.ffoot{display:flex;align-items:center;justify-content:space-between;gap:1em;margin-top:2cqw}
+.fhint{font-size:clamp(9px,1.5cqw,12px);color:var(--muted);letter-spacing:.08em}
+@media (hover:none){.fhint{display:none}}
+/* 狭い画面：ファイルを上に横並び、詳細は概要を省いてボタンが必ず見えるように */
+@container (max-width:600px){
+  #files{padding:2.4cqw 3.2cqw 2cqw}
+  .fhead{padding-bottom:.8cqw}
+  .fbody{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:1.6cqw;margin-top:1.6cqw}
+  #flist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4cqw;overflow:visible}
+  .fcard{flex:1;min-width:0;padding:.35em .6em;gap:0}
+  .fcard .tt{font-size:12px;letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fcard .badge{display:none}
+  #fdetail{padding:1.8cqw 2.6cqw}
+  #fdetail h2{font-size:17px;margin-bottom:.3em}
+  .fd-lead,.fd-note{display:none}
+  .fd-acts{margin-top:.6em}
+  .fd-acts .btn{font-size:13px}
+  .fstamp{font-size:13px;border-width:2px}
+  .ffoot{margin-top:1.2cqw}
+  .fhint{display:none}
+}
+
+/* ---------- エンディング ---------- */
 #ending{overflow:auto;align-items:flex-start;cursor:pointer}
 .enext{text-align:center;margin-top:2.4em;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);letter-spacing:.15em;animation:blink 1.2s infinite}
 .einner{max-width:640px;padding:6% 7%;text-align:left;font-size:clamp(12px,2.2cqw,16px);line-height:1.95}

@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>隠された真実 ― 密室の書斎</title>
+<title>隠された真実</title>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/dialog.css">
 <link rel="stylesheet" href="css/screens.css">
 <link rel="stylesheet" href="css/board.css">
 </head>
 <body>
-<div id="app">
+<div id="app" class="menu">
   <div id="top">
     <div id="loc">隠された真実</div>
     <span id="saved">✓ 保存</span>
@@ -30,17 +30,28 @@
       <div id="bandLabel"></div><div id="bandTitle"></div><div id="bandSub"></div>
       <div id="bandRows"></div><div id="bandNote"></div><div id="bandHint">クリック / Space で閉じる ▼</div>
     </div></div>
+    <!-- タイトル -->
     <div id="title" class="overlay">
-      <div>
-        <div class="tfile">FILE.01</div>
+      <div class="tlogo">
+        <div class="tseries">HIDDEN TRUTH</div>
         <h1>隠された真実</h1>
-        <div class="tsub">― 密室の書斎 ―</div>
-        <div class="tbtns">
-          <button class="btn gold big hidden" id="contBtn">続きから</button>
-          <button class="btn gold big" id="startBtn">はじめから</button>
+        <div class="tline"></div>
+        <div class="tsub">― 物証が、真実を語る ―</div>
+        <div class="tpress">クリック / Space で はじめる</div>
+      </div>
+    </div>
+    <!-- FILE選択 -->
+    <div id="files" class="overlay hidden">
+      <div class="fwrap">
+        <div class="fhead"><span class="fh">事件ファイル</span><span class="fen">FILE SELECT</span></div>
+        <div class="fbody">
+          <div id="flist"></div>
+          <div id="fdetail"></div>
         </div>
-        <div id="saveinfo" class="thelp"></div>
-        <div class="thelp">移動：矢印キー / WASD / 行き先をタップ<br>調べる・話す・進む：Space / Enter / 対象をタップ<br>捜査ボード：B</div>
+        <div class="ffoot">
+          <button class="btn small" id="fback">◀ タイトルへ</button>
+          <span class="fhint">↑↓ 選ぶ ・ Space / Enter 決定 ・ Esc もどる</span>
+        </div>
       </div>
     </div>
     <div id="ending" class="overlay hidden"></div>
@@ -63,24 +74,46 @@
 <!--
   スクリプトは通常の <script> で順番に読み込む（file:// で直接開いても動くように）。
   すべて同じグローバルスコープを共有するので、読み込み順が大事：
-  1. core（定数・音・セーブ） 2. data（物証・仮定・マップ・人物…） 3. state
-  4. ui（会話・ガイド・HUD） 5. game（進行・移動・シーン・ボード・取調べ）
+  1. core（定数・音・セーブ・事件の切り替え）
+  2. data（common → 事件ごとのフォルダ fileXX/。defCase で登録し、useCase で切り替える） 3. state
+  4. ui（会話・ガイド・HUD・タイトル／FILE選択） 5. game（進行・移動・シーン・ボード・取調べ）
   6. render（描画） 7. main（ループ・入力・タイトル。最後に読み込む）
 -->
 <script src="js/core/config.js"></script>
 <script src="js/core/audio.js"></script>
 <script src="js/core/save.js"></script>
-<script src="js/data/evidence.js"></script>
-<script src="js/data/hypotheses.js"></script>
+<script src="js/core/case.js"></script>
+<script src="js/data/common.js"></script>
+<script src="js/data/file01/evidence.js"></script>
+<script src="js/data/file01/hypotheses.js"></script>
+<script src="js/data/file01/maps.js"></script>
+<script src="js/data/file01/characters.js"></script>
+<script src="js/data/file01/hotspots.js"></script>
+<script src="js/data/file01/scenes.js"></script>
+<script src="js/data/file01/interrogation.js"></script>
+<script src="js/data/file01/story.js"></script>
+<script src="js/data/file02/evidence.js"></script>
+<script src="js/data/file02/hypotheses.js"></script>
+<script src="js/data/file02/maps.js"></script>
+<script src="js/data/file02/characters.js"></script>
+<script src="js/data/file02/hotspots.js"></script>
+<script src="js/data/file02/scenes.js"></script>
+<script src="js/data/file02/interrogation.js"></script>
+<script src="js/data/file02/story.js"></script>
+<script src="js/data/file03/evidence.js"></script>
+<script src="js/data/file03/hypotheses.js"></script>
+<script src="js/data/file03/maps.js"></script>
+<script src="js/data/file03/characters.js"></script>
+<script src="js/data/file03/hotspots.js"></script>
+<script src="js/data/file03/scenes.js"></script>
+<script src="js/data/file03/interrogation.js"></script>
+<script src="js/data/file03/story.js"></script>
 <script src="js/core/state.js"></script>
-<script src="js/data/maps.js"></script>
-<script src="js/data/characters.js"></script>
-<script src="js/data/hotspots.js"></script>
-<script src="js/data/scenes.js"></script>
-<script src="js/data/interrogation.js"></script>
+<script src="js/data/files.js"></script>
 <script src="js/ui/dialog.js"></script>
 <script src="js/ui/guides.js"></script>
 <script src="js/ui/hud.js"></script>
+<script src="js/ui/title.js"></script>
 <script src="js/game/progress.js"></script>
 <script src="js/game/player.js"></script>
 <script src="js/game/scene.js"></script>
@@ -88,6 +121,8 @@
 <script src="js/game/interrogation.js"></script>
 <script src="js/render/draw-util.js"></script>
 <script src="js/render/backgrounds.js"></script>
+<script src="js/render/bg-file02.js"></script>
+<script src="js/render/bg-file03.js"></script>
 <script src="js/render/sprites.js"></script>
 <script src="js/render/render.js"></script>
 <script src="js/main.js"></script>

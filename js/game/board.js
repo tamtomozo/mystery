@@ -10,7 +10,8 @@ function openBoard(pick,round){
   if(S.mode==='explore'&&pick) return;
   B.ret=S.mode; S.mode='board'; B.pick=!!pick; B.round=round||0;
   B.claim=null; B.ev=null; B.act=null;
-  B.msg=pick?'柏木の問いに答える物証を選び、みせよう。':'';
+  B.msg=pick?`${CASE.suspect}の問いに答える物証を選び、みせよう。`:'';
+  $('#bqname').textContent=CASE.suspect;
   const ul=unlockedHyps();
   if(!B.hyp||!S.hyps[B.hyp]) B.hyp=ul.length?ul[ul.length-1].id:null;
   if(!pick&&ul.length){const last=ul[ul.length-1]; if(hypStatus(last)==='open') B.hyp=last.id;}

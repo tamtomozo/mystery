@@ -162,7 +162,10 @@ function drawInterro(g){
   C(g,'#2a2a2a',11.4*TS,6.4*TS,5); C(g,'#f3e3b0',11.4*TS,6.4*TS,3);
 }
 
+// 各事件の背景は DRAWERS に足していく（FILE.02 は bg-file02.js）
 const DRAWERS={study:drawStudy,garden:drawGarden,interro:drawInterro};
+// シーンで置いたり片づけたりする小道具の描き方（SCN.props のキーごと）
+const PROP_DRAW={};
 const STATIC={};
 function getStatic(id){
   if(STATIC[id]) return STATIC[id];

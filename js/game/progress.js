@@ -24,9 +24,9 @@ function checkPhase(){
   const p=phase();
   if(p<=S.phaseShown) return false;
   S.phaseShown=p; AU.sfx('phase');
-  const name=S.map==='study'?'滝沢':'滝沢（無線）';
+  const name=S.map===NPCS.takizawa.map?'滝沢':'滝沢（無線）';
   (PHASE_MSG[p]||[]).forEach(l=>say(name,l));
-  if(p===2) guideGarden();
+  if(CASE.phaseGuide&&CASE.phaseGuide[p]) CASE.phaseGuide[p]();
   run(()=>toast('新たな調査ポイントが現れた',3200));
   startDialog();
   return true;

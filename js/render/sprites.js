@@ -15,6 +15,22 @@ function drawPerson(g,x,y,o,t){
   RR(g,coat,-11,-5,22,15,7);
   if(o.tie&&!sh){R(g,'#eee',-3,-5,6,4); R(g,o.tie,-1,-3,2,7);}
   const dir=o.fallen?'down':(o.dir||'down'), [dx,dy]=DIRV[dir];
+  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン）
+  if(o.carry){
+    g.save(); g.shadowBlur=0; g.globalAlpha=1;
+    const cx=dx*10, cy=dy*9+3;
+    if(o.carry==='panel'){
+      const w=dy?24:8, h=dy?8:22;
+      RR(g,'#e9e4d8',cx-w/2,cy-h/2,w,h,2); R(g,'rgba(0,0,0,.12)',cx-w/2,cy+h/2-2,w,2);
+    }else if(o.carry==='flower'){
+      C(g,'#2f5a2c',cx,cy,8);
+      for(let i=0;i<7;i++){const a=i/7*Math.PI*2; C(g,['#e8a0b4','#f4f0e6','#e3c26a'][i%3],cx+Math.cos(a)*5,cy+Math.sin(a)*5,2.6);}
+      C(g,'#f4f0e6',cx,cy,2.4);
+    }else if(o.carry==='pudding'){
+      E(g,'#f2ead8',cx,cy+1,6,4.5); E(g,'#e8c470',cx,cy,4.6,3.4); E(g,'#7a3e16',cx,cy-.6,2.8,1.9);
+    }
+    g.restore();
+  }
   const hx=dx*1.8, hy=-7+dy*1.2;
   C(g,skin,hx,hy,7);
   if(o.hat&&!sh){C(g,o.hat,hx,hy,10.5); C(g,shade(o.hat,-18),hx,hy,6.5); g.strokeStyle='#1d1610'; g.lineWidth=1.2; g.beginPath(); g.arc(hx,hy,6.8,0,Math.PI*2); g.stroke();}
