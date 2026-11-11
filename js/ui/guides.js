@@ -2,29 +2,13 @@
 'use strict';
 
 /* ---------- 操作ガイドの内容 ---------- */
-const G_MOVE=['移動','矢印キー / WASD　・　行き先をタップ'];
-const G_LOOK=['調べる・話す','Space / Enter　・　対象をタップ'];
-const G_NEXT=['会話を進める','Space / Enter　・　クリック'];
-const G_BOARD=['捜査ボード','B キー　・　画面右上のボタン'];
-function guideBasic(){guide('現場を調べる',[G_MOVE,G_LOOK,G_NEXT],'光っている場所は、まだ調べていない手がかり。');}
-function guideAll(){guide('操作方法',[G_MOVE,G_LOOK,G_NEXT,G_BOARD,['仮定の検証','捜査ボードで「主張」→「物証」を選んで「かんがえる」']],'光っている場所は、まだ調べていない手がかり。');}
-function guideBoard(){
-  guide('仮定を検証する ― 捜査ボード',[
-    ['開く','B キー　・　画面右上の「捜査ボード」'],
-    ['①','仮定の「主張」をひとつ選ぶ'],
-    ['②','物証を選ぶ'],
-    ['③','「かんがえる」で検証する'],
-  ],'誤った主張には「矛盾する物証」、正しい主張には「裏付ける物証」。矛盾が見つかると、その仮定は否定される。');
-}
-function guideGarden(){guide('庭へ出る',[['書斎 → 庭','書斎のドアを調べる'],['庭 → 書斎','勝手口を調べる']]);}
-function guideHall(){guide('廊下へ出る',[['展示室 → 廊下','展示室の出入口を調べる'],['廊下 → 展示室','展示室の入口を調べる'],['監視カメラの映像','警備室のモニターを調べる']]);}
-function guideRoof(){guide('屋上へ上がる',[['捜査一課 → 屋上','捜査一課の出入口を調べる'],['屋上 → 捜査一課','階段室の扉を調べる']]);}
-function guideFinal(){guide('真相を確定する',[['最後の仮定','すべての主張を、物証で「裏付け」る'],['確定すると','取調室へ向かえる']]);}
-function guideInterro(){
-  guide('取調べ',[
-    ['答える','「物証で答える」→ 物証を選ぶ → みせる'],
-    ['聞き直す','「問いを聞き直す」で、問いをもう一度聞ける'],
-    ['間違えたら','同じ問いに戻るだけ。何度でも答えられる'],
-  ]);
-}
+// 中身（題・行・注記）は言語ごとの L.g にある
+function guideBasic(){guide(...L.g.basic);}
+function guideAll(){guide(...L.g.all);}
+function guideBoard(){guide(...L.g.board);}
+function guideGarden(){guide(...L.g.garden);}
+function guideHall(){guide(...L.g.hall);}
+function guideRoof(){guide(...L.g.roof);}
+function guideFinal(){guide(...L.g.final);}
+function guideInterro(){guide(...L.g.interro);}
 

@@ -51,7 +51,7 @@ function continueGame(id,d){
   updateHud();
   if(d.map==='interro'){
     setMap('interro',10,9,'up'); S.mode='interro'; $('#boardBtn').classList.add('hidden');
-    sys('―― 取調べを再開する。');
+    sys(L.resumeInterro);
     round(d.round||0); startDialog();
     return;
   }
@@ -59,7 +59,7 @@ function continueGame(id,d){
   if(MAPDEF[d.map]&&HS[d.map]) setMap(d.map,d.x,d.y,d.dir||'down');
   else setMap(...CASE.start);
   if(!walkable(P.x,P.y)) setMap(...CASE.start);
-  toast('前回の続きから再開します');
+  toast(L.resumed);
   if(!checkPhase()) checkUnlock();
 }
 function newGame(id){
@@ -82,9 +82,9 @@ soundButtons();
 // ブラウザの制約で、最初の操作のあとに音が鳴り始める
 window.addEventListener('pointerdown',()=>AU.init(),{once:true});
 window.addEventListener('keydown',()=>AU.init(),{once:true});
-// BGMはタイトル／FILE選択、回想（仮定シーン）、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面は無音
+// BGMはタイトル／FILE選択、回想（推理シーン）、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面は無音
 function wantedBgm(){
-  if(S.mode==='title'||S.mode==='files') return 'title';
+  if(S.mode==='title'||S.mode==='files') return performance.now()<FS.bgmAt?null:'title';   // 解決の判を押した直後は、少し間をおく
   if(SCN) return SCN.cctv?null:'scene';   // 監視カメラの映像は無音
   if(S.mode==='board') return 'think';
   return null;

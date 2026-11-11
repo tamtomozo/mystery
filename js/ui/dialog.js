@@ -9,7 +9,7 @@ function say(name,text,cls){dq.push({name,text,cls})}
 function sys(text){dq.push({name:'',text,cls:'sys'})}
 function ask(name,text,choices){dq.push({name,text,choices})}
 function run(fn){dq.push({fn})}
-function give(id){run(()=>addEv(id)); sys(`《物証》「${EV[id].name}」を手に入れた。`)}
+function give(id){run(()=>addEv(id)); sys(L.got(EV[id].name))}
 // 帯：kind='event'（演出。autoミリ秒で自動で閉じる）／'guide'（操作説明。クリックで閉じる）
 function band(kind,o){dq.push({band:{kind,...o}})}
 function guide(title,rows,note){band('guide',{title,rows,note})}
@@ -20,7 +20,7 @@ let bandAt=0, bandTimer=0;
 function showBand(b){
   hideDlg();
   const el=$('#band'); el.className=b.kind;
-  $('#bandLabel').textContent=b.kind==='guide'?'操作ガイド':'';
+  $('#bandLabel').textContent=b.kind==='guide'?L.guideLabel:'';
   $('#bandTitle').textContent=b.title||'';
   $('#bandSub').textContent=b.sub||'';
   $('#bandRows').innerHTML=(b.rows||[]).map(([k,v])=>`<span class="k">${k}</span><span>${v}</span>`).join('');
@@ -88,7 +88,7 @@ function speakerAnchor(name){
     const sx=a.x*TS*Z+ox, sy=a.y*TS*Z+oy;
     return {x:sx,top:sy-31*Z,bottom:sy+14*Z};
   }
-  const n=Object.values(NPCS).find(n=>n.map===S.map&&n.name.split('（')[0]===name);
+  const n=Object.values(NPCS).find(n=>n.map===S.map&&L.speakerOf(n.name)===name);
   if(!n) return null;
   const cx=(n.x+.5)*TS, cy=(n.y+.5)*TS;
   return {x:cx,top:cy-31,bottom:cy+14};

@@ -5,23 +5,23 @@
    タイトル → FILE選択 → 「続きから／はじめから」
    FILE選択は2段：list（ファイルを選ぶ）→ act（続きから／はじめからを選ぶ）
    ========================================================= */
-const FS={sel:0,level:'list',act:0,busy:false};
+const FS={sel:0,level:'list',act:0,busy:false,bgmAt:0};   // bgmAt：この時刻（performance.now）まで BGM を待たせる
 
 function showTitle(){
   S.mode='title';
   $('#files').classList.add('hidden'); $('#title').classList.remove('hidden');
-  $('#loc').textContent='隠された真実';
+  $('#loc').textContent=L.gameTitle;
 }
 function openFiles(){
   if(S.mode!=='title') return;
   AU.init(); AU.sfx('select');
   S.mode='files'; FS.level='list'; FS.act=0;
   $('#title').classList.add('hidden'); $('#files').classList.remove('hidden');
-  $('#loc').textContent='事件ファイル';
+  $('#loc').textContent=L.caseFiles;
   renderFiles();
 }
 
-const FSTATUS={locked:'準備中',progress:'捜査中',solved:'解決済',fresh:'未着手'};
+const FSTATUS=L.fstatus;
 function fileStatus(f){
   if(!f.ready) return 'locked';
   if(f.save&&f.save()) return 'progress';
@@ -31,14 +31,14 @@ function fileStatus(f){
 function fileActs(f){
   if(!f.ready) return [];
   const d=f.save&&f.save(), a=[];
-  if(d) a.push({label:'続きから',fn:()=>f.resume(d)});
-  a.push({label:d?'はじめから':isCleared(f.id)?'もう一度 捜査する':'捜査をはじめる',fn:f.start});
+  if(d) a.push({label:L.actContinue,fn:()=>f.resume(d)});
+  a.push({label:d?L.actRestart:isCleared(f.id)?L.actReplay:L.actStart,fn:f.start});
   return a;
 }
 function saveSummary(f,d){
-  const when=new Date(d.time).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  const where=d.map==='interro'?'取調室':MAPDEF[d.map]?MAPDEF[d.map].name.split(' ―')[0]:'現場';
-  return `${when}　${where}　物証 ${(d.ev||[]).length}/${evTotalOf(f.id)}`;
+  const when=new Date(d.time).toLocaleString(L.locale,{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const where=d.map==='interro'?L.interroRoom:MAPDEF[d.map]?L.mapShort(MAPDEF[d.map].name):L.sceneFallback;
+  return `${when}　${where}　${L.saveEv((d.ev||[]).length,evTotalOf(f.id))}`;
 }
 
 function renderFiles(){
@@ -46,7 +46,7 @@ function renderFiles(){
   FILES.forEach((f,i)=>{
     const st=fileStatus(f), b=document.createElement('button');
     b.className=`fcard ${st}`+(i===FS.sel?' sel':'')+(i===FS.sel&&FS.level==='list'?' cur':'');
-    b.innerHTML=`<span class="no">${f.no}</span><span class="tt">${f.ready?f.title:'？？？'}</span><span class="badge">${FSTATUS[st]}</span>`;
+    b.innerHTML=`<span class="no">${f.no}</span><span class="tt">${f.ready?f.title:L.unknown}</span><span class="badge">${FSTATUS[st]}</span>`;
     b.onclick=e=>{
       e.stopPropagation(); if(FS.busy) return;
       if(FS.sel!==i) AU.sfx('blip',520);
@@ -58,18 +58,25 @@ function renderFiles(){
   const f=FILES[FS.sel], st=fileStatus(f), el=$('#fdetail');
   el.className=st;
   if(!f.ready){
-    el.innerHTML=`<div class="fd-no">${f.no}</div><h2>― 準備中 ―</h2>
-      <p class="fd-lead">この事件ファイルは、まだ開くことができない。</p>`;
+    el.innerHTML=`<div class="fd-no">${f.no}</div><h2>${L.lockedTitle}</h2>
+      <p class="fd-lead">${L.lockedLead}</p>`;
   }else{
     const d=f.save&&f.save();
-    const slam=FS.justSolved===f.id; FS.justSolved=null;
-    el.innerHTML=`${isCleared(f.id)?`<div class="fstamp${slam?' slam':''}">解決</div>`:''}
+    const slam=FS.firstSolved===f.id; FS.firstSolved=null;
+    el.innerHTML=`${isCleared(f.id)?`<div class="fstamp${slam?' slam':''}">${L.solvedStamp}</div>`:''}
       <div class="fd-no">${f.no}</div><h2>${f.title}</h2>
       <p class="fd-lead">${f.lead}</p>
-      <div class="fd-stat">状態：<b>${FSTATUS[st]}</b></div>
-      ${d?`<div class="fd-save">前回の記録：${saveSummary(f,d)}</div>`:''}
+      <div class="fd-stat">${L.statusLabel}<b>${FSTATUS[st]}</b></div>
+      ${d?`<div class="fd-save">${L.lastSave}${saveSummary(f,d)}</div>`:''}
       <div class="fd-acts"></div>
-      ${d?'<div class="fd-note">※「はじめから」を選ぶと、記録は上書きされます</div>':''}`;
+      ${d?`<div class="fd-note">${L.restartNote}</div>`:''}`;
+    // 判が紙に当たる瞬間（css の stampFirst：0.6秒待って 0.55秒の 60% の時点）に、音と揺れを合わせる
+    if(slam){
+      el.classList.add('stamping');   // 大きく降ってくる判で、スクロールバーが出ないように
+      FS.bgmAt=performance.now()+930+1000;   // 判を押してから1秒おいて、BGM を始める
+      setTimeout(()=>{AU.sfx('stamp'); el.classList.remove('thud'); void el.offsetWidth; el.classList.add('thud');},930);
+      setTimeout(()=>el.classList.remove('stamping'),1700);
+    }
     fileActs(f).forEach((a,i)=>{
       const b=document.createElement('button');
       b.className='btn gold'+(FS.level==='act'&&i===FS.act?' cur':'');
@@ -79,8 +86,8 @@ function renderFiles(){
     });
   }
   $('#files .fhint').textContent=FS.level==='list'
-    ?'↑↓ 選ぶ ・ Space / Enter 決定 ・ Esc タイトルへ'
-    :'←→ 選ぶ ・ Space / Enter 決定 ・ Esc もどる';
+    ?L.hintList
+    :L.hintAct;
 }
 
 function startFile(a){
@@ -114,11 +121,18 @@ function menuKey(k){
 $('#title').addEventListener('click',openFiles);
 
 // 事件を解決してエンディングから戻ってきたら、タイトルを飛ばして FILE選択を開く（解決した事件を選んだ状態で）
-(function fromEnding(){
-  const m=/^#solved=(\w+)$/.exec(location.hash); if(!m) return;
-  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
-  const i=FILES.findIndex(f=>f.id===m[1]);
-  if(i>=0){FS.sel=i; FS.justSolved=m[1];}
-  openFiles();
-})();
+// 初めての解決なら、「解決」の判を押す演出をする。
+// ページを読み込み直すとブラウザの制限で音が止まる（判の音も BGM も鳴らない）ので、その場で画面を切り替える
+function returnToFiles(id,first){
+  S.mode='files'; FS.level='list'; FS.act=0; FS.busy=false;
+  const i=FILES.findIndex(f=>f.id===id);
+  if(i>=0){FS.sel=i; if(first) FS.firstSolved=id;}
+  $('#ending').classList.add('hidden'); $('#title').classList.add('hidden'); $('#files').classList.remove('hidden');
+  $('#app').classList.add('menu'); $('#loc').textContent=L.caseFiles; $('#evcount').textContent='';
+  renderFiles();
+}
 $('#fback').addEventListener('click',e=>{e.stopPropagation(); if(!FS.busy) showTitle();});
+
+// 言語の切り替え（タイトル／FILE選択のあいだだけ出す。切り替えると読み込み直す）
+$('#langBtn').textContent=L.langBtn; $('#langBtn').title=L.langBtnTitle;
+$('#langBtn').addEventListener('click',e=>{e.stopPropagation(); if(FS.busy) return; setLang(LANG==='ja'?'en':'ja');});

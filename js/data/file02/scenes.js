@@ -1,4 +1,4 @@
-/* データ：FILE.02 の仮定シーンと、監視カメラの映像の台本 */
+/* データ：FILE.02 の推理シーンと、監視カメラの映像の台本 */
 'use strict';
 
 /* 位置の目安
@@ -10,7 +10,7 @@ const FLOWER={prop:'flower',x:13.2,y:4.3};
 
 defCase('file02',{SCENES:{
   h1:()=>[
-    {title:'仮定①',sub:'夜間侵入説'},
+    {title:'推理①',sub:'夜間侵入説'},
     {map:'gallery'},{clock:'深夜'},
     {text:'昨夜。警備のすきをついて、何者かが外から忍び込んだ――'},
     {spawn:'G',x:9.5,y:14.4,label:'侵入者？',dir:'up'},
@@ -23,7 +23,7 @@ defCase('file02',{SCENES:{
     {text:'すり替えられたのは確かだ。だが――夜の美術館に、本当に忍び込めたのか？'},
   ],
   h2:()=>[
-    {title:'仮定②',sub:'鑑定士すり替え説'},
+    {title:'推理②',sub:'鑑定士すり替え説'},
     {map:'gallery'},{clock:'18:00'},
     {spawn:'W',x:8.6,y:7.7,label:'館長',dir:'up'},
     {spawn:'K',x:10.4,y:7.7,label:'鑑定士・久我',dir:'up'},
@@ -40,7 +40,7 @@ defCase('file02',{SCENES:{
     {text:'鑑定士なら、すり替えは一瞬だ。だが――ケースの中身が変わったのは、本当にこの時なのか？'},
   ],
   h3:()=>[
-    {title:'仮定③',sub:'館長説'},
+    {title:'推理③',sub:'館長説'},
     {map:'cam'},{clock:'20:12'},
     {spawn:'W',x:-1,y:7.5,label:'館長',carry:'panel'},
     {move:'W',to:[[9.5,7.5],[9.5,2.4]]},
@@ -63,7 +63,7 @@ defCase('file02',{SCENES:{
     {text:'映像も、時刻も、ぴたりと合う。だが――館長は本当に、そのとき館内にいたのか？'},
   ],
   h4:()=>[
-    {title:'仮定④',sub:'学芸員説'},
+    {title:'推理④',sub:'学芸員説'},
     {map:'cam'},{clock:'19:32'},
     {spawn:'H',x:20.6,y:7.5,label:'学芸員・早瀬',carry:'flower'},
     {move:'H',to:[[13.2,7.5],[13.2,5.6]]},

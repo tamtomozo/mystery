@@ -9,7 +9,7 @@ function toast(msg,ms=2600){
 function addEv(id){
   if(has(id)) return; S.ev.push(id); updateHud(); AU.sfx('evidence');
 }
-function updateHud(){$('#evcount').textContent=`物証 ${S.ev.length}/${EV_TOTAL}`}
+function updateHud(){$('#evcount').textContent=L.evCount(S.ev.length,EV_TOTAL)}
 function fade(cb){
   const f=$('#fade'); f.classList.add('on'); AU.sfx('whoosh');
   setTimeout(()=>{cb(); setTimeout(()=>f.classList.remove('on'),60);},420);

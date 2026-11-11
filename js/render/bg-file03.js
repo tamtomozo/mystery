@@ -30,7 +30,7 @@ function drawOffice(g){
   // 給湯室の仕切り（MAPDEF.office の solids と同じ位置）
   const wall=(x,y,w,h)=>{R(g,'#2e3138',x*TS,y*TS,w*TS,h*TS); R(g,'#4a4e57',x*TS,y*TS,w*TS,4);};
   wall(13,1,1,5); wall(14,5,2,1); wall(17,5,2,1);
-  g.fillStyle='#cfc8b8'; g.font='bold 10px sans-serif'; g.fillText('給湯室',14.15*TS,5.65*TS);
+  g.fillStyle='#cfc8b8'; g.font='bold 10px sans-serif'; g.fillText(L.sign.kitchen,14.15*TS,5.65*TS);
   // 冷蔵庫の貼り紙（上の壁）
   R(g,'#f2eee2',16*TS+9,5,15,19); for(let i=0;i<4;i++) R(g,'#9a9488',16*TS+11,9+i*3.5,11-(i%2)*3,1);
   C(g,'#c94a3a',16*TS+16.5,6,1.4);
@@ -92,7 +92,7 @@ function drawOffice(g){
   // 出入口とカードリーダー（下の壁）
   R(g,'#1b1d22',9*TS+2,14*TS+2,TS-4,TS-2); R(g,'#8a8e96',9*TS,14*TS,2,TS); R(g,'#8a8e96',10*TS-2,14*TS,2,TS);
   RR(g,'#3a3d44',10*TS+11,14*TS+6,10,15,2); R(g,'#1a1c20',10*TS+13,14*TS+9,6,4); C(g,'#5ad07a',10*TS+16,14*TS+17,1.5);
-  g.fillStyle='#cfc8b8'; g.font='bold 9px sans-serif'; g.fillText('出入口',9.1*TS,13.85*TS);
+  g.fillStyle='#cfc8b8'; g.font='bold 9px sans-serif'; g.fillText(L.sign.exit,9.1*TS,13.85*TS);
   R(g,'rgba(255,240,215,.03)',0,0,PW,PH);
   vignette(g,.3);
 }
@@ -121,7 +121,7 @@ function drawRoof(g){
   // 階段室（下の壁）
   R(g,'#4a4c52',7*TS,14*TS,5*TS,TS); R(g,'#5c5e64',7*TS,14*TS,5*TS,3);
   R(g,'#2a3a4a',9*TS+3,14*TS+3,TS-6,TS-3); C(g,'#c9c2b2',9*TS+TS-8,14.55*TS,1.6);
-  g.fillStyle='#e0dace'; g.font='bold 9px sans-serif'; g.fillText('階段室',10.2*TS,14.6*TS);
+  g.fillStyle='#e0dace'; g.font='bold 9px sans-serif'; g.fillText(L.sign.stairs,10.2*TS,14.6*TS);
   // 自販機（2〜3,1）とゴミ箱（4,1）
   glow(g,3*TS,1.8*TS,60,'rgba(255,250,220,.12)');
   for(const [x,c] of [[2,'#b8302c'],[3,'#2c5cae']]){

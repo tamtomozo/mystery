@@ -1,4 +1,4 @@
-/* フレーム描画（探索・取調室・仮定シーン） */
+/* フレーム描画（探索・取調室・推理シーン） */
 'use strict';
 
 /* ---------- フレーム描画 ---------- */
@@ -79,7 +79,7 @@ function renderScene(t){
       g.save(); g.translate(X,Y-6); g.scale(s,s); g.globalAlpha=al;
       g.strokeStyle='#e8c46a'; g.lineWidth=2; g.beginPath(); g.arc(0,-5,4,Math.PI,0); g.stroke();
       RR(g,'#e8c46a',-6,-5,12,9,2); g.restore();
-      g.globalAlpha=al; g.fillStyle='#f6e2a8'; g.font='bold 11px sans-serif'; g.textAlign='center'; g.fillText('カチッ',X+18,Y-14-p*6); g.textAlign='start'; g.globalAlpha=1;
+      g.globalAlpha=al; g.fillStyle='#f6e2a8'; g.font='bold 11px sans-serif'; g.textAlign='center'; g.fillText(L.click,X+18,Y-14-p*6); g.textAlign='start'; g.globalAlpha=1;
     }else if(f.type==='sparkle'){
       g.strokeStyle=`rgba(255,220,130,${1-p})`; g.lineWidth=2; g.beginPath(); g.arc(X,Y,4+18*p,0,Math.PI*2); g.stroke();
       drawSparkle(g,X,Y,t*3);
@@ -98,7 +98,7 @@ function renderScene(t){
   const blink=Math.sin(t*4)>0;
   g.fillStyle=blink?'#d23a2a':'rgba(210,58,42,.35)'; g.beginPath(); g.arc(18,18,4,0,Math.PI*2); g.fill();
   const h=HYPS.find(x=>x.id===SCN.id);
-  if(h){g.fillStyle='#f0dcb4'; g.font='bold 12px serif'; g.fillText(`仮定${h.no}  ${h.title}　― 再現 ―`,28,22);}
+  if(h){g.fillStyle='#f0dcb4'; g.font='bold 12px serif'; g.fillText(L.sceneHeader(h.no,h.title),28,22);}
   // 時刻（時間が鍵になる事件で、再現の「いつ」を見せる）
   if(SCN.clock){
     g.font='bold 15px serif'; const w=g.measureText(SCN.clock).width+22;

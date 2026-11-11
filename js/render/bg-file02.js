@@ -104,7 +104,7 @@ function drawHall(g){
   const wall=(x,y,w,h)=>{R(g,'#2a292f',x*TS,y*TS,w*TS,h*TS); R(g,'#45434c',x*TS,y*TS,w*TS,4);};
   wall(1,5,3,1); wall(5,5,3,1); wall(12,5,3,1); wall(16,5,3,1); wall(7,6,1,8); wall(12,6,1,8);
   g.fillStyle='#cfc8b8'; g.font='bold 10px sans-serif';
-  g.fillText('警備室',1.3*TS,5.65*TS); g.fillText('学芸員室',16.15*TS,5.65*TS);
+  g.fillText(L.sign.security,1.3*TS,5.65*TS); g.fillText(L.sign.curator,16.15*TS,5.65*TS);
   // 展示室の入口（上の壁）
   R(g,'#141218',9*TS+2,2,TS-4,TS-4); R(g,'#c9a45a',9*TS,0,2,TS); R(g,'#c9a45a',10*TS-2,0,2,TS);
   glow(g,9.5*TS,.6*TS,30,'rgba(255,240,210,.1)');
@@ -132,7 +132,7 @@ function drawHall(g){
   // 通用口（下の壁）と出入りの記録簿
   R(g,'#1b1a1e',9*TS+2,14*TS+2,2*TS-4,TS-2); R(g,'#6a6a72',10*TS-1,14*TS+2,2,TS-2);
   R(g,'#e9e2d0',11*TS-12,14*TS+4,9,12); R(g,'#8a7a5a',11*TS-10,14*TS+3,5,2);
-  g.fillStyle='#cfc8b8'; g.font='bold 9px sans-serif'; g.fillText('通用口',9.55*TS,13.85*TS);
+  g.fillStyle='#cfc8b8'; g.font='bold 9px sans-serif'; g.fillText(L.sign.staffExit,9.55*TS,13.85*TS);
   R(g,'rgba(255,250,235,.03)',0,0,PW,PH);
   vignette(g,.32);
 }
@@ -146,7 +146,7 @@ function drawCam(g){
   // 展示室の入口（両開きの扉が開いている）
   R(g,'#17151b',8.5*TS,.9*TS,2*TS,2.7*TS); R(g,'#c9a45a',8.5*TS-3,.8*TS,3,2.8*TS); R(g,'#c9a45a',10.5*TS,.8*TS,3,2.8*TS); R(g,'#c9a45a',8.5*TS-3,.8*TS,2*TS+6,3);
   R(g,'#2a2730',8.6*TS,2.3*TS,1.8*TS,1.3*TS);
-  g.fillStyle='#e8dcc0'; g.font='bold 9px sans-serif'; g.fillText('展示室',9.05*TS,.62*TS);
+  g.fillStyle='#e8dcc0'; g.font='bold 9px sans-serif'; g.fillText(L.sign.gallery,9.05*TS,.62*TS);
   // ポスター
   R(g,'#16223e',3*TS,.7*TS,1.6*TS,2.1*TS); C(g,'#3a6bd0',3.8*TS,1.6*TS,8); C(g,'#9cc0ff',3.8*TS-2,1.6*TS-2,2.5);
   R(g,'#d6b061',3.2*TS,2.4*TS,1.2*TS,2);
@@ -159,7 +159,7 @@ function drawCam(g){
   RR(g,'#5a4430',5*TS,11.2*TS,3*TS,.7*TS,3);
   // 左右の案内
   g.fillStyle='#d8d4c8'; g.font='bold 10px sans-serif';
-  g.fillText('← ロビー',.4*TS,11.6*TS); g.fillText('STAFF ONLY →',16.4*TS,11.6*TS);
+  g.fillText(L.sign.lobby,.4*TS,11.6*TS); g.fillText('STAFF ONLY →',16.4*TS,11.6*TS);
   vignette(g,.25);
 }
 

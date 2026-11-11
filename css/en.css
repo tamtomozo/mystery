@@ -1,0 +1,32 @@
+/* 英語版だけで読み込む調整（js/core/lang.js が読み込む）
+   和文向けの広い字間を詰め、欧文のセリフ体にする。
+   時刻や数が多いので、数字の高さがそろう（ライニング数字の）書体を先に置く */
+html,body{font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;font-variant-numeric:lining-nums}
+#loc{letter-spacing:.04em}
+#dname,#bname{letter-spacing:.04em}
+#band.event #bandTitle{letter-spacing:.12em}
+#band.event #bandSub{letter-spacing:.06em}
+#band.guide #bandLabel{letter-spacing:.08em}
+.tseries{letter-spacing:.5em;padding-left:.5em}
+#title h1{letter-spacing:.08em;padding-left:.08em}
+.tsub{letter-spacing:.12em;padding-left:.12em}
+.tpress{letter-spacing:.12em;padding-left:.12em}
+.fh{letter-spacing:.12em}
+.fen{letter-spacing:.25em}
+.fcard .no{letter-spacing:.15em}
+.fcard .tt{letter-spacing:.02em}
+.fd-no{letter-spacing:.2em}
+#fdetail h2{letter-spacing:.04em}
+.fd-stat b{letter-spacing:.04em}
+.fd-acts .btn{letter-spacing:.04em}
+.fstamp{letter-spacing:.1em}
+#btitle{letter-spacing:.08em}
+.sech{letter-spacing:.06em}
+.hno{letter-spacing:.08em}
+.hcard h2{letter-spacing:.02em}
+.stamp{letter-spacing:.08em}
+.btn.big{letter-spacing:.06em}
+.enext{letter-spacing:.06em}
+.einner h2,.einner h3{letter-spacing:.06em}
+/* 物証のアイコン（英語版は絵文字） */
+.evc .k{font-size:16px}

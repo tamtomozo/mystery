@@ -16,9 +16,11 @@ function clearedFiles(){
   try{const a=JSON.parse(localStorage.getItem(CLEAR_KEY)||'[]'); return Array.isArray(a)?a:[];}catch(e){return [];}
 }
 const isCleared=id=>clearedFiles().includes(id);
+// 初めて解決したときは true を返す
 function markCleared(id){
-  const a=clearedFiles(); if(a.includes(id)) return;
+  const a=clearedFiles(); if(a.includes(id)) return false;
   a.push(id); try{localStorage.setItem(CLEAR_KEY,JSON.stringify(a));}catch(e){}
+  return true;
 }
 
 /* ---------- セーブ／ロード ---------- */

@@ -8,49 +8,51 @@
 <link rel="stylesheet" href="css/dialog.css">
 <link rel="stylesheet" href="css/screens.css">
 <link rel="stylesheet" href="css/board.css">
+<script src="js/core/lang.js"></script>
 </head>
 <body>
 <div id="app" class="menu">
   <div id="top">
-    <div id="loc">隠された真実</div>
-    <span id="saved">✓ 保存</span>
+    <div id="loc" data-l="loc">隠された真実</div>
+    <span id="saved" data-l="saved">✓ 保存</span>
     <div id="evcount"></div>
-    <button class="btn small snd" id="bgmBtn" title="BGMのON/OFF">♪BGM</button>
-    <button class="btn small snd" id="seBtn" title="効果音のON/OFF">SE</button>
-    <button class="btn small" id="helpBtn">操作</button>
-    <button class="btn gold" id="boardBtn">捜査ボード<span class="kb"> [B]</span></button>
+    <button class="btn small" id="langBtn"></button>
+    <button class="btn small snd" id="bgmBtn" data-lt="bgm" title="BGMのON/OFF">♪BGM</button>
+    <button class="btn small snd" id="seBtn" data-lt="se" title="効果音のON/OFF">SE</button>
+    <button class="btn small" id="helpBtn" data-l="help">操作</button>
+    <button class="btn gold" id="boardBtn"><span data-l="board">捜査ボード</span><span class="kb"> [B]</span></button>
+    <button class="btn small gold hidden" id="skip" data-l="skip">スキップ ▶▶</button>
   </div>
   <div id="stage">
     <canvas id="cv"></canvas>
     <div id="bubble" class="hidden"><div id="bname"></div><div id="btext"><span id="btyped"></span><span id="brest"></span></div><div id="bnext">▼</div><div id="btail"></div></div>
     <div id="dlg" class="hidden"><div id="dname"></div><div id="dtext"></div><div id="dchoices"></div><div id="dnext">▼</div></div>
     <div id="toast"></div>
-    <button class="btn small hidden" id="skip">スキップ ▶▶</button>
     <div id="band" class="hidden"><div class="strip">
       <div id="bandLabel"></div><div id="bandTitle"></div><div id="bandSub"></div>
-      <div id="bandRows"></div><div id="bandNote"></div><div id="bandHint">クリック / Space で閉じる ▼</div>
+      <div id="bandRows"></div><div id="bandNote"></div><div id="bandHint" data-l="bandHint">クリック / Space で閉じる ▼</div>
     </div></div>
     <!-- タイトル -->
     <div id="title" class="overlay">
       <div class="tlogo">
-        <div class="tseries">HIDDEN TRUTH</div>
-        <h1>隠された真実</h1>
+        <div class="tseries" data-l="tseries">HIDDEN TRUTH</div>
+        <h1 data-l="title">隠された真実</h1>
         <div class="tline"></div>
-        <div class="tsub">― 物証が、真実を語る ―</div>
-        <div class="tpress">クリック / Space で はじめる</div>
+        <div class="tsub" data-l="tsub">― 物証が、真実を語る ―</div>
+        <div class="tpress" data-l="tpress">クリック / Space で はじめる</div>
       </div>
     </div>
     <!-- FILE選択 -->
     <div id="files" class="overlay hidden">
       <div class="fwrap">
-        <div class="fhead"><span class="fh">事件ファイル</span><span class="fen">FILE SELECT</span></div>
+        <div class="fhead"><span class="fh" data-l="fh">事件ファイル</span><span class="fen" data-l="fen">FILE SELECT</span></div>
         <div class="fbody">
           <div id="flist"></div>
           <div id="fdetail"></div>
         </div>
         <div class="ffoot">
-          <button class="btn small" id="fback">◀ タイトルへ</button>
-          <span class="fhint">↑↓ 選ぶ ・ Space / Enter 決定 ・ Esc もどる</span>
+          <button class="btn small" id="fback" data-l="fback">◀ タイトルへ</button>
+          <span class="fhint" data-l="fhint">↑↓ 選ぶ ・ Space / Enter 決定 ・ Esc もどる</span>
         </div>
       </div>
     </div>
@@ -61,11 +63,11 @@
 
 <div id="board" class="hidden">
   <div id="bwrap">
-    <div class="bhead"><span id="btitle">捜査ボード</span><button class="btn small" id="bclose">閉じる ✕</button></div>
+    <div class="bhead"><span id="btitle" data-l="btitle">捜査ボード</span><button class="btn small" id="bclose" data-l="bclose">閉じる ✕</button></div>
     <div id="bquote" class="hidden"><span id="bqname">柏木</span><p id="bqtext"></p></div>
     <div class="bbody" id="bbody">
-      <section id="hypsec"><p class="sech">仮定</p><div id="htabs"></div><div id="hview"></div></section>
-      <section id="evsec"><p class="sech">物証 <span id="evnum"></span></p><div id="evgrid"></div><div id="evdetail"></div></section>
+      <section id="hypsec"><p class="sech" data-l="hypsec">推理</p><div id="htabs"></div><div id="hview"></div></section>
+      <section id="evsec"><p class="sech"><span data-l="evsec">物証</span> <span id="evnum"></span></p><div id="evgrid"></div><div id="evdetail"></div></section>
     </div>
     <div class="bfoot"><div id="bmsg"></div><div id="bact"></div></div>
   </div>
@@ -76,6 +78,7 @@
   すべて同じグローバルスコープを共有するので、読み込み順が大事：
   1. core（定数・音・セーブ・事件の切り替え）
   2. data（common → 事件ごとのフォルダ fileXX/。defCase で登録し、useCase で切り替える） 3. state
+     事件データは選んだ言語のものだけを loadCaseData で読み込む（js/core/lang.js。言語の文言 L は <head> で先に読み込む）
   4. ui（会話・ガイド・HUD・タイトル／FILE選択） 5. game（進行・移動・シーン・ボード・取調べ）
   6. render（描画） 7. main（ループ・入力・タイトル。最後に読み込む）
 -->
@@ -84,30 +87,7 @@
 <script src="js/core/save.js"></script>
 <script src="js/core/case.js"></script>
 <script src="js/data/common.js"></script>
-<script src="js/data/file01/evidence.js"></script>
-<script src="js/data/file01/hypotheses.js"></script>
-<script src="js/data/file01/maps.js"></script>
-<script src="js/data/file01/characters.js"></script>
-<script src="js/data/file01/hotspots.js"></script>
-<script src="js/data/file01/scenes.js"></script>
-<script src="js/data/file01/interrogation.js"></script>
-<script src="js/data/file01/story.js"></script>
-<script src="js/data/file02/evidence.js"></script>
-<script src="js/data/file02/hypotheses.js"></script>
-<script src="js/data/file02/maps.js"></script>
-<script src="js/data/file02/characters.js"></script>
-<script src="js/data/file02/hotspots.js"></script>
-<script src="js/data/file02/scenes.js"></script>
-<script src="js/data/file02/interrogation.js"></script>
-<script src="js/data/file02/story.js"></script>
-<script src="js/data/file03/evidence.js"></script>
-<script src="js/data/file03/hypotheses.js"></script>
-<script src="js/data/file03/maps.js"></script>
-<script src="js/data/file03/characters.js"></script>
-<script src="js/data/file03/hotspots.js"></script>
-<script src="js/data/file03/scenes.js"></script>
-<script src="js/data/file03/interrogation.js"></script>
-<script src="js/data/file03/story.js"></script>
+<script>loadCaseData(['file01','file02','file03']);</script>
 <script src="js/core/state.js"></script>
 <script src="js/data/files.js"></script>
 <script src="js/ui/dialog.js"></script>

@@ -57,9 +57,23 @@
 .fd-note{margin-top:.9em;font-size:clamp(9px,1.5cqw,12px);color:var(--muted)}
 .fstamp{position:absolute;top:2cqw;right:2.4cqw;border:3px solid var(--red);color:var(--red);font-weight:900;
   padding:.05em .55em;transform:rotate(-12deg);font-size:clamp(14px,3cqw,24px);letter-spacing:.25em;opacity:.85;pointer-events:none}
-/* 解決して戻ってきた直後：判が押される */
-.fstamp.slam{animation:stampIn .45s cubic-bezier(.3,.9,.4,1.25) .5s both}
-@keyframes stampIn{from{opacity:0;transform:rotate(-12deg) scale(2.6)}to{opacity:.85;transform:rotate(-12deg) scale(1)}}
+/* 初めて解決して戻ってきた直後：判が上から降りてきて、ぽん！と押される
+   （0.6秒待って 0.55秒で押す。紙に当たるのは 60% の時点。title.js の音と揺れもこの瞬間に合わせている） */
+.fstamp.slam{animation:stampFirst .55s cubic-bezier(.5,0,.6,1) .6s both}
+@keyframes stampFirst{
+  0%  {opacity:0;transform:rotate(-20deg) scale(4.2);filter:blur(2px)}
+  45% {opacity:.6}
+  60% {opacity:1;transform:rotate(-12deg) scale(.86);filter:none}
+  78% {transform:rotate(-12deg) scale(1.07)}
+  100%{opacity:.85;transform:rotate(-12deg) scale(1)}}
+/* 押された瞬間、朱のにじみが広がって消える */
+.fstamp.slam::after{content:'';position:absolute;inset:-3px;border:3px solid var(--red);border-radius:3px;opacity:0;
+  animation:inkRing .6s ease-out .93s}
+@keyframes inkRing{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.45)}}
+/* 押した衝撃で、ファイルの紙面がわずかに揺れる */
+#fdetail.stamping{overflow:hidden}
+#fdetail.thud{animation:thud .32s ease-out}
+@keyframes thud{0%{transform:translate(0,0)}20%{transform:translate(-3px,3px)}45%{transform:translate(3px,-2px)}70%{transform:translate(-1px,1px)}100%{transform:none}}
 
 .ffoot{display:flex;align-items:center;justify-content:space-between;gap:1em;margin-top:2cqw}
 .fhint{font-size:clamp(9px,1.5cqw,12px);color:var(--muted);letter-spacing:.08em}

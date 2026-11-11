@@ -21,7 +21,7 @@ const LOOK={
 
 /* ---------- マップ（取調室は全事件で共通。現場のマップは各事件のフォルダで足す） ---------- */
 const MAPDEF={
-  interro:{name:'取調室',border:true,solids:[[8,6,4,2]]},
+  interro:{name:L.interroRoom,border:true,solids:[[8,6,4,2]]},
 };
 const INTERRO_Z=1.75, INTERRO_CY=0.5;   // 取調室の拡大率と、机を置く画面上の高さ（割合）
 const SOLID={};
@@ -40,28 +40,28 @@ function talkTakizawa(){
   const ul=unlockedHyps(), n=ul.length, cur=ul[n-1];
   if(n===0){
     const miss=HYPS[0].requires.filter(id=>!has(id));
-    say('滝沢',CASE.hint0);
-    if(miss.length) say('滝沢',EVHINT[miss[0]]);
+    say(L.tak,CASE.hint0);
+    if(miss.length) say(L.tak,EVHINT[miss[0]]);
     return;
   }
   const st=hypStatus(cur);
   if(cur.final){
     if(st==='proven'){
-      say('滝沢',CASE.provenLine);
-      ask('','取調室へ向かいますか？',[{label:'取調室へ',fn:()=>goInterro()},{label:'まだ現場を見る',fn:()=>{}}]);
-    }else if(CASE.finalOpen) CASE.finalOpen.forEach(l=>say('滝沢',l));   // 事件ごとに差し替えられる
-    else say('滝沢',`仮定${cur.no}の主張を、すべて物証で裏付けろ。捜査ボード［B］だ。`);
+      say(L.tak,CASE.provenLine);
+      ask('',L.askInterro,[{label:L.goInterro,fn:()=>goInterro()},{label:L.stayScene,fn:()=>{}}]);
+    }else if(CASE.finalOpen) CASE.finalOpen.forEach(l=>say(L.tak,l));   // 事件ごとに差し替えられる
+    else say(L.tak,L.takFinal(cur.no));
     return;
   }
   if(st==='open'){
-    say('滝沢',`仮定${cur.no}「${cur.title}」か……。`);
-    say('滝沢',cur.hint);
+    say(L.tak,L.takOpen(cur.no,cur.title));
+    say(L.tak,cur.hint);
     const falses=cur.claims.filter(c=>!c.truth);
-    if(!falses.some(c=>c.ev.some(has))) say('滝沢',EVHINT[falses[0].ev.find(id=>!has(id))||falses[0].ev[0]]);
-    else say('滝沢','物証はそろってる。捜査ボード［B］で、主張と照らし合わせてかんがえてみろ。');
+    if(!falses.some(c=>c.ev.some(has))) say(L.tak,EVHINT[falses[0].ev.find(id=>!has(id))||falses[0].ev[0]]);
+    else say(L.tak,L.takReady);
     return;
   }
   const next=HYPS[n], miss=next.requires.filter(id=>!has(id));
-  say('滝沢',`仮定${cur.no}は崩れた。だが、まだ次の筋が見えない。`);
-  if(miss.length) say('滝沢',EVHINT[miss[0]]);
+  say(L.tak,L.takBroken(cur.no));
+  if(miss.length) say(L.tak,EVHINT[miss[0]]);
 }

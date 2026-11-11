@@ -38,7 +38,7 @@
 #band .strip{width:100%;animation:bandIn .5s cubic-bezier(.2,.8,.2,1)}
 @keyframes shadeIn{from{opacity:0}to{opacity:1}}
 @keyframes bandIn{from{clip-path:inset(50% 0 50% 0)}to{clip-path:inset(0 0 0 0)}}
-/* イベント帯：仮定が浮かび上がる／場面転換 */
+/* イベント帯：推理が浮かび上がる／場面転換 */
 #band.event .strip{text-align:center;padding:3.6cqw 0;
   background:linear-gradient(90deg,rgba(12,9,5,0),rgba(12,9,5,.94) 14%,rgba(12,9,5,.94) 86%,rgba(12,9,5,0));
   border-top:1px solid #a8865a;border-bottom:1px solid #a8865a}
@@ -63,6 +63,5 @@
 #toast{position:absolute;top:3%;left:50%;transform:translateX(-50%);background:rgba(10,10,12,.9);border:1px solid var(--gold);color:var(--gold);
   padding:.4em 1.1em;border-radius:20px;font-size:clamp(11px,2cqw,15px);white-space:nowrap;pointer-events:none;transition:opacity .3s;opacity:0;max-width:94%;overflow:hidden;text-overflow:ellipsis}
 #toast.on{opacity:1}
-#skip{position:absolute;top:2.5%;right:2%}
 #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .4s}
 #fade.on{opacity:1}

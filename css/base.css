@@ -33,3 +33,7 @@ body{display:flex;justify-content:center}
 .hidden{display:none!important}
 /* タイトル／FILE選択のあいだは、ゲーム中だけのボタンを出さない */
 #app.menu #helpBtn,#app.menu #boardBtn{display:none}
+/* 言語の切り替えは、タイトル／FILE選択のあいだだけ */
+#app:not(.menu) #langBtn{display:none}
+/* 推理シーン・映像の再生中は「操作」「捜査ボード」の代わりに「スキップ」を出す（画面に被らないよう、上のバーに置く） */
+#app.scene #helpBtn,#app.scene #boardBtn{display:none}

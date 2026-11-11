@@ -1,4 +1,4 @@
-/* 仮定シーン・監視カメラ映像の再生 */
+/* 推理シーン・監視カメラ映像の再生 */
 'use strict';
 
 /* =========================================================
@@ -24,7 +24,7 @@ const toSec=s=>{const [h,m,x]=s.split(':').map(Number); return h*3600+m*60+(x||0
 function startScene(id,isNew,opt){
   P.path=[];P.pending=null;
   SCN={id,isNew,steps:SCENES[id](),i:-1,actors:{},fx:[],props:{},map:'study',wait:null,timer:0,title:null,clock:null,cctv:null,after:opt&&opt.after};
-  S.mode='scene'; $('#skip').classList.remove('hidden');
+  S.mode='scene'; $('#skip').classList.remove('hidden'); $('#app').classList.add('scene');
   nextStep();
 }
 function nextStep(){
@@ -42,7 +42,7 @@ function nextStep(){
   if(s.carry){SCN.actors[s.carry].carry=s.item; return nextStep();}
   if(s.remove){delete SCN.actors[s.remove]; return nextStep();}
   if(s.move){const a=SCN.actors[s.move]; a.path=s.to.map(p=>[p[0],p[1]]); if(s.nowait) return nextStep(); SCN.wait='move'; SCN.waitActor=a; return;}
-  if(s.text){showLine({name:s.name||(SCN.cctv?'映像':'仮定'),text:s.text},true); SCN.wait='click'; return;}
+  if(s.text){showLine({name:s.name||(SCN.cctv?L.cctvName:L.sceneName),text:s.text},true); SCN.wait='click'; return;}
   if(s.fx){SCN.fx.push({type:s.fx,x:s.x,y:s.y,x2:s.x2,y2:s.y2,t:0,dur:s.dur||0.9,persist:!!s.persist}); AU.sfx(s.fx); SCN.wait='time'; SCN.timer=s.dur||0.9; return;}
   if(s.fall){SCN.actors[s.fall].fallen=true; SCN.wait='time'; SCN.timer=0.6; return;}
   if(s.title){SCN.title={text:s.title,sub:s.sub,t:0}; AU.sfx('hypo'); SCN.wait='time'; SCN.timer=2.3; return;}
@@ -73,20 +73,18 @@ function updateScene(dt){
 function endScene(){
   if(!SCN) return;
   const {id,isNew,after}=SCN; SCN=null;
-  hideDlg(); $('#skip').classList.add('hidden'); S.mode='explore';
+  hideDlg(); $('#skip').classList.add('hidden'); $('#app').classList.remove('scene'); S.mode='explore';
   saveGame();
   if(after){after(); if(dq.length) startDialog(); else if(!checkPhase()) checkUnlock(); return;}
   if(!isNew){ if(!checkPhase()) checkUnlock(); return; }
   const h=HYPS.find(x=>x.id===id);
-  toast(`捜査ボードに 仮定${h.no}「${h.title}」を追加`,3600);
+  toast(L.addedToBoard(h.no,h.title),3600);
   if(id===HYPS[0].id){
-    say('滝沢','……今のが、ここまでの物証から組み立てた「仮定」だ。');
-    say('滝沢','仮定の主張を、一つずつ物証で確かめろ。矛盾が見つかれば、その仮定は崩れる。');
-    say('滝沢','崩れた仮定に新しい物証が加われば、仮定は真実に近づいていく。');
+    L.firstHyp.forEach(l=>say(L.tak,l));
     guideBoard();
     startDialog();
   }else if(h.final){
-    say('滝沢',CASE.finalIntro);
+    say(L.tak,CASE.finalIntro);
     guideFinal();
     startDialog();
   }

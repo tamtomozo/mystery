@@ -308,7 +308,7 @@ const AU=(()=>{
       [[5,88],[19,86],[29,91],[43,88],[55,83]].forEach(([st,m])=>add('drop',st,m,1,.045));
     }),
 
-    // 仮定の再現：セピア色の記憶を辿る懐中時計とオルゴール（Am, 58 BPM, 8小節）
+    // 推理の再現：セピア色の記憶を辿る懐中時計とオルゴール（Am, 58 BPM, 8小節）
     scene:track(58,2,64,add=>{
       const ch=[
         [33,[57,60,64]],[32,[56,60,64]],[31,[55,60,64]],[30,[54,60,64]],
@@ -498,6 +498,7 @@ const AU=(()=>{
     const t=ac.currentTime+.01;
     if(KEEP.has(name)) return sfxRich(name,arg);
     if(FIND.has(name)){ for(let i=0;i<3;i++) beep(t+i*.085,PI_HZ,PI_LEN,PI_VOL); return; }  // ピピピ
+    if(name==='stamp'){ beep(t,440,.12,.2); return; }  // 判を押す「ポン」（ピより低く、少し長く）
     beep(t,PI_HZ,PI_LEN,PI_VOL);  // ピ
   }
   // 合成した効果音（今は足音と文字送りだけで使用。ほかの音も残してある）
@@ -565,6 +566,8 @@ const AU=(()=>{
   }
   return {init,setTrack,sfx,pref,setPref,state:()=>ac?ac.state:'none'};
 })();
-const VOICE={'滝沢':300,'森':440,'野口':494,'柏木':370,'大河内':262,'あなた':392,'早瀬':523,'岩田':277,'久我':330,'館長':247,'小松':587};
+const VOICE={'滝沢':300,'森':440,'野口':494,'柏木':370,'大河内':262,'あなた':392,'早瀬':523,'岩田':277,'久我':330,'館長':247,'小松':587,
+  // 英語版の話し手名
+  'Takizawa':300,'Mori':440,'Noguchi':494,'Kashiwagi':370,'Okochi':262,'You':392,'Hayase':523,'Iwata':277,'Kuga':330,'Director':247,'Komatsu':587};
 const voiceOf=name=>{if(!name) return 0; for(const k in VOICE) if(name.startsWith(k)) return VOICE[k]; return 0;};
 

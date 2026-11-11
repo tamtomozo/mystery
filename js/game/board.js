@@ -1,22 +1,20 @@
-/* 捜査ボード（仮定の検証） */
+/* 捜査ボード（推理の検証） */
 'use strict';
 
 /* =========================================================
-   捜査ボード（仮定の検証）
+   捜査ボード（推理の検証）
    ========================================================= */
-const B={hyp:null,claim:null,ev:null,pick:false,round:0,msg:'',act:null,ret:'explore'};
+const B={hyp:null,claim:null,ev:null,pick:false,round:0,msg:'',act:null,ret:'explore',slam:null};   // slam：判を押す演出をする推理のID
 function openBoard(pick,round){
   if(!['explore','interro'].includes(S.mode)) return;
   if(S.mode==='explore'&&pick) return;
   B.ret=S.mode; S.mode='board'; B.pick=!!pick; B.round=round||0;
   B.claim=null; B.ev=null; B.act=null;
-  B.msg=pick?`${CASE.suspect}の問いに答える物証を選び、みせよう。`:'';
+  B.msg=pick?L.b.pickMsg(CASE.suspect):'';
   $('#bqname').textContent=CASE.suspect;
   const ul=unlockedHyps();
   if(!B.hyp||!S.hyps[B.hyp]) B.hyp=ul.length?ul[ul.length-1].id:null;
   if(!pick&&ul.length){const last=ul[ul.length-1]; if(hypStatus(last)==='open') B.hyp=last.id;}
-  const fin=HYPS.find(h=>h.final);
-  if(!pick&&hypStatus(fin)==='proven') B.act={label:'▶ 取調室へ向かう',fn:()=>{hideBoard(); S.mode='explore'; goInterro();}};
   renderBoard(); $('#board').classList.remove('hidden'); AU.sfx('paper');
 }
 function hideBoard(){$('#board').classList.add('hidden')}
@@ -29,68 +27,79 @@ function closeBoard(cancel){
 }
 
 function renderBoard(){
-  $('#btitle').textContent=B.pick?'物証をみせる':'捜査ボード';
+  $('#btitle').textContent=B.pick?L.b.titlePick:L.b.title;
   $('#bquote').classList.toggle('hidden',!B.pick);
   if(B.pick) $('#bqtext').textContent=ROUNDS[B.round].stmt;
   $('#hypsec').classList.toggle('hidden',B.pick);
   $('#bbody').classList.toggle('single',B.pick);
   if(!B.pick){
     const ul=unlockedHyps();
-    $('#htabs').innerHTML=ul.map(h=>`<button class="htab ${h.id===B.hyp?'sel':''} ${hypStatus(h)}" data-h="${h.id}">仮定${h.no}</button>`).join('');
+    $('#htabs').innerHTML=ul.map(h=>`<button class="htab ${h.id===B.hyp?'sel':''} ${hypStatus(h)}" data-h="${h.id}">${L.b.tab(h.no)}</button>`).join('');
     if(!ul.length){
-      $('#hview').innerHTML='<p class="empty">まだ仮定はない。<br>現場で物証を集めれば、何が起きたのか「仮定」が見えてくる。</p>';
+      $('#hview').innerHTML=`<p class="empty">${L.b.noHyp}</p>`;
     }else{
       const h=HYPS.find(x=>x.id===B.hyp), st=hypStatus(h), cs=S.hyps[h.id].claims;
+      const slam=B.slam===h.id?' slam':''; B.slam=null;
       const left=h.claims.filter((c,i)=>!cs[i]).length;
-      const guide= st==='refuted'?'この仮定は否定された。':
-                   st==='proven'?'すべての主張が物証で裏付けられた。':
-                   h.final?`すべての主張を、物証で裏付けよう（残り ${left}）。`:
-                   '主張をひとつ選び、物証と照らし合わせて「かんがえる」。<br>誤った主張には「矛盾する物証」を、正しい主張には「裏付ける物証」を。';
+      const guide= st==='refuted'?L.b.refuted:
+                   st==='proven'?L.b.proven:
+                   h.final?L.b.finalLeft(left):
+                   L.b.howTo;
       $('#hview').innerHTML=
-        `<div class="hcard">${st==='refuted'?'<div class="stamp">否定</div>':st==='proven'?'<div class="stamp ok">確定</div>':''}
-          <div class="hno">仮定${h.no}</div><h2>${h.title}</h2><p class="sum">${h.summary}</p>
-          <button class="btn small" data-replay="${h.id}">▶ シーンを再生</button></div>
+        `<div class="hcard">${st==='refuted'?`<div class="stamp${slam}">${L.b.stampNg}</div>`:st==='proven'?`<div class="stamp ok${slam}">${L.b.stampOk}</div>`:''}
+          <div class="hno">${L.b.tab(h.no)}</div><h2>${h.title}</h2><p class="sum">${h.summary}</p>
+          <button class="btn small" data-replay="${h.id}">${L.b.replay}</button></div>
          <p class="guide">${guide}</p>
          <ul class="claims">${h.claims.map((c,i)=>{const r=cs[i];
-           return `<li class="claim ${r||''} ${B.claim===i?'sel':''}" data-c="${i}"><span class="mark">${r==='ok'?'✔':r==='ng'?'✖':'？'}</span><div><div class="ct">${c.t}</div>${r?`<div class="why">${c.why}</div>`:''}</div></li>`;}).join('')}</ul>`;
+           return `<li class="claim ${r||''} ${B.claim===i?'sel':''}" data-c="${i}"><span class="mark">${r==='ok'?'✔':r==='ng'?'✖':L.b.unchecked}</span><div><div class="ct">${c.t}</div>${r?`<div class="why">${c.why}</div>`:''}</div></li>`;}).join('')}</ul>`;
+      if(slam) slamStamp();
     }
   }
   $('#evnum').textContent=`${S.ev.length}/${EV_TOTAL}`;
-  $('#evgrid').innerHTML=S.ev.length?S.ev.map(id=>`<button class="evc ${B.ev===id?'sel':''} ${S.seenEv.has(id)?'':'new'}" data-e="${id}"><span class="k">${EV[id].k}</span><span>${EV[id].name}</span></button>`).join(''):'<p class="empty">まだ物証はない。</p>';
-  $('#evdetail').innerHTML=B.ev?`<b>${EV[B.ev].name}</b><br>${EV[B.ev].desc}`:'<span class="muted">物証をタップすると詳細が表示される。</span>';
+  $('#evgrid').innerHTML=S.ev.length?S.ev.map(id=>`<button class="evc ${B.ev===id?'sel':''} ${S.seenEv.has(id)?'':'new'}" data-e="${id}"><span class="k">${EV[id].k}</span><span>${EV[id].name}</span></button>`).join(''):`<p class="empty">${L.b.noEv}</p>`;
+  $('#evdetail').innerHTML=B.ev?`<b>${EV[B.ev].name}</b><br>${EV[B.ev].desc}`:`<span class="muted">${L.b.evHint}</span>`;
   let msg=B.msg;
   if(!msg&&!B.pick){
-    if(B.claim!=null&&!B.ev) msg='<span class="muted">照らし合わせる物証を選んでください。</span>';
-    else if(B.ev&&B.claim==null&&B.hyp&&hypStatus(HYPS.find(x=>x.id===B.hyp))==='open') msg='<span class="muted">主張を選ぶと、この物証と照らし合わせてかんがえられる。</span>';
+    if(B.claim!=null&&!B.ev) msg=`<span class="muted">${L.b.pickEv}</span>`;
+    else if(B.ev&&B.claim==null&&B.hyp&&hypStatus(HYPS.find(x=>x.id===B.hyp))==='open') msg=`<span class="muted">${L.b.pickClaim}</span>`;
   }
   $('#bmsg').innerHTML=msg||'';
   let btn='';
   if(B.act) btn=`<button class="btn gold" data-act>${B.act.label}</button>`;
-  else if(B.pick&&B.ev) btn=`<button class="btn gold" data-present>「${EV[B.ev].name}」をみせる</button>`;
-  else if(!B.pick&&B.claim!=null&&B.ev) btn=`<button class="btn gold" data-present>かんがえる</button>`;
+  else if(B.pick&&B.ev) btn=`<button class="btn gold" data-present>${L.b.present(EV[B.ev].name)}</button>`;
+  else if(!B.pick&&B.claim!=null&&B.ev) btn=`<button class="btn gold" data-present>${L.b.think}</button>`;
   $('#bact').innerHTML=btn;
+}
+// 推理が確定／否定された瞬間：判が降ってきて、ぽん！と押される
+// （css の .stamp.slam：0.25秒待って 0.55秒で押す。紙に当たるのは 60% の時点 ≒ 0.58秒。音と揺れをそこに合わせる）
+function slamStamp(){
+  const card=$('#hview .hcard'), body=$('#bbody');
+  body.scrollTo({top:0,behavior:'smooth'});   // 推理のカードはボードの先頭にある（スマホの1列表示でも）
+  body.classList.add('stamping');   // 大きく降ってくる判で、スクロールバーが出ないように
+  setTimeout(()=>{AU.sfx('stamp'); card.classList.remove('thud'); void card.offsetWidth; card.classList.add('thud');},580);
+  setTimeout(()=>body.classList.remove('stamping'),1300);
 }
 function doPresent(){
   const h=HYPS.find(x=>x.id===B.hyp), c=h.claims[B.claim], st=S.hyps[h.id];
   if(c.ev.includes(B.ev)){
     st.claims[B.claim]=c.truth?'ok':'ng';
-    B.msg=c.truth?`<b class="okc">✔ 裏付け</b>　${c.why}`:`<b class="ngc">✖ 矛盾！</b>　${c.why}`;
+    B.msg=c.truth?`<b class="okc">${L.b.ok}</b>　${c.why}`:`<b class="ngc">${L.b.ng}</b>　${c.why}`;
     B.claim=null; B.ev=null;
     const s=hypStatus(h);
+    if(s==='refuted'||s==='proven') B.slam=h.id;
     AU.sfx(s==='proven'?'proven':c.truth?'support':'refute');
     saveGame();
     if(s==='refuted'){
-      B.msg+=`<br>仮定${h.no}「${h.title}」は否定された。`;
+      B.msg+=`<br>${L.b.hypRefuted(h.no,h.title)}`;
       if(phase()>S.phaseShown){
-        B.msg+='<br><span class="muted">捜査が進展した。現場に、新たに調べられる場所が現れる。</span>';
-        B.act={label:'▶ 現場に戻る',fn:()=>closeBoard()};
+        B.msg+=`<br><span class="muted">${L.b.progressed}</span>`;
+        B.act={label:L.b.backToScene,fn:()=>closeBoard()};
       }
     }else if(s==='proven'){
-      B.msg+='<br><b class="okc">すべての主張が裏付けられた。――これが真相だ。</b>';
-      B.act={label:'▶ 取調室へ向かう',fn:()=>{hideBoard(); S.mode='explore'; goInterro();}};
+      B.msg+=`<br><b class="okc">${L.b.allProven}</b><br><span class="muted">${L.b.goTak}</span>`;
     }
   }else{
-    const ng=['……この物証では、主張を崩すことも、裏付けることもできない。','関係がなさそうだ。別の物証を考えよう。','うまく結びつかない。主張をよく読み直そう。'];
+    const ng=L.b.miss;
     B.msg=`<span class="muted">${ng[(Math.random()*ng.length)|0]}</span>`;
     AU.sfx('wrong');
   }
