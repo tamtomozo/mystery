@@ -82,6 +82,8 @@ const L={
       lead:'Three threatening letters, with no stamps and no postmarks, reach Juho Kiryu, master of the Bokkokai calligraphy school. One in a child’s clumsy hand, one in the very hand of a pupil. — Whose hand wrote them?'},
     file05:{title:'The Seventh Mystery',
       lead:'A week before Tsukikagedai Elementary closes for good, its Seven Mysteries have been “really” happening, night after night. And this morning, the time capsule buried twenty-five years ago was gone. — No one knows the seventh.'},
+    file06:{title:'The Projection Room at Dawn',
+      lead:'The Ginseiza, an underground cinema, is closing after sixty years. On the night of its last private screening, the power dies, the fire shutter drops, and the emergency exit is chained with a combination lock. Six people — two detectives among them — are trapped until morning. — Why?'},
   },
 
   /* Takizawa's hints (common.js) */
@@ -150,11 +152,14 @@ const L={
   resumeInterro:'— The interrogation resumes.',
   resumed:'Resuming where you left off',
   proNext:'Click / Space to begin the investigation ▼',
+  dial:{title:'COMBINATION LOCK',open:'Open',cancel:'Cancel',hint:'↑↓ Turn · ←→ Choose digit · Number keys to enter · Enter Open · Esc Cancel'},
 
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',
         kitchen:'KITCHEN',exit:'EXIT',stairs:'STAIRS',
         shihan:'MASTER’S RM',genkan:'ENTRANCE',backdoor:'BACK',bokko:'墨香会',fudosan:'KURODA REALTY',juku:'CRAM SCHOOL',
         school:'TSUKIKAGEDAI ELEM.',shoko:'ENTRANCE',yomuin:'CARETAKER',shokuin:'STAFF ROOM',kocho:'PRINCIPAL',ongaku:'MUSIC',
-        hoso:'BROADCAST',rika:'SCIENCE',class6:'CLASS 6-1',staffDoor:'STAFF',stairs2:'STAIRS'},
+        hoso:'BROADCAST',rika:'SCIENCE',class6:'CLASS 6-1',staffDoor:'STAFF',stairs2:'STAIRS',
+        ginsei:'G I N S E I Z A',seats:'THEATER',lobby6:'LOBBY',kikai:'MACHINE',jimu:'OFFICE',eisha:'PROJECTION',baiten:'KIOSK',
+        kitsuen:'SMOKING',kippu:'TICKETS',hikae:'STAFF RM'},
 };

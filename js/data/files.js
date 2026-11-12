@@ -19,5 +19,6 @@ const FILES=[
   caseFile('file03','FILE.03'),
   caseFile('file04','FILE.04'),
   caseFile('file05','FILE.05'),
-  {id:'file06',no:'FILE.06',title:L.unknown,ready:false},
+  caseFile('file06','FILE.06'),
+  {id:'file07',no:'FILE.07',title:L.unknown,ready:false},
 ];

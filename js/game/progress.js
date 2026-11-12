@@ -24,6 +24,8 @@ function checkPhase(){
   const p=phase();
   if(p<=S.phaseShown) return false;
   S.phaseShown=p; AU.sfx('phase');
+  // 段階が進むたびに、時刻などの帯を出す事件もある（FILE.06：夜が更けていく）
+  if(CASE.phaseBand&&CASE.phaseBand[p]) band('event',{...CASE.phaseBand[p],auto:2400});
   const name=S.map===NPCS.takizawa.map?L.tak:L.takRadio;
   (PHASE_MSG[p]||[]).forEach(l=>say(name,l));
   if(CASE.phaseGuide&&CASE.phaseGuide[p]) CASE.phaseGuide[p]();

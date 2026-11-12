@@ -8,7 +8,9 @@ function render(t){
   if(S.mode==='title'||S.mode==='files'||(S.review&&!SCN)){renderTitle(t); return;}
   if(SCN){renderScene(t); return;}
   ctx.drawImage(getStatic(S.map),0,0,PW,PH);
-  for(const h of HS[S.map]||[]) if(h.glow&&h.glow()) drawSparkle(ctx,(h.x+.5)*TS,(h.y+.5)*TS,t);
+  const dark=MAPDEF[S.map].dark;   // 停電中などの暗いマップ（FILE.06）。きらめきは闇の上に描く
+  const sparkles=()=>{for(const h of HS[S.map]||[]) if(h.glow&&h.glow()) drawSparkle(ctx,(h.x+.5)*TS,(h.y+.5)*TS,t);};
+  if(!dark) sparkles();
   if(S.map==='interro'){
     ctx.setTransform(1,0,0,1,0,0); ctx.fillStyle='#000'; ctx.fillRect(0,0,cv.width,cv.height);
     const Z=INTERRO_Z; ctx.setTransform(SC*Z,0,0,SC*Z,SC*(PW/2-10*TS*Z),SC*(PH*INTERRO_CY-7*TS*Z));
@@ -33,11 +35,30 @@ function render(t){
   list.push({x:px*TS,y:py*TS,o:{...LOOK.player,dir:P.dir,walking:P.moving},player:true});
   list.sort((a,b)=>a.y-b.y);
   for(const a of list) drawPerson(ctx,a.x,a.y,a.o,t);
+  if(dark){drawDark(ctx,t,px*TS,py*TS,MAPDEF[S.map].lights||[]); sparkles();}
   for(const a of list){
     if(a.label) drawLabel(ctx,a.label,a.x,a.y-22);
     if(a.npc&&a.npc.alert()) drawBubble(ctx,a.x,a.y-12,t);
   }
   drawTalkMark(t);
+}
+// 暗いマップ：画面に闇を重ね、手もとの懐中電灯（自キャラのまわり）と非常灯（lights：[タイルx,タイルy,半径]）だけを明るく抜く
+let darkCv=null;
+function drawDark(g,t,px,py,lights){
+  if(!darkCv){darkCv=document.createElement('canvas'); darkCv.width=PW; darkCv.height=PH;}
+  const d=darkCv.getContext('2d');
+  d.globalCompositeOperation='source-over'; d.clearRect(0,0,PW,PH);
+  d.fillStyle='rgba(2,4,10,.68)'; d.fillRect(0,0,PW,PH);
+  d.globalCompositeOperation='destination-out';
+  const hole=(x,y,r,a)=>{
+    const gr=d.createRadialGradient(x,y,0,x,y,r);
+    gr.addColorStop(0,`rgba(0,0,0,${a})`); gr.addColorStop(.55,`rgba(0,0,0,${a*.7})`); gr.addColorStop(1,'rgba(0,0,0,0)');
+    d.fillStyle=gr; d.fillRect(x-r,y-r,r*2,r*2);
+  };
+  const fl=1+Math.sin(t*7.3)*.012+Math.sin(t*2.1)*.01;   // 懐中電灯のかすかなゆらぎ
+  hole(px,py,150*fl,.92);
+  for(const [x,y,r] of lights) hole((x+.5)*TS,(y+.5)*TS,r,.55);
+  g.drawImage(darkCv,0,0,PW,PH);
 }
 // 縦持ちでセリフを下の会話ウィンドウに出しているとき、話し手の頭上に ▼ を出す（js/ui/dialog.js の talkSpeaker）
 function drawTalkMark(t){

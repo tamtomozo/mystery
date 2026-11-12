@@ -74,6 +74,8 @@ const L={
       lead:'書道教室「墨香会」の主宰・桐生寿峰のもとに、消印のない脅迫状が三通届いた。たどたどしい字と、ある弟子にそっくりな字。――書いたのは、誰の手か。'},
     file05:{title:'七つ目の不思議',
       lead:'閉校を一週間後に控えた月影台小学校。この二週間、夜ごとに七不思議が“本当に”起きている。そして今朝、二十五年前に埋めたタイムカプセルが消えていた。――七つ目は、誰も知らない。'},
+    file06:{title:'夜明けの映写室',
+      lead:'六十年の幕を下ろす地下の映画館「銀星座」。最後の試写の夜、停電とともに防火シャッターが下り、非常口には番号錠。刑事二人を含む六人が、朝まで閉じ込められた。――犯人は、何のために。'},
   },
 
   /* 滝沢のヒント（common.js） */
@@ -142,11 +144,14 @@ const L={
   resumeInterro:'―― 取調べを再開する。',
   resumed:'前回の続きから再開します',
   proNext:'クリック / Space で 捜査をはじめる ▼',
+  dial:{title:'番号錠',open:'開ける',cancel:'やめる',hint:'↑↓ 数字を回す ・ ←→ 桁を選ぶ ・ 数字キーで入力 ・ Enter 開ける ・ Esc やめる'},
 
   /* 背景に描く看板 */
   sign:{security:'警備室',curator:'学芸員室',staffExit:'通用口',gallery:'展示室',lobby:'← ロビー',
         kitchen:'給湯室',exit:'出入口',stairs:'階段室',
         shihan:'師範室',genkan:'玄関',backdoor:'裏口',bokko:'墨香会',fudosan:'黒田不動産',juku:'学習塾',
         school:'月影台小学校',shoko:'昇降口',yomuin:'用務員室',shokuin:'職員室',kocho:'校長室',ongaku:'音楽室',
-        hoso:'放送室',rika:'理科室',class6:'6年1組',staffDoor:'職員玄関',stairs2:'西階段'},
+        hoso:'放送室',rika:'理科室',class6:'6年1組',staffDoor:'職員玄関',stairs2:'西階段',
+        ginsei:'銀 星 座',seats:'客席',lobby6:'ロビー',kikai:'機械室',jimu:'事務所',eisha:'映写室',baiten:'売店',
+        kitsuen:'喫煙所',kippu:'きっぷ',hikae:'控室'},
 };

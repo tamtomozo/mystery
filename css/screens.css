@@ -141,3 +141,22 @@
 @media (orientation:portrait){
   .fd-lead,.fd-note{display:block}
 }
+
+/* 番号錠のダイヤル（FILE.06 の非常口。js/ui/dial.js） */
+#dial{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.6);animation:shadeIn .25s ease-out}
+#dial .dwrap{background:linear-gradient(#1c1813,#0f0d0a);border:1px solid rgba(214,176,97,.7);border-radius:10px;
+  padding:2.4cqw 4cqw 2cqw;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.75)}
+#dial .dtitle{color:var(--gold);font-weight:700;letter-spacing:.3em;font-size:clamp(14px,2.8cqw,20px)}
+#dial .dnums{display:flex;gap:1.4cqw;justify-content:center;margin:1.8cqw 0 2cqw;padding:1.2cqw 1.6cqw;
+  background:#8a2420;border-radius:12px;box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -3px 0 rgba(0,0,0,.35)}
+#dial .dcol{display:flex;flex-direction:column;align-items:center;gap:.35em;padding:.3em;border-radius:8px;border:2px solid transparent}
+#dial .dcol.cur{border-color:var(--gold)}
+#dial .dv{width:1.5em;line-height:1.5em;font:700 clamp(24px,5.4cqw,42px) ui-monospace,Consolas,monospace;color:#1a1410;
+  background:linear-gradient(#e9e2d2,#c9c0ac 50%,#e9e2d2);border-radius:5px;cursor:pointer;box-shadow:inset 0 2px 4px rgba(0,0,0,.4)}
+#dial .dcol button{font:inherit;font-size:clamp(12px,2.2cqw,16px);background:rgba(0,0,0,.35);color:#f3e0b0;
+  border:1px solid rgba(243,224,176,.35);border-radius:5px;padding:.15em .8em;cursor:pointer}
+#dial .dcol button:hover{border-color:var(--gold)}
+#dial .dacts{display:flex;gap:10px;justify-content:center}
+#dial .dhint{margin-top:1.2cqw;font-size:clamp(10px,1.7cqw,13px);color:var(--muted)}
+@media (hover:none){#dial .dhint{display:none}}

@@ -31,6 +31,11 @@ const LOOK={
   daichi:   {coat:'#c98a2a',coat2:'#a87020',cap:'#e8e6dc'},
   yomisaka: {coat:'#2a2a30',coat2:'#1e1e24',hair:'#c0507a'},
   nonomura: {coat:'#4a4a52',coat2:'#3c3c44',hair:'#9a9a9a',tie:'#7a2a3a'},
+  // FILE.06
+  yaeko:    {coat:'#6a3a4a',coat2:'#57303d',hair:'#d8d4cc'},
+  goda:     {coat:'#3a4048',coat2:'#2f343b',cap:'#4a3e30'},
+  akari:    {coat:'#c8b07a',coat2:'#ad9764',hair:'#3a2418'},
+  mashiba:  {coat:'#34404e',coat2:'#2a3440',hair:'#1c1c1e',tie:'#9a8a3a'},
 };
 
 /* ---------- マップ（取調室は全事件で共通。現場のマップは各事件のフォルダで足す） ---------- */
@@ -61,6 +66,7 @@ function talkTakizawa(){
   const st=hypStatus(cur);
   if(cur.final){
     if(st==='proven'){
+      if(CASE.provenTalk) return CASE.provenTalk();   // 事件ごとに差し替えられる（FILE.06 は取調べの前に脱出する）
       say(L.tak,CASE.provenLine);
       ask('',L.askInterro,[{label:L.goInterro,fn:()=>goInterro()},{label:L.stayScene,fn:()=>{}}]);
     }else if(CASE.finalOpen) CASE.finalOpen.forEach(l=>say(L.tak,l));   // 事件ごとに差し替えられる

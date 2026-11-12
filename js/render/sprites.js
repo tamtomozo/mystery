@@ -15,7 +15,7 @@ function drawPerson(g,x,y,o,t){
   RR(g,coat,-11,-5,22,15,7);
   if(o.tie&&!sh){R(g,'#eee',-3,-5,6,4); R(g,o.tie,-1,-3,2,7);}
   const dir=o.fallen?'down':(o.dir||'down'), [dx,dy]=DIRV[dir];
-  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒／capsule＝錆びた缶）
+  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒／capsule＝錆びた缶／reel＝16ミリのリール／handle＝シャッターの巻き上げハンドル）
   if(o.carry){
     g.save(); g.shadowBlur=0; g.globalAlpha=1;
     const cx=dx*10, cy=dy*9+3;
@@ -33,6 +33,13 @@ function drawPerson(g,x,y,o,t){
       g.beginPath(); g.moveTo(cx-6,cy-4); g.lineTo(cx,cy); g.lineTo(cx+6,cy-4); g.stroke();
     }else if(o.carry==='capsule'){
       C(g,'#6e5a48',cx,cy,7); C(g,'#8a6e52',cx,cy,5.6); C(g,'#a0563a',cx+2,cy-1.5,2); C(g,'#7a4a30',cx-2.5,cy+2,1.6);
+    }else if(o.carry==='reel'){
+      C(g,'#9aa0a8',cx,cy,7); C(g,'#3a3a3e',cx,cy,5.4); C(g,'#9aa0a8',cx,cy,1.8);
+      for(let i=0;i<3;i++){const a=i/3*Math.PI*2+.5; C(g,'#c8ccd2',cx+Math.cos(a)*3.6,cy+Math.sin(a)*3.6,1.3);}
+    }else if(o.carry==='handle'){
+      g.strokeStyle='#5a5e66'; g.lineWidth=2.4; g.lineCap='round';
+      g.beginPath(); g.moveTo(cx-7,cy+3); g.lineTo(cx+5,cy-3); g.lineTo(cx+5,cy+3); g.stroke();
+      C(g,'#8a3a2a',cx+5,cy+4,2.2);
     }
     g.restore();
   }

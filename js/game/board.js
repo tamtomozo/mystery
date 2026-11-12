@@ -134,7 +134,7 @@ function doPresent(){
         B.act={label:L.b.backToScene,fn:()=>closeBoard()};
       }
     }else if(s==='proven'){
-      B.msg+=`<br><b class="okc">${L.b.allProven}</b><br><span class="muted">${L.b.goTak}</span>`;
+      B.msg+=`<br><b class="okc">${L.b.allProven}</b><br><span class="muted">${CASE.goTak||L.b.goTak}</span>`;   // goTak は事件ごとに差し替えられる
     }
   }else{
     const ng=L.b.miss;
