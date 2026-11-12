@@ -22,14 +22,23 @@ function openFiles(){
 }
 
 const FSTATUS=L.fstatus;
+// 事件は FILE.01 から順番に開く：ひとつ前の事件を解決すると、次の事件が開く
+// （すでに途中の記録があるか、解決済みの事件は、そのまま開いておく）
+function prevFile(f){const i=FILES.indexOf(f); return i>0?FILES[i-1]:null;}
+function isOpen(f){
+  if(!f.ready) return false;
+  const p=prevFile(f);
+  return !p||isCleared(p.id)||isCleared(f.id)||!!(f.save&&f.save());
+}
 function fileStatus(f){
   if(!f.ready) return 'locked';
+  if(!isOpen(f)) return 'sealed';
   if(f.save&&f.save()) return 'progress';
   if(isCleared(f.id)) return 'solved';
   return 'fresh';
 }
 function fileActs(f){
-  if(!f.ready) return [];
+  if(!isOpen(f)) return [];
   const d=f.save&&f.save(), a=[];
   if(d) a.push({label:L.actContinue,fn:()=>f.resume(d)});
   a.push({label:d?L.actRestart:isCleared(f.id)?L.actReplay:L.actStart,fn:f.start});
@@ -47,7 +56,7 @@ function renderFiles(){
   FILES.forEach((f,i)=>{
     const st=fileStatus(f), b=document.createElement('button');
     b.className=`fcard ${st}`+(i===FS.sel?' sel':'')+(i===FS.sel&&FS.level==='list'?' cur':'');
-    b.innerHTML=`<span class="no">${f.no}</span><span class="tt">${f.ready?f.title:L.unknown}</span><span class="badge">${FSTATUS[st]}</span>`;
+    b.innerHTML=`<span class="no">${f.no}</span><span class="tt">${isOpen(f)?f.title:L.unknown}</span><span class="badge">${FSTATUS[st]}</span>`;
     b.onclick=e=>{
       e.stopPropagation(); if(FS.busy) return;
       if(FS.sel!==i) AU.sfx('blip',520);
@@ -61,6 +70,9 @@ function renderFiles(){
   if(!f.ready){
     el.innerHTML=`<div class="fd-no">${f.no}</div><h2>${L.lockedTitle}</h2>
       <p class="fd-lead">${L.lockedLead}</p>`;
+  }else if(st==='sealed'){
+    el.innerHTML=`<div class="fd-no">${f.no}</div><h2>${L.sealedTitle}</h2>
+      <p class="fd-lead">${L.sealedLead(prevFile(f).no)}</p>`;
   }else{
     const d=f.save&&f.save();
     const slam=FS.firstSolved===f.id; FS.firstSolved=null;

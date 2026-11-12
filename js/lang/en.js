@@ -63,9 +63,10 @@ const L={
   /* Title & file select */
   caseFiles:'Case Files',
   unknown:'???',
-  fstatus:{locked:'Coming soon',progress:'In progress',solved:'Solved',fresh:'New'},
+  fstatus:{locked:'Coming soon',sealed:'Sealed',progress:'In progress',solved:'Solved',fresh:'New'},
   actContinue:'Continue', actRestart:'Start over', actReplay:'Investigate again', actStart:'Begin investigation', actReview:'View case board',
   lockedTitle:'— Coming Soon —', lockedLead:'This case file cannot be opened yet.',
+  sealedTitle:'— Sealed —', sealedLead:no=>`Solve ${no} to open this case file.`,
   solvedStamp:'SOLVED', statusLabel:'Status: ', lastSave:'Last save: ',
   restartNote:'* Choosing “Start over” will overwrite your save',
   saveEv:(n,t)=>`Evidence ${n}/${t}`,

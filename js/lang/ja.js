@@ -55,9 +55,10 @@ const L={
   /* タイトル・FILE選択 */
   caseFiles:'事件ファイル',
   unknown:'？？？',
-  fstatus:{locked:'準備中',progress:'捜査中',solved:'解決済',fresh:'未着手'},
+  fstatus:{locked:'準備中',sealed:'未開封',progress:'捜査中',solved:'解決済',fresh:'未着手'},
   actContinue:'続きから', actRestart:'はじめから', actReplay:'もう一度 捜査する', actStart:'捜査をはじめる', actReview:'捜査ボードを見る',
   lockedTitle:'― 準備中 ―', lockedLead:'この事件ファイルは、まだ開くことができない。',
+  sealedTitle:'― 未開封 ―', sealedLead:no=>`${no} の事件を解決すると、この事件ファイルを開くことができる。`,
   solvedStamp:'解決', statusLabel:'状態：', lastSave:'前回の記録：',
   restartNote:'※「はじめから」を選ぶと、記録は上書きされます',
   saveEv:(n,t)=>`物証 ${n}/${t}`,
