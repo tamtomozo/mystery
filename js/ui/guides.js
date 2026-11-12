@@ -9,6 +9,7 @@ function guideBoard(){guide(...L.g.board);}
 function guideGarden(){guide(...L.g.garden);}
 function guideHall(){guide(...L.g.hall);}
 function guideRoof(){guide(...L.g.roof);}
+function guideAlley(){guide(...L.g.alley);}
 function guideFinal(){guide(...L.g.final);}
 function guideInterro(){guide(...L.g.interro);}
 

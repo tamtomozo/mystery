@@ -50,6 +50,7 @@ const L={
       garden:['To the Garden',[['Study → Garden','Examine the study door'],['Garden → Study','Examine the back door']]],
       hall:['To the Corridor',[['Gallery → Corridor','Examine the gallery exit'],['Corridor → Gallery','Examine the gallery entrance'],['Security footage','Examine the monitor in the security office']]],
       roof:['Up to the Roof',[['Division → Roof','Examine the division’s door'],['Roof → Division','Examine the stairwell door']]],
+      alley:['Out to the Lane',[['Hall → Lane','Examine the front entrance'],['Lane → Hall','Examine the lattice door'],['Back door','Hall’s back door ⇔ the lane’s narrow passage']]],
       final:['Establish the Truth',[['Final deduction','Support every claim with evidence'],['Once proven','You can head to the interrogation room']]],
       interro:['Interrogation',[
         ['Answer','“Answer with evidence” → pick evidence → Present'],
@@ -77,6 +78,8 @@ const L={
       lead:'The night before its grand opening, the Shirasagi Museum of Art discovers its star jewel, the “Azure Drop,” has been swapped for a glass fake. — When? And who?'},
     file03:{title:'The Last Spoonful',
       lead:'Inspector Okochi’s pudding has vanished from the fridge in Prefectural Police HQ’s Major Crimes Division. Limited to 20 a day — he queued from 7 a.m. to get it. — This is a case.'},
+    file04:{title:'The Unstamped Letters',
+      lead:'Three threatening letters, with no stamps and no postmarks, reach Juho Kiryu, master of the Bokkokai calligraphy school. One in a child’s clumsy hand, one in the very hand of a pupil. — Whose hand wrote them?'},
   },
 
   /* Takizawa's hints (common.js) */
@@ -148,5 +151,6 @@ const L={
 
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',
-        kitchen:'KITCHEN',exit:'EXIT',stairs:'STAIRS'},
+        kitchen:'KITCHEN',exit:'EXIT',stairs:'STAIRS',
+        shihan:'MASTER’S RM',genkan:'ENTRANCE',backdoor:'BACK',bokko:'墨香会',fudosan:'KURODA REALTY',juku:'CRAM SCHOOL'},
 };

@@ -17,6 +17,13 @@ const LOOK={
   washio:  {coat:'#4b4038',coat2:'#3d342d',hair:'#e6e6e6',tie:'#2a4a3a'},
   // FILE.03
   komatsu: {coat:'#8a6a78',coat2:'#735866',hair:'#4a3328'},
+  // FILE.04
+  juho:     {coat:'#3e3a44',coat2:'#322e38',hair:'#e6e6e6'},
+  takanashi:{coat:'#2e3a4e',coat2:'#252f40',hair:'#5c5c5c'},
+  miyauchi: {coat:'#8a3a40',coat2:'#722f35',hair:'#1c1416'},
+  chizuru:  {coat:'#6a7458',coat2:'#575f48',hair:'#3a2820'},
+  kuroda:   {coat:'#6a5a44',coat2:'#574a38',hair:'#1a1a1a',tie:'#8a6a1a'},
+  kenta:    {coat:'#3a6aaa',coat2:'#30588e',cap:'#e3c23a'},
 };
 
 /* ---------- マップ（取調室は全事件で共通。現場のマップは各事件のフォルダで足す） ---------- */

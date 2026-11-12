@@ -26,7 +26,7 @@ function stepTo(nx,ny){
   AU.sfx(OUTDOOR.has(S.map)?'step_out':'step_in',P.stepN);
   return true;
 }
-const OUTDOOR=new Set(['garden','roof']);   // 屋外のマップ（足音が土と草になる）
+const OUTDOOR=new Set(['garden','roof','alley']);   // 屋外のマップ（足音が土と草になる）
 function keyDir(){
   const k=S.keys;
   if(k.has('ArrowUp')||k.has('w')) return [0,-1];

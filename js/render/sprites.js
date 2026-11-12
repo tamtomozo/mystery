@@ -15,7 +15,7 @@ function drawPerson(g,x,y,o,t){
   RR(g,coat,-11,-5,22,15,7);
   if(o.tie&&!sh){R(g,'#eee',-3,-5,6,4); R(g,o.tie,-1,-3,2,7);}
   const dir=o.fallen?'down':(o.dir||'down'), [dx,dy]=DIRV[dir];
-  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン）
+  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒）
   if(o.carry){
     g.save(); g.shadowBlur=0; g.globalAlpha=1;
     const cx=dx*10, cy=dy*9+3;
@@ -28,6 +28,9 @@ function drawPerson(g,x,y,o,t){
       C(g,'#f4f0e6',cx,cy,2.4);
     }else if(o.carry==='pudding'){
       E(g,'#f2ead8',cx,cy+1,6,4.5); E(g,'#e8c470',cx,cy,4.6,3.4); E(g,'#7a3e16',cx,cy-.6,2.8,1.9);
+    }else if(o.carry==='letter'){
+      R(g,'#f4f0e4',cx-6,cy-4,12,8); g.strokeStyle='rgba(0,0,0,.25)'; g.lineWidth=.8; g.strokeRect(cx-6,cy-4,12,8);
+      g.beginPath(); g.moveTo(cx-6,cy-4); g.lineTo(cx,cy); g.lineTo(cx+6,cy-4); g.stroke();
     }
     g.restore();
   }
