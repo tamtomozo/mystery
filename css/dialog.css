@@ -28,6 +28,17 @@
   border-right:1px solid rgba(214,176,97,.5);border-bottom:1px solid rgba(214,176,97,.5)}
 #bubble.below #btail{bottom:auto;top:-8px;border:0;border-left:1px solid rgba(214,176,97,.5);border-top:1px solid rgba(214,176,97,.5)}
 #bubble.below #bname{top:auto;bottom:-.95em}
+/* 感情つきのセリフ（js/ui/dialog.js の EMO。吹き出しと会話ウィンドウの両方に data-emo が付く） */
+#bubble[data-emo=surprise],#dlg[data-emo=surprise]{animation:emoPop .28s ease-out}
+#bubble[data-emo=angry],#dlg[data-emo=angry]{animation:emoShake .4s linear;border-color:rgba(232,67,47,.75)}
+#bubble[data-emo=angry] #btail{border-color:rgba(232,67,47,.75)}
+#bubble[data-emo=angry] #btext,#dlg[data-emo=angry] #dtext{font-weight:700}
+#bubble[data-emo=sad] #btext,#dlg[data-emo=sad] #dtext{color:#b9c3cf}
+#bubble[data-emo=sad],#dlg[data-emo=sad]{border-color:rgba(140,170,200,.45)}
+#bubble[data-emo=sad] #btail{border-color:rgba(140,170,200,.45)}
+#bubble[data-emo=think] #btext,#dlg[data-emo=think] #dtext{color:#d8d2c4}
+@keyframes emoPop{0%{transform:scale(.82)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes emoShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 /* 吹き出しのセリフに選択肢があるときは、下に選択肢だけを出す */
 #dlg.chonly{min-height:0;padding:1.2cqw 2cqw;text-align:center;background:rgba(10,11,14,.88)}
 #dlg.chonly #dname,#dlg.chonly #dtext,#dlg.chonly #dnext{display:none}

@@ -57,7 +57,7 @@ function f6Escape(){
   band('event',{title:'5:40',sub:'— Dawn',auto:2600});
   say(L.tak,'Well, well... Fresh air, for the first time all night.');
   say(L.tak,'Goda. ...We’ll hear the rest down at the station.');
-  say('Goda','.........');
+  say('Goda','.........','sad');
   run(()=>goInterro());
 }
 

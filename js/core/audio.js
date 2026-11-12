@@ -567,7 +567,14 @@ const AU=(()=>{
   return {init,setTrack,sfx,pref,setPref,state:()=>ac?ac.state:'none'};
 })();
 const VOICE={'滝沢':300,'森':440,'野口':494,'柏木':370,'大河内':262,'あなた':392,'早瀬':523,'岩田':277,'久我':330,'館長':247,'小松':587,
+  // FILE.04〜06
+  '千鶴':466,'寿峰':220,'高梨':311,'宮内':415,'黒田':294,'健太':659,
+  '陽太':698,'源さん':233,'大地':349,'ヨミサカ':415,'白川':466,'野々村':294,
+  '八重子':349,'郷田':208,'灯':554,'真柴':330,
   // 英語版の話し手名
-  'Takizawa':300,'Mori':440,'Noguchi':494,'Kashiwagi':370,'Okochi':262,'You':392,'Hayase':523,'Iwata':277,'Kuga':330,'Director':247,'Komatsu':587};
+  'Takizawa':300,'Mori':440,'Noguchi':494,'Kashiwagi':370,'Okochi':262,'You':392,'Hayase':523,'Iwata':277,'Kuga':330,'Director':247,'Komatsu':587,
+  'Chizuru':466,'Juho':220,'Takanashi':311,'Miyauchi':415,'Kuroda':294,'Kenta':659,
+  'Yota':698,'Gen-san':233,'Daichi':349,'Yomisaka':415,'Shirakawa':466,'Nonomura':294,
+  'Yaeko':349,'Goda':208,'Akari':554,'Mashiba':330};
 const voiceOf=name=>{if(!name) return 0; for(const k in VOICE) if(name.startsWith(k)) return VOICE[k]; return 0;};
 

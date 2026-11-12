@@ -10,14 +10,14 @@ defCase('file02',{NPCS:{
       say('Mori','Mori, Forensics. No signs of forcing on the case glass or the lock.');
       say('Mori','Looks like the pedestal has a weight sensor, so I’m asking the manufacturer for the data now.');
     }else if(!has('weight')){
-      say('Mori','The weight sensor data’s in! This pedestal records the weight of whatever’s on it every second.');
+      say('Mori','The weight sensor data’s in! This pedestal records the weight of whatever’s on it every second.','surprise');
       say('Mori','From 18:10 yesterday, a steady 38.2 grams. Then at 20:14:05 it drops to 0 grams... and at 20:15:40 it comes back at 31.6 grams.');
       say('Mori','The fake in the case now weighs exactly 31.6 grams. So the swap happened at 20:14.');
       give('weight');
     }else if(findable('lock')){
       say('Mori','Check the case’s electronic lock record too. You can see it on the panel at the front of the case.');
     }else{
-      say('Mori','A 6.6-gram difference between the real one and the fake. Jewels can’t lie.');
+      say('Mori','A 6.6-gram difference between the real one and the fake. Jewels can’t lie.','happy');
     }
   }},
 
@@ -27,10 +27,10 @@ defCase('file02',{NPCS:{
       say('Kuga','Kuga. I do appraisals on behalf of the insurance company.');
       say('Kuga','Yesterday at 18:00, with the Director present, I appraised the Azure Drop. It was genuine, no doubt about it. 38.2 grams.');
       say('Kuga','After the appraisal, I also watched the Director lock the case at 18:10.');
-      say('Kuga','But this morning at 9:30, when I put my loupe to it for the pre-opening re-appraisal... plain glass.');
+      say('Kuga','But this morning at 9:30, when I put my loupe to it for the pre-opening re-appraisal... plain glass.','uneasy');
       give('appraisal');
     }else if(S.hyps.h2&&hypStatus(HYPS[1])==='open'){
-      say('Kuga','...You suspect me? Understandable. I was the only one who held the brooch during the appraisal.');
+      say('Kuga','...You suspect me? Understandable. I was the only one who held the brooch during the appraisal.','think');
       say('Kuga','But what I put back in the case was the real thing. There must be some way to confirm that.');
     }else{
       say('Kuga','Fake or not, it’s well made. At a glance, you’d never know.');
@@ -52,7 +52,7 @@ defCase('file02',{NPCS:{
       say('Noguchi','The café owner also says the Director stayed until closing at 21:00!');
       give('alibi');
     }else{
-      say('Noguchi','The Director’s selling his own house... Is the museum really in that much trouble?');
+      say('Noguchi','The Director’s selling his own house... Is the museum really in that much trouble?','sad');
     }
   }},
 
@@ -61,10 +61,10 @@ defCase('file02',{NPCS:{
     if(!S.flags.metHayase){
       S.flags.metHayase=1;
       say('Hayase','I’m Hayase, a curator. I’m in charge of this exhibition.');
-      say('Hayase','...The Azure Drop has always been this museum’s treasure.');
+      say('Hayase','...The Azure Drop has always been this museum’s treasure.','sad');
       say('Hayase','Yesterday I stayed in the building until after 21:00, preparing for the opening.');
     }else if(phase()>=3){
-      say('Hayase','.........');
+      say('Hayase','.........','uneasy');
     }else{
       say('Hayase','That panel is for the Director to unveil at the opening ceremony. He brought it in himself the night before last.');
       say('Hayase','No one is to look at it until the unveiling, he said...');
@@ -74,10 +74,10 @@ defCase('file02',{NPCS:{
   /* Iwata, security guard: patrol log (security office in the corridor) */
   iwata:{map:'hall',x:4,y:11,dir:'up',name:'Iwata (Security)',look:LOOK.iwata,alert:()=>findable('patrol'),talk(){
     if(!has('patrol')){
-      say('Iwata','Iwata, night security. ...What a mess this is.');
+      say('Iwata','Iwata, night security. ...What a mess this is.','uneasy');
       say('Iwata','Last night’s patrol? I left the security office at 20:00 and made my rounds from the third floor down. The checkpoints keep a record.');
       say('Iwata','3F East at 20:13, 3F West at 20:16. I got back to the office at 20:35.');
-      say('Iwata','...The office was empty that whole time. I’m ashamed to say it.');
+      say('Iwata','...The office was empty that whole time. I’m ashamed to say it.','sad');
       give('patrol');
     }else if(phase()>=3&&!S.flags.iwataPanel){
       S.flags.iwataPanel=1;

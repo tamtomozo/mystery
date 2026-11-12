@@ -57,7 +57,7 @@ function f6Escape(){
   band('event',{title:'5:40',sub:'―― 夜明け',auto:2600});
   say(L.tak,'やれやれ……ひと晩ぶりの、外の空気だ。');
   say(L.tak,'郷田さん。……話は、署で聞かせてもらう。');
-  say('郷田','…………。');
+  say('郷田','…………。','sad');
   run(()=>goInterro());
 }
 

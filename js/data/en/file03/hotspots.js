@@ -7,7 +7,7 @@ function actFridge(){
     say(ME,'The kitchenette fridge. On the middle shelf sits a box from “Patisserie Miyako.”');
     say(ME,'A sticky note on the lid reads “OKOCHI” in big letters. ...The lid is half open, and the box is empty. Only an ice pack is left.');
     say(ME,'Something seems to be stuck to the bottom of the box—');
-    say('Okochi','Don’t touch that! ...The bottom has nothing to do with the case.');
+    say('Okochi','Don’t touch that! ...The bottom has nothing to do with the case.','angry');
     give('box');
   }else if(phase()>=2){
     say(ME,'The empty Miyako box. Next to it are the rice crackers Ms. Komatsu put away.');

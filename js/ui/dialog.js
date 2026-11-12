@@ -5,7 +5,26 @@
    会話システム
    ========================================================= */
 const dq=[]; let dlgCur=null, typing=null, blipF=0;
+// cls：'sys'／'letter'（文字の色・書体）か、EMO の感情の名前
 function say(name,text,cls){dq.push({name,text,cls})}
+
+/* ---------- 感情（say の第3引数に名前を書く。例：say('灯','……ばかみたいでしょ。','sad')） ----------
+   mark  …頭の横に出す印（render.js の drawEmoMark）
+   move  …人物の動き（render.js の emoMotion）
+   speed …文字送りの間隔の倍率（大きいほどゆっくり）
+   pause …「…」のあとに置く間（文字送り何回ぶん）
+   pitch …声（blip）の高さの倍率
+   吹き出しと会話ウィンドウの見た目は css/dialog.css の [data-emo] */
+const EMO={
+  surprise:{mark:'surprise',move:'hop',  speed:.8, pause:0,pitch:1.25},
+  happy:   {mark:'note',    move:'bob',  speed:1,  pause:1,pitch:1.15},
+  sad:     {mark:'tear',    move:'away', speed:1.5,pause:5,pitch:.82},
+  angry:   {mark:'anger',   move:'shake',speed:.8, pause:1,pitch:1.1},
+  uneasy:  {mark:'sweat',   move:'sway', speed:1.1,pause:3,pitch:.95},
+  think:   {mark:'dots',    move:null,   speed:1.3,pause:4,pitch:.9},
+};
+// いま表示している感情つきの台詞（{name,key,t0}）。render.js が話し手に印と動きを付ける
+let talkEmo=null;
 function sys(text){dq.push({name:'',text,cls:'sys'})}
 function ask(name,text,choices){dq.push({name,text,choices})}
 function run(fn){dq.push({fn})}
@@ -61,20 +80,23 @@ function renderChoices(d){
 function showLine(d,scene){
   const dlg=$('#dlg');
   $('#dchoices').innerHTML=''; $('#dnext').classList.add('hidden');
-  blipF=scene?0:voiceOf(d.name);
+  const emo=!scene&&EMO[d.cls]?d.cls:null;
+  blipF=scene?0:voiceOf(d.name)*(emo?EMO[emo].pitch:1);
+  talkEmo=emo?{name:d.name,key:emo,t0:performance.now()/1000}:null;
   // 自キャラ以外で、画面上にいる人物のセリフは吹き出しで表示
   // （縦持ちでは画面の下の会話ウィンドウに出し、話し手の頭上に印を付ける。印は render.js の drawTalkMark）
   const onScreen=!scene&&d.name&&d.name!==ME&&speakerAnchor(d.name);
   if(onScreen&&!PORTRAIT.matches){
-    hideBox(); showBubble(d); return;
+    hideBox(); setEmoAttr(dlg,null); setEmoAttr($('#bubble'),emo); showBubble(d); return;
   }
   hideBubble(); talkSpeaker=onScreen?d.name:null;
+  setEmoAttr(dlg,emo);
   dlg.classList.remove('hidden','chonly'); dlg.classList.toggle('scene',!!scene);
   let top=false;
   if(scene&&SCN){const ys=Object.values(SCN.actors).map(a=>a.y); top=ys.length>0&&ys.reduce((a,b)=>a+b,0)/ys.length>7.5;}
   dlg.classList.toggle('top',top);
   $('#dname').textContent=d.name||'';
-  const t=$('#dtext'); t.className=d.cls||'';
+  const t=$('#dtext'); t.className=emo?'':(d.cls||'');
   typeText(t,d.text,()=>{
     if(d.choices) renderChoices(d); else $('#dnext').classList.remove('hidden');
   });
@@ -139,16 +161,26 @@ function pickChoice(i){
   if(r==='hold'){hideDlg(); return;}
   if(S.mode==='dialog') nextDialog();
 }
-function hideDlg(){hideBox(); hideBubble(); talkSpeaker=null;}
+function hideDlg(){hideBox(); hideBubble(); talkSpeaker=null; talkEmo=null;}
+// 感情の見た目（css/dialog.css の [data-emo]）。同じ感情が続いても演出をやり直す
+function setEmoAttr(el,emo){
+  el.removeAttribute('data-emo');
+  if(emo){void el.offsetWidth; el.dataset.emo=emo;}
+}
 // rest：まだ表示していない文字を透明で置いておき、吹き出しの大きさを最初から確定させる
+// 感情つきの台詞は、文字送りの速さを変え、「…」のあとに間を置く（EMO の speed・pause）
 function typeText(el,text,done,rest){
   if(typing) clearInterval(typing.iv);
-  let i=0; el.textContent=''; if(rest) rest.textContent=text;
+  const emo=talkEmo&&EMO[talkEmo.key];
+  let i=0, hold=0; el.textContent=''; if(rest) rest.textContent=text;
   const iv=setInterval(()=>{
+    if(hold>0){hold--; return;}
     i+=1; el.textContent=text.slice(0,i); if(rest) rest.textContent=text.slice(i);
     if(blipF&&i%3===1) AU.sfx('blip',blipF);
-    if(i>=text.length) finishTyping();
-  },24);
+    if(i>=text.length){finishTyping(); return;}
+    // 「……」「...」の終わりで間を置く
+    if(emo&&emo.pause&&/[…\.]/.test(text[i-1])&&!/[…\.]/.test(text[i])) hold=emo.pause;
+  },Math.round(24*(emo?emo.speed:1)));
   typing={iv,el,text,done,rest};
 }
 function finishTyping(){

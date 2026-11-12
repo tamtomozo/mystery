@@ -76,7 +76,7 @@ defCase('file04',{HS:{
     {x:11,y:1,act(){say(ME,'Juho’s piece for the exhibition, mounted and carefully rolled.');}},
     {x:12,y:1,act(){
       say(ME,'A lacquered letter box sits on the shelf, tied tight with cord and sealed.');
-      say('Chizuru','That’s... Father is going to open it on the day of the exhibition.');}},
+      say('Chizuru','That’s... Father is going to open it on the day of the exhibition.','uneasy');}},
     {x:14,y:7,glow:()=>findable('paris'),act(){
       if(!avail('paris')) say(ME,'Ms. Miyauchi’s desk. Neat and tidy, with a well-worn paperweight.');
       else if(!has('paris')){

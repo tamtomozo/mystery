@@ -14,11 +14,11 @@ defCase('file04',{NPCS:{
       say('Chizuru','This morning I opened the mailbox, and this was inside...');
       sys('Chizuru empties the envelope. A brush snapped in two, and a single sheet of paper.');
       say('Chizuru','That’s the brush Father has used for fifty years. It was missing from the brush rack in the alcove.');
-      say('Chizuru','Father told me to ignore the first two, so I kept quiet... but this is too much.');
+      say('Chizuru','Father told me to ignore the first two, so I kept quiet... but this is too much.','uneasy');
       give('letter3');
       say('Chizuru','I’ve laid the first two out on that desk over there.');
     }else if(findable('kurodaseen')){
-      say('Chizuru','Last night? ...Now that you mention it, Mr. Kuroda came to the front around 20:30. The realtor across the lane.');
+      say('Chizuru','Last night? ...Now that you mention it, Mr. Kuroda came to the front around 20:30. The realtor across the lane.','think');
       say('Chizuru','Asking us to sell the townhouse again. Father refused to see him, so I sent him away at the entrance.');
       give('kurodaseen');
     }else if(findable('callname')&&has('infrared')){
@@ -28,7 +28,7 @@ defCase('file04',{NPCS:{
       say('Chizuru','The only one who calls him plain “Sensei” is... Mr. Takanashi. For thirty-six years.');
       give('callname');
     }else if(phase()>=3){
-      say('Chizuru','...Ever since Father’s hand started to shake, Mr. Takanashi has been the one holding him up.');
+      say('Chizuru','...Ever since Father’s hand started to shake, Mr. Takanashi has been the one holding him up.','sad');
     }else if(phase()>=1){
       say('Chizuru','The exhibition is on Sunday. Father says it’s going ahead no matter what.');
     }else{
@@ -43,9 +43,9 @@ defCase('file04',{NPCS:{
       say('Juho','...Show me the first letter.');
       sys('With a trembling hand, Juho picks up a loupe and peers at the character 必.');
       say('Juho','必 is a character with several schools of stroke order. Where the strokes cross, the ink tells you which way the brush went.');
-      say('Juho','...This order is the one I taught until thirty years ago. When I started the children’s class, I changed to the textbook order.');
+      say('Juho','...This order is the one I taught until thirty years ago. When I started the children’s class, I changed to the textbook order.','think');
       say('Juho','The only one who still writes 必 this way is—');
-      say('Juho','.........');
+      say('Juho','.........','sad');
       sys('Juho put the loupe down and said nothing more.');
       say(ME,'On the wall beside the alcove hangs the register of pupils, names listed by the year they joined.');
       sys('At the top: “Makoto Takanashi — joined 36 years ago.” Second: “joined 18 years ago.”');
@@ -75,10 +75,10 @@ defCase('file04',{NPCS:{
     }else if(phase()>=1){
       say('Takanashi','Not an outsider, you say. ...I see.');
       say('Takanashi','Um... this may just be my imagination. But doesn’t Letter #3 look rather like Ms. Miyauchi’s writing?');
-      say('Takanashi','...No, forget it. I spoke out of turn.');
+      say('Takanashi','...No, forget it. I spoke out of turn.','uneasy');
     }else{
       say('Takanashi','I’m Takanashi, the senior instructor. I’ve been with Sensei for thirty-six years.');
-      say('Takanashi','Sensei says there’s “nothing to worry about,” but... with the exhibition this Sunday, of all times.');
+      say('Takanashi','Sensei says there’s “nothing to worry about,” but... with the exhibition this Sunday, of all times.','sad');
       say('Takanashi','If there’s anything I can do, please just say.');
     }
   }},
@@ -91,18 +91,18 @@ defCase('file04',{NPCS:{
     }else if(!has('line')){
       say('Miyauchi','The handwriting on the letters? ...Let me see.');
       sys('Miyauchi lays the first and second letters side by side and studies them.');
-      say('Miyauchi','...They’re made to look like a child’s writing. But they aren’t.');
+      say('Miyauchi','...They’re made to look like a child’s writing. But they aren’t.','think');
       say('Miyauchi','The shapes have been broken on purpose. But not the way the brush enters the paper, or the way the sweeps lift off.');
       say('Miyauchi','A child can’t put a brush to paper like this. This is the line of someone who has held a brush for twenty years.');
       give('line');
     }else if(phase()>=3){
       say('Miyauchi','Letter #3 was traced from my writing...?');
-      say('Miyauchi','...Who would do such a thing?');
+      say('Miyauchi','...Who would do such a thing?','sad');
     }else if(has('paris')){
       say('Miyauchi','About Paris... no one at the school knows except Juho-sensei.');
       say('Miyauchi','I meant to tell everyone after the exhibition.');
     }else if(phase()>=2){
-      say('Miyauchi','It looks like my writing...? That can’t be.');
+      say('Miyauchi','It looks like my writing...? That can’t be.','surprise');
       say('Miyauchi','...I’d be grateful if you didn’t look at my desk too closely.');
     }else{
       const l=['Juho-sensei always says he can tell who wrote something just by looking.','The children are all good kids. None of them could write like this.'];
@@ -120,7 +120,7 @@ defCase('file04',{NPCS:{
     }else if(findable('overlay')&&has('kaiho')){
       say('Mori','The newsletter, great. Let me overlay Ms. Miyauchi’s works on Letter #3.');
       sys('— Mori lays a clear sheet traced from Letter #3 over the newsletter page, one character at a time.');
-      say('Mori','...Huh. 社, 中, 展... every single one matches to the hair.');
+      say('Mori','...Huh. 社, 中, 展... every single one matches to the hair.','surprise');
       say('Mori','That’s wrong. When someone writes, even the same character wobbles a little every time. A match this perfect — it was copied.');
       give('overlay');
     }else if(findable('overlay')){
@@ -133,7 +133,7 @@ defCase('file04',{NPCS:{
       say('Mori','They started writing it, then hurried to paint it out. The name they always use just slipped out.');
       give('infrared');
     }else if(phase()>=3){
-      say('Mori','So handwriting really is like a fingerprint. ...Maybe I should take a look at my own.');
+      say('Mori','So handwriting really is like a fingerprint. ...Maybe I should take a look at my own.','happy');
     }else if(phase()>=1){
       say('Mori','The back-door handle is covered in the pupils’ prints. They use that door every day.');
     }else{
@@ -150,7 +150,7 @@ defCase('file04',{NPCS:{
       say('Kuroda','Kuroda, of Kuroda Realty. ...Ah, this is about Mr. Kiryu’s place.');
       say('Kuroda','Yes, I’ve asked whether they’d sell me the townhouse. For six months now. Here’s a copy of the offer.');
       give('kuroda');
-      say('Kuroda','Threatening letters? Don’t be ridiculous. I ask properly, to their face.');
+      say('Kuroda','Threatening letters? Don’t be ridiculous. I ask properly, to their face.','angry');
       say('Kuroda','I’ve heard that calligraphy school has some kind of show coming up. What goes on inside, I couldn’t tell you.');
     }else{
       const l=['Mr. Kiryu isn’t getting any younger. He can’t keep a school in that old townhouse forever.','Last night? I stopped by at 20:30, the daughter sent me off, and I went back to my office.','Me, I’m hopeless with a brush. I couldn’t tell good writing from bad.'];
@@ -161,11 +161,11 @@ defCase('file04',{NPCS:{
   /* Kenta: pupil in the children's class. Saw someone at 21:00 */
   kenta:{map:'alley',x:14,y:8,dir:'left',name:'Kenta (Pupil)',look:LOOK.kenta,alert:()=>findable('kenta'),talk(){
     if(findable('kenta')){
-      say('Kenta','Are you a police officer? ...No — a detective? Cool.');
+      say('Kenta','Are you a police officer? ...No — a detective? Cool.','surprise');
       say('Kenta','I go to the kids’ class at Bokkokai. Grandpa Sensei’s scary, but his writing is super good.');
       say('Kenta','Last night? I came by here around 9, on my way home from cram school.');
       say('Kenta','And a grown-up came out of the narrow path next to Bokkokai, put something in the mailbox, and went back down the path.');
-      say('Kenta','It was too dark to see a face. ...That path only goes to the school’s back door, right?');
+      say('Kenta','It was too dark to see a face. ...That path only goes to the school’s back door, right?','think');
       give('kenta');
     }else{
       const l=['Last week Grandpa Sensei told me my “stops are sloppy.” Stops are hard.','Ms. Miyauchi is nice. She always praises my writing.','My writing’s bad, but I don’t write letters. Too much work.'];

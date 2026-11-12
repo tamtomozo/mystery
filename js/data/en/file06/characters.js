@@ -22,21 +22,21 @@ defCase('file06',{NPCS:{
     }else if(findable('akariSkill')){
       say('Yaeko','Akari’s job? She works in film and video, out in Tokyo. Television, something or other... behind the scenes, anyway.');
       say('Yaeko','She learned to run film projectors at vocational school. She practically lived in that booth when she was little.');
-      say('Yaeko','With 16mm, she might be handier than Goda. ...Don’t tell him I said that.');
+      say('Yaeko','With 16mm, she might be handier than Goda. ...Don’t tell him I said that.','happy');
       give('akariSkill');
     }else if(findable('panelKey')){
       say('Yaeko','The key to the breaker panel? ...There are only two.');
       say('Yaeko','One is in the safe at my house. The other is on Goda’s key ring. For sixty years, I’ve left the electrics to Goda.');
-      say('Yaeko','...Detective. What are you thinking?');
+      say('Yaeko','...Detective. What are you thinking?','uneasy');
       give('panelKey');
     }else if(f6Proven()){
-      say('Yaeko','...Goda, of all people.');
+      say('Yaeko','...Goda, of all people.','sad');
       say('Yaeko','His numbers? His bicycle lock, his bank PIN — that man uses the same date for everything. The day this place opened.');
       say('Yaeko','Says he can’t remember anything else. ...And yet he never forgets a single other thing.');
     }else if(has('projector16')&&!S.flags.yaekoReel){
       S.flags.yaekoReel=1;
       say('Yaeko','The 16mm? ...Yes, I’m the one who asked Akari.');
-      say('Yaeko','What’s on it? ...I’ll tell you later. Not yet.');
+      say('Yaeko','What’s on it? ...I’ll tell you later. Not yet.','think');
     }else if(!S.flags.yaekoMet){
       S.flags.yaekoMet=1;
       say('Yaeko','I’m Yaeko Hoshino, the owner. ...Some night this has turned out to be, Detective.');
@@ -62,14 +62,14 @@ defCase('file06',{NPCS:{
   goda:{map:'lobby',get x(){return phase()>=2?12:16;},get y(){return phase()>=2?6:5;},
     dir:'down',name:'Goda (Projectionist)',look:LOOK.goda,alert:()=>false,talk(){
     if(f6Proven()){
-      say('Goda','.........');
+      say('Goda','.........','sad');
       say('Goda','Couldn’t wait for dawn, could you. ...Impatient lot, detectives.');
     }else if(phase()>=3){
       const l=['...When the sun comes up, you’ll get out. Wait till then.','A projectionist doesn’t leave the booth till the audience goes home. ...That’s how I’ve always done it.'];
       say('Goda',l[S.ev.length%l.length]);
     }else if(phase()>=2){
       say('Goda','...If you want to see the booth, see it. It’s an emergency.');
-      say('Goda','But don’t touch the projectors. Those belong to me and Minoru.');
+      say('Goda','But don’t touch the projectors. Those belong to me and Minoru.','angry');
     }else if(!S.flags.godaMet){
       S.flags.godaMet=1;
       say('Goda','Goda. Projectionist. ...Nobody goes in the booth. Projectionist’s rule.');
@@ -77,7 +77,7 @@ defCase('file06',{NPCS:{
     }else if(phase()>=1){
       say('Goda','Phone’s dead too, eh. ...Someone’ll notice come morning.');
     }else{
-      say('Goda','Nobody goes in the booth. ...How many times do I have to say it.');
+      say('Goda','Nobody goes in the booth. ...How many times do I have to say it.','angry');
     }
   }},
 
@@ -85,34 +85,34 @@ defCase('file06',{NPCS:{
   akari:{map:'lobby',x:5,y:8,dir:'left',name:'Akari (Granddaughter)',look:LOOK.akari,
     alert:()=>(findable('akariPlan')&&has('projector16'))||findable('boothEmpty')||findable('refusal'),talk(){
     if(findable('akariPlan')&&has('projector16')){
-      say('Akari','...So you saw the 16mm. Yeah, I threaded that.');
+      say('Akari','...So you saw the 16mm. Yeah, I threaded that.','uneasy');
       say('Akari','Grandma asked me to. Right after the screening, run this 16mm, she said. “And don’t tell Goda.”');
       say('Akari','I don’t know what’s on it. She only gave me the reel. She kept the can.');
       say('Akari','At 10:24 I switched on the lamp to give it a test run, and... blackout. It stopped my screening too.');
-      say('Akari','If I’d cut the power, I’d have killed my own screening. ...Pretty stupid, right?');
+      say('Akari','If I’d cut the power, I’d have killed my own screening. ...Pretty stupid, right?','sad');
       give('akariPlan');
     }else if(findable('boothEmpty')){
-      say('Akari','When I went into the booth? ...Actually, it was weird.');
+      say('Akari','When I went into the booth? ...Actually, it was weird.','think');
       say('Akari','10:20. Goda wasn’t there. The 35mm was running all by itself. Near the end of reel two — maybe ten minutes to the changeover.');
-      say('Akari','I have never, ever seen Goda leave a projector running alone. Not once in my life.');
+      say('Akari','I have never, ever seen Goda leave a projector running alone. Not once in my life.','surprise');
       give('boothEmpty');
     }else if(findable('refusal')){
       say('Akari','Goda and Grandma? ...Now that you mention it, last week I overheard them outside the booth.');
       say('Akari','Goda said, “On the day we close... how about we watch something with Minoru in it?” And Grandma said “I won’t,” just like that.');
-      say('Akari','Then: “When the screening’s over, I hand the keys back at midnight, and I never come here again.” ...Goda went back into the booth without a word.');
+      say('Akari','Then: “When the screening’s over, I hand the keys back at midnight, and I never come here again.” ...Goda went back into the booth without a word.','sad');
       give('refusal');
     }else if(!S.flags.akariMet){
       S.flags.akariMet=1;
       say('Akari','I’m Akari, the granddaughter. I came back from Tokyo for the closing.');
       say('Akari','I collected three thousand signatures to save this place. ...The box is still on the kiosk counter.');
-      say('Akari','Never thought we’d end up locked in on the last night, though.');
+      say('Akari','Never thought we’d end up locked in on the last night, though.','uneasy');
     }else if(phase()>=3){
-      say('Akari','Why did Grandma want to keep the 16mm a secret from Goda, I wonder.');
+      say('Akari','Why did Grandma want to keep the 16mm a secret from Goda, I wonder.','think');
     }else if(phase()>=2){
-      say('Akari','Me, lock everyone in? ...Okay, yes, I wanted to stop the closing. But not like this.');
+      say('Akari','Me, lock everyone in? ...Okay, yes, I wanted to stop the closing. But not like this.','angry');
     }else{
-      const l=['When I was little, I loved looking through the booth window at all the heads lined up in the seats.','If they tear this place down, I feel like half my childhood goes with it.'];
-      say('Akari',l[S.ev.length%l.length]);
+      const l=[['When I was little, I loved looking through the booth window at all the heads lined up in the seats.','happy'],['If they tear this place down, I feel like half my childhood goes with it.','sad']];
+      say('Akari',...l[S.ev.length%l.length]);
     }
   }},
 
@@ -126,7 +126,7 @@ defCase('file06',{NPCS:{
       say('Mashiba','There’s a penalty for late handover in there too. If it’s on the seller’s side, that is.');
       give('contract');
     }else if(findable('schedule')&&has('contract')){
-      say('Mashiba','My company profits if the handover’s late? ...You’re joking. Look at this.');
+      say('Mashiba','My company profits if the handover’s late? ...You’re joking. Look at this.','angry');
       sys('Clipped to Mashiba’s board: the demolition schedule. “Day 1, 7:00 — heavy machinery arrives, crew of twenty.”');
       say('Mashiba','At seven a.m., machines and twenty workers show up here. Every day the work’s held up, we lose close to a million yen just paying them to stand around.');
       say('Mashiba','A ¥300,000 penalty is a drop in the bucket. ...Nobody wants out of here faster than I do.');
@@ -140,9 +140,9 @@ defCase('file06',{NPCS:{
       S.flags.mashibaMet=1;
       say('Mashiba','Mashiba, from the real estate company. We’re buying the Ginseiza site.');
       say('Mashiba','I was supposed to get the keys from Mrs. Hoshino at midnight. That’s why I was sitting in on the screening...');
-      say('Mashiba','When the power went, I was at the smoking corner in the lobby. And then the shutter came crashing down.');
+      say('Mashiba','When the power went, I was at the smoking corner in the lobby. And then the shutter came crashing down.','surprise');
     }else if(phase()>=3){
-      say('Mashiba','I had no idea projectors were that big. ...I’m starting to feel a bit bad about tearing it all down.');
+      say('Mashiba','I had no idea projectors were that big. ...I’m starting to feel a bit bad about tearing it all down.','sad');
     }else if(phase()>=2){
       say('Mashiba','Am I cleared, then? ...In that case, let’s figure out how to get out of here.');
     }else{

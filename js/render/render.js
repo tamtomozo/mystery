@@ -29,7 +29,12 @@ function render(t){
     return;
   }
   const list=[];
-  for(const n of Object.values(NPCS)) if(n.map===S.map) list.push({x:(n.x+.5)*TS,y:(n.y+.5)*TS,o:{...n.look,dir:n.dir},label:n.name,npc:n});
+  for(const n of Object.values(NPCS)) if(n.map===S.map){
+    // 感情つきの台詞を話している人物は、感情に合わせて動かす
+    const e=talkEmo&&S.mode==='dialog'&&L.speakerOf(n.name)===talkEmo.name?talkEmo:null;
+    const m=e?emoMotion(EMO[e.key].move,t-e.t0,n.dir):{ox:0,oy:0,dir:n.dir};
+    list.push({x:(n.x+.5)*TS+m.ox,y:(n.y+.5)*TS+m.oy,o:{...n.look,dir:m.dir},label:n.name,npc:n,emo:e});
+  }
   const pp=P.moving?P.prog:0;
   const px=(P.moving?P.fx+(P.tx-P.fx)*pp:P.x)+.5, py=(P.moving?P.fy+(P.ty-P.fy)*pp:P.y)+.5;
   list.push({x:px*TS,y:py*TS,o:{...LOOK.player,dir:P.dir,walking:P.moving},player:true});
@@ -39,8 +44,53 @@ function render(t){
   for(const a of list){
     if(a.label) drawLabel(ctx,a.label,a.x,a.y-22);
     if(a.npc&&a.npc.alert()) drawBubble(ctx,a.x,a.y-12,t);
+    if(a.emo) drawEmoMark(ctx,EMO[a.emo.key].mark,a.x,a.y,t-a.emo.t0);
   }
   drawTalkMark(t);
+}
+/* ---------- 感情（js/ui/dialog.js の EMO） ---------- */
+// 動き：dt は台詞が出てからの秒数。体のずれ（ox,oy）と向きを返す
+const OPP_DIR={up:'down',down:'up',left:'right',right:'left'};
+function emoMotion(move,dt,dir){
+  let ox=0, oy=0;
+  if(move==='hop'&&dt<.44) oy=-Math.abs(Math.sin(dt/.22*Math.PI))*6;          // 驚き：二度跳ねる
+  else if(move==='bob'&&dt<1.6) oy=-Math.abs(Math.sin(dt*7))*2.2;              // 喜び：小さく弾む
+  else if(move==='shake') ox=Math.sin(dt*70)*2.6*Math.max(0,1-dt/.6);          // 怒り：ぶるっと震える
+  else if(move==='sway') ox=Math.sin(dt*4.5)*1.4;                              // 動揺：そわそわ揺れる
+  else if(move==='away'&&dt>.35){dir=OPP_DIR[dir]; oy=1.5;}                    // 悲しみ：一拍おいて背を向ける
+  return {ox,oy,dir};
+}
+// 頭の右横に出す印（名札に重ならない高さ）。x,y は人物の中心
+function drawEmoMark(g,mark,x,y,dt){
+  const pop=dt<.15?dt/.15*1.25:dt<.25?1.25-(dt-.15)/.1*.25:1;   // 出るときに、ぽんと弾ませる
+  if(pop<=0) return;
+  g.save(); g.translate(x+17,y-6); g.scale(pop*1.35,pop*1.35);
+  g.lineJoin='round'; g.lineCap='round';
+  const glyph=(s,col,dy)=>{
+    g.font='bold 15px serif'; g.textAlign='center'; g.textBaseline='middle';
+    g.strokeStyle='rgba(0,0,0,.75)'; g.lineWidth=3; g.strokeText(s,0,dy); g.fillStyle=col; g.fillText(s,0,dy);
+    g.textAlign='start'; g.textBaseline='alphabetic';
+  };
+  const drop=(cx,cy,r,col,al)=>{
+    g.globalAlpha=al; g.beginPath(); g.moveTo(cx,cy-r*2.1);
+    g.quadraticCurveTo(cx+r*1.1,cy-r*.6,cx+r,cy); g.arc(cx,cy,r,0,Math.PI); g.quadraticCurveTo(cx-r*1.1,cy-r*.6,cx,cy-r*2.1);
+    g.fillStyle=col; g.fill(); g.strokeStyle='rgba(0,0,0,.55)'; g.lineWidth=1; g.stroke(); g.globalAlpha=1;
+  };
+  if(mark==='surprise') glyph('!','#ffe27a',-2);
+  else if(mark==='note') glyph('♪','#f4a9c4',-2-Math.abs(Math.sin(dt*4))*2);
+  else if(mark==='tear'){const p=(dt%1.8)/1.8; drop(-4,-2+p*10,2.2,'#8cc8f0',p<.7?1:(1-p)/.3);}
+  else if(mark==='sweat'){const p=(dt%1.4)/1.4; drop(0,-2+p*4,3.2,'#bfe4f7',1);}
+  else if(mark==='anger'){
+    const s=1+.12*Math.sin(dt*10); g.scale(s,s);
+    for(const [col,w] of [['rgba(0,0,0,.7)',3],['#ef4a34',1.6]]){
+      g.strokeStyle=col; g.lineWidth=w;
+      for(let k=0;k<4;k++){const a=k*Math.PI/2+Math.PI/4; g.beginPath(); g.arc(Math.cos(a)*6,Math.sin(a)*6,3.6,a+Math.PI*.78,a+Math.PI*1.22); g.stroke();}
+    }
+  }else if(mark==='dots'){
+    const n=Math.min(3,Math.floor((dt%1.5)/.35)+1);
+    for(let k=0;k<n;k++){C(g,'rgba(0,0,0,.7)',-5+k*5,0,2.4); C(g,'#ece4d2',-5+k*5,0,1.6);}
+  }
+  g.restore();
 }
 // 暗いマップ：画面に闇を重ね、手もとの懐中電灯（自キャラのまわり）と非常灯（lights：[タイルx,タイルy,半径]）だけを明るく抜く
 let darkCv=null;
