@@ -80,6 +80,8 @@ const L={
       lead:'Inspector Okochi’s pudding has vanished from the fridge in Prefectural Police HQ’s Major Crimes Division. Limited to 20 a day — he queued from 7 a.m. to get it. — This is a case.'},
     file04:{title:'The Unstamped Letters',
       lead:'Three threatening letters, with no stamps and no postmarks, reach Juho Kiryu, master of the Bokkokai calligraphy school. One in a child’s clumsy hand, one in the very hand of a pupil. — Whose hand wrote them?'},
+    file05:{title:'The Seventh Mystery',
+      lead:'A week before Tsukikagedai Elementary closes for good, its Seven Mysteries have been “really” happening, night after night. And this morning, the time capsule buried twenty-five years ago was gone. — No one knows the seventh.'},
   },
 
   /* Takizawa's hints (common.js) */
@@ -152,5 +154,7 @@ const L={
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',
         kitchen:'KITCHEN',exit:'EXIT',stairs:'STAIRS',
-        shihan:'MASTER’S RM',genkan:'ENTRANCE',backdoor:'BACK',bokko:'墨香会',fudosan:'KURODA REALTY',juku:'CRAM SCHOOL'},
+        shihan:'MASTER’S RM',genkan:'ENTRANCE',backdoor:'BACK',bokko:'墨香会',fudosan:'KURODA REALTY',juku:'CRAM SCHOOL',
+        school:'TSUKIKAGEDAI ELEM.',shoko:'ENTRANCE',yomuin:'CARETAKER',shokuin:'STAFF ROOM',kocho:'PRINCIPAL',ongaku:'MUSIC',
+        hoso:'BROADCAST',rika:'SCIENCE',class6:'CLASS 6-1',staffDoor:'STAFF',stairs2:'STAIRS'},
 };
