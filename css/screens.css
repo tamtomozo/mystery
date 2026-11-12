@@ -160,3 +160,39 @@
 #dial .dacts{display:flex;gap:10px;justify-content:center}
 #dial .dhint{margin-top:1.2cqw;font-size:clamp(10px,1.7cqw,13px);color:var(--muted)}
 @media (hover:none){#dial .dhint{display:none}}
+
+/* 投書と議事録の照合（FILE.08 の会議室の長机。js/ui/compare.js） */
+#compare{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.62);animation:shadeIn .25s ease-out}
+#compare .cwrap{width:94%;max-height:94%;display:flex;flex-direction:column;background:linear-gradient(#1c1813,#0f0d0a);
+  border:1px solid rgba(214,176,97,.7);border-radius:10px;padding:1.6cqw 2.2cqw 1.4cqw;box-shadow:0 10px 40px rgba(0,0,0,.75)}
+#compare .ctitle{color:var(--gold);font-weight:700;letter-spacing:.24em;text-align:center;font-size:clamp(13px,2.4cqw,18px)}
+#compare .csub{color:var(--muted);text-align:center;font-size:clamp(11px,1.8cqw,14px);margin-top:.2em}
+#compare .ccols{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw;margin:1.2cqw 0;min-height:0;flex:1}
+#compare .cpaper{display:flex;flex-direction:column;min-height:0;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 3px 10px rgba(0,0,0,.5)}
+#compare .chead{font-size:clamp(10px,1.6cqw,12px);font-weight:700;letter-spacing:.12em;padding:.5em .9em .3em;border-bottom:1px solid rgba(0,0,0,.18)}
+#compare .cbody{overflow-y:auto;padding:.6em .9em .8em;font-size:clamp(12px,2.05cqw,16px);line-height:1.75}
+/* 投書：罫線入りの便箋に、ブルーブラックの万年筆 */
+#compare .letter{background:#f4efe2;color:#1f2f4f}
+#compare .letter .cbody{background:repeating-linear-gradient(transparent 0 calc(1.75em - 1px),rgba(70,110,160,.22) calc(1.75em - 1px) 1.75em);
+  background-origin:content-box;background-clip:content-box;background-attachment:local}
+#compare .letter .chead{color:#4a5a78}
+#compare .cseg{cursor:pointer;border-radius:3px;padding:.05em .1em;transition:background .15s}
+#compare .cseg:hover{background:rgba(214,176,97,.22)}
+#compare .cseg.cur{background:rgba(214,176,97,.42);box-shadow:0 0 0 1px rgba(150,110,40,.7)}
+#compare .cseg.bad{background:rgba(214,90,68,.22);box-shadow:0 0 0 1px rgba(180,60,40,.6)}
+/* 議事録：清書した、事務的な書類 */
+#compare .minutes{background:#e8e6df;color:#2a2826}
+#compare .minutes .chead{color:#5a5650}
+#compare .crow{display:flex;gap:.7em}
+#compare .ctime{flex:none;font-family:ui-monospace,Consolas,monospace;font-size:.88em;color:#6a6660;padding-top:.08em}
+#compare .cmsg{min-height:2.6em;text-align:center;font-size:clamp(11px,1.9cqw,15px);color:var(--text);line-height:1.5}
+#compare .chintline{color:var(--gold)}
+#compare .cacts{display:flex;gap:10px;justify-content:center;margin-top:.5em}
+#compare .chint{margin-top:.8cqw;text-align:center;font-size:clamp(10px,1.6cqw,12px);color:var(--muted)}
+@media (hover:none){#compare .chint{display:none}}
+/* 縦持ち：投書と議事録を上下に重ねる */
+@media (orientation:portrait){
+  #compare .cwrap{width:100%;max-height:100%;border-radius:0}
+  #compare .ccols{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+}

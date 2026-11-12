@@ -107,6 +107,7 @@ window.addEventListener('keydown',e=>{
   if(S.mode==='title'||S.mode==='files'){if(!e.repeat||e.key.startsWith('Arrow')) menuKey(k); return;}
   if(S.mode==='board'){if(k==='Escape'||k==='b'||k==='Tab') closeBoard(true); return;}
   if(S.mode==='dial'){if(!e.repeat||e.key.startsWith('Arrow')) dialKey(k); return;}   // 番号錠（js/ui/dial.js）
+  if(S.mode==='compare'){if(!e.repeat||e.key.startsWith('Arrow')) compareKey(k); return;}   // 投書と議事録の照合（js/ui/compare.js）
   if(S.mode==='prologue'){
     if(e.repeat) return;
     if(k===' '||k==='Enter'||k==='z') prologueNext(); else if(k==='Escape') endPrologue();

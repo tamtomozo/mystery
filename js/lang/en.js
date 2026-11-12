@@ -87,6 +87,8 @@ const L={
       lead:'The Ginseiza, an underground cinema, is closing after sixty years. On the night of its last private screening, the power dies, the fire shutter drops, and the emergency exit is chained with a combination lock. Six people — two detectives among them — are trapped until morning. — Why?'},
     file07:{title:'The Empty Gondola',
       lead:'At Shiomi Land, a little seaside amusement park, a boy vanishes on his tenth birthday. The ransom: 3,120,000 yen. The bag his father left in a Ferris wheel gondola disappears in midair, right before the detectives’ eyes. — Thirty minutes until five o’clock.'},
+    file08:{title:'Every Word Through the Wall',
+      lead:'Narumi Pen, a fountain-pen maker, is seventy years old. Whatever its board says behind closed doors turns up, word for word, in the trade paper the next morning. There is no bug in the room, phones are left at the door, and the minutes sit in a safe. — So how are the voices getting out?'},
   },
 
   /* Takizawa's hints (common.js) */
@@ -156,6 +158,11 @@ const L={
   resumed:'Resuming where you left off',
   proNext:'Click / Space to begin the investigation ▼',
   dial:{title:'COMBINATION LOCK',open:'Open',cancel:'Cancel',hint:'↑↓ Turn · ←→ Choose digit · Number keys to enter · Enter Open · Esc Cancel'},
+  compare:{title:'CROSS-CHECK',letter:'Letter (original)',minutes:'Minutes',
+    ask:'Pick the sentence in the letter that doesn’t match the minutes. (Tap a chosen sentence again to confirm.)',
+    pick:'This one',cancel:'Cancel',
+    keys:'←→ Choose a sentence · Enter Confirm · Esc Cancel',
+    miss:['...The minutes say the same thing.','This part matches the minutes.','That’s what was said in the meeting. Keep looking.']},
 
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',
@@ -166,5 +173,7 @@ const L={
         ginsei:'G I N S E I Z A',seats:'THEATER',lobby6:'LOBBY',kikai:'MACHINE',jimu:'OFFICE',eisha:'PROJECTION',baiten:'KIOSK',
         kitsuen:'SMOKING',kippu:'TICKETS',hikae:'STAFF RM',
         shiomi:'SHIOMI LAND',sousa:'CONTROL',noriba:'BOARDING',kanri:'OFFICE',jimu7:'OFFICE',ousetsu:'MEETING RM',maigo:'LOST CHILD',
-        softcream:'SOFT SERVE',toWheel:'TO PLAZA'},
+        softcream:'SOFT SERVE',toWheel:'TO PLAZA',
+        kaigi:'BOARDROOM',shacho:'PRESIDENT',hisho:'SECRETARY',osetsu8:'RECEPTION',kaidan:'↓ COURTYARD',
+        togiba:'NIB WORKSHOP',shuei:'GUARD',uramon:'BACK GATE',honkan:'MAIN BLDG',narumi:'NARUMI PEN'},
 };

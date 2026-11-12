@@ -8,6 +8,7 @@ function render(t){
   if(S.mode==='title'||S.mode==='files'||(S.review&&!SCN)){renderTitle(t); return;}
   if(SCN){renderScene(t); return;}
   ctx.drawImage(getStatic(S.map),0,0,PW,PH);
+  if(MAPDEF[S.map].overlay) MAPDEF[S.map].overlay(ctx,t);   // 捜査の進み具合で描き替える部分（FILE.08 の暖炉の上の額）
   const dark=MAPDEF[S.map].dark;   // 停電中などの暗いマップ（FILE.06）。きらめきは闇の上に描く
   const sparkles=()=>{for(const h of HS[S.map]||[]) if(h.glow&&h.glow()) drawSparkle(ctx,(h.x+.5)*TS,(h.y+.5)*TS,t);};
   if(!dark) sparkles();
@@ -42,6 +43,7 @@ function render(t){
   for(const a of list) drawPerson(ctx,a.x,a.y,a.o,t);
   if(dark){drawDark(ctx,t,px*TS,py*TS,MAPDEF[S.map].lights||[]); sparkles();}
   if(MAPDEF[S.map].dusk&&CASE.clock) drawDusk(ctx,CASE.clock().dusk);
+  if(MAPDEF[S.map].rain) drawRain(ctx,t,MAPDEF[S.map].rain);
   for(const a of list){
     if(a.label) drawLabel(ctx,a.label,a.x,a.y-22);
     if(a.npc&&a.npc.alert()) drawBubble(ctx,a.x,a.y-12,t);
@@ -55,6 +57,25 @@ function drawDusk(g,d){
   g.save();
   g.globalCompositeOperation='multiply'; g.fillStyle=`rgb(255,${(226-70*d)|0},${(196-90*d)|0})`; g.fillRect(0,0,PW,PH);   // 西日の色
   g.globalCompositeOperation='source-over'; g.fillStyle=`rgba(40,20,70,${.03+.16*d})`; g.fillRect(0,0,PW,PH);   // 暮れていく
+  g.restore();
+}
+// 雨：屋外に、斜めに降る雨すじと、石畳に跳ねる波紋を重ねる（MAPDEF の rain：雨を降らせない屋根の下 [x,y,w,h] の一覧。FILE.08）
+function drawRain(g,t,roofs){
+  const dry=(x,y)=>roofs.some(([rx,ry,rw,rh])=>x>=rx*TS&&x<(rx+rw)*TS&&y>=ry*TS&&y<(ry+rh)*TS);
+  g.save();
+  g.fillStyle='rgba(30,40,60,.10)'; g.fillRect(0,0,PW,PH);
+  g.strokeStyle='rgba(200,215,235,.32)'; g.lineWidth=1; g.beginPath();
+  for(let i=0;i<150;i++){
+    const sp=380+(i%7)*40, x0=(i*97.3)%(PW+80)-40, y=((i*53.7+t*sp)%(PH+40))-20, x=x0-(y*.18);
+    if(dry(x,y)) continue;
+    g.moveTo(x,y); g.lineTo(x-2.2,y+11);
+  }
+  g.stroke();
+  for(let i=0;i<26;i++){
+    const ph=(t*1.6+i*.37)%1, x=(i*151.7)%PW, y=(i*89.9+Math.floor(t*1.6+i*.37)*37)%PH;
+    if(dry(x,y)) continue;
+    g.strokeStyle=`rgba(210,225,240,${.35*(1-ph)})`; g.beginPath(); g.ellipse(x,y,1+ph*5,.5+ph*2,0,0,Math.PI*2); g.stroke();
+  }
   g.restore();
 }
 // 時間制限のある事件の時計（CASE.clock()：{main:'16:41',sub:'17時まで あと19分',warn}）。探索中、画面の右上に出す

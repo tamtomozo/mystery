@@ -41,6 +41,14 @@ const LOOK={
   toru:     {coat:'#6a7a3a',coat2:'#57652f',hair:'#5a3a24'},
   haru:     {coat:'#7a6a8a',coat2:'#665872',hair:'#bdb6ac'},
   asakura:  {coat:'#22262e',coat2:'#1a1d24',hair:'#141416',tie:'#5a2a3a'},
+  // FILE.08
+  shiho:    {coat:'#4a3a5e',coat2:'#3c2f4d',hair:'#2a1c18'},
+  shuzo:    {coat:'#3e3833',coat2:'#322d29',hair:'#ececec',tie:'#6a2a2a'},
+  tatsumi:  {coat:'#4e5a6a',coat2:'#3f4956',cap:'#dcd6c8'},
+  mizuhara: {coat:'#c4b8a2',coat2:'#a89c86',hair:'#3a2418'},
+  kusumi:   {coat:'#2a3040',coat2:'#222735',hair:'#3a3a3a',tie:'#8a6a2a'},
+  kuramochi:{coat:'#3a5a7a',coat2:'#2f4a66',hair:'#1a1a1a'},
+  chihaya:  {coat:'#6e2a3a',coat2:'#5a2230',hair:'#1a1414'},
 };
 
 /* ---------- マップ（取調室は全事件で共通。現場のマップは各事件のフォルダで足す） ---------- */
