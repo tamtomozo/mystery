@@ -38,7 +38,7 @@ $('#helpBtn').addEventListener('click',()=>{
 
 /* ---------- 事件に入る（はじめから／続きから） ---------- */
 function enterCase(id){
-  useCase(id);
+  useCase(id); S.review=null;
   $('#title').classList.add('hidden'); $('#files').classList.add('hidden'); $('#app').classList.remove('menu');
   $('#boardBtn').classList.remove('hidden');
   S.ev=[]; S.hyps={}; S.flags={}; S.phaseShown=0; S.seenEv=new Set(); S.round=0;

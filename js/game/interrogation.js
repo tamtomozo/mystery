@@ -45,7 +45,7 @@ function onPick(id){
 }
 function confession(){
   $('#loc').textContent=L.interroRoom;
-  S.flags.confess=true; clearSave(); S.firstClear=markCleared(CASE.id);
+  S.flags.confess=true; saveBoard(); clearSave(); S.firstClear=markCleared(CASE.id);
   CASE.confession();
   band('event',{...L.truthBand,auto:3000});
   run(()=>showEnding());

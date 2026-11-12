@@ -4,7 +4,7 @@
 /* =========================================================
    状態
    ========================================================= */
-const S={mode:'title',map:'study',ev:[],seenEv:new Set(),hyps:{},flags:{},keys:new Set(),dlgReturn:'explore',phaseShown:0};
+const S={mode:'title',map:'study',ev:[],seenEv:new Set(),hyps:{},flags:{},keys:new Set(),dlgReturn:'explore',phaseShown:0,review:null};
 const has=id=>S.ev.includes(id);
 const unlockedHyps=()=>HYPS.filter(h=>S.hyps[h.id]);
 function hypStatus(h){

@@ -33,6 +33,7 @@ function fileActs(f){
   const d=f.save&&f.save(), a=[];
   if(d) a.push({label:L.actContinue,fn:()=>f.resume(d)});
   a.push({label:d?L.actRestart:isCleared(f.id)?L.actReplay:L.actStart,fn:f.start});
+  if(isCleared(f.id)) a.push({label:L.actReview,fn:()=>openReview(f.id),overlay:true});
   return a;
 }
 function saveSummary(f,d){
@@ -91,8 +92,10 @@ function renderFiles(){
 }
 
 function startFile(a){
-  if(FS.busy) return; FS.busy=true;
+  if(FS.busy) return;
   AU.init();
+  if(a.overlay){a.fn(); return;}
+  FS.busy=true;
   fade(()=>{ $('#files').classList.add('hidden'); FS.busy=false; a.fn(); });
 }
 

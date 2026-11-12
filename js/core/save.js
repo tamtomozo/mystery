@@ -23,10 +23,23 @@ function markCleared(id){
   return true;
 }
 
+/* 解決したときの捜査ボード（FILE選択画面の「捜査ボードを見る」で振り返る）
+   クリア時にセーブは消えるので、ボード（集めた物証と推理の判定）だけを事件ごとに残しておく。
+   もう一度解決したら、新しいボードで上書きする */
+const BOARD_KEY='hidden-truth-boards';
+function readBoards(){
+  try{const o=JSON.parse(localStorage.getItem(BOARD_KEY)||'{}'); return o&&typeof o==='object'?o:{};}catch(e){return {};}
+}
+const readBoard=id=>{const d=readBoards()[id]; return d&&d.v===1?d:null;};
+function saveBoard(){
+  const o=readBoards(); o[CASE.id]={v:1,time:Date.now(),ev:S.ev.slice(),hyps:S.hyps};
+  try{localStorage.setItem(BOARD_KEY,JSON.stringify(o));}catch(e){}
+}
+
 /* ---------- セーブ／ロード ---------- */
 let savedT=0;
 function saveGame(){
-  if(!CASE||S.mode==='title'||S.mode==='files'||S.mode==='end'||S.flags.confess) return;
+  if(!CASE||S.review||S.mode==='title'||S.mode==='files'||S.mode==='end'||S.flags.confess) return;
   const interro=S.map==='interro';
   const data={v:1,time:Date.now(),ev:S.ev,hyps:S.hyps,flags:S.flags,phaseShown:S.phaseShown,seen:[...S.seenEv],
     map:S.map,x:P.moving?P.tx:P.x,y:P.moving?P.ty:P.y,dir:P.dir,round:interro?(S.round||0):null};

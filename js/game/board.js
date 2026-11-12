@@ -18,7 +18,44 @@ function openBoard(pick,round){
   renderBoard(); $('#board').classList.remove('hidden'); AU.sfx('paper');
 }
 function hideBoard(){$('#board').classList.add('hidden')}
+/* 解決済みの事件の捜査ボードを振り返る（FILE選択画面から開く。読み取り専用）
+   解決したときに残したボード（save.js の saveBoard）を、そのまま表示する。
+   残っていないとき（この機能より前に解決した事件）は、事件データから「すべてを調べ終えた」ボードを組み立てる：
+   物証はすべて、推理はすべて、主張はすべて判定済み（正しい主張は ✔、誤った主張は ✖） */
+function openReview(id){
+  useCase(id); S.review=id;
+  const d=readBoard(id);
+  if(d){
+    S.ev=(d.ev||[]).filter(e=>EV[e]);
+    S.hyps={}; for(const h of HYPS) if(d.hyps&&d.hyps[h.id]) S.hyps[h.id]={claims:{...d.hyps[h.id].claims}};
+  }else{
+    S.ev=Object.keys(EV);
+    S.hyps={}; for(const h of HYPS) S.hyps[h.id]={claims:Object.fromEntries(h.claims.map((c,i)=>[i,c.truth?'ok':'ng']))};
+  }
+  S.seenEv=new Set(S.ev); S.flags={}; S.phaseShown=phase();
+  const note=d?L.b.reviewNote(new Date(d.time).toLocaleString(L.locale,{year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})):L.b.reviewNoteAll;
+  S.mode='board'; B.ret='files'; B.pick=false; B.round=0;
+  const ul=unlockedHyps();
+  if(!B.hyp||!S.hyps[B.hyp]) B.hyp=ul.length?ul[ul.length-1].id:null;
+  B.claim=null; B.ev=null; B.act=null; B.slam=null; B.msg=`<span class="muted">${note}</span>`;
+  renderBoard(); $('#board').classList.remove('hidden'); $('#bbody').scrollTop=0; AU.sfx('paper');
+}
+// 振り返りから推理シーンを再生する。見終わったら（スキップしても）振り返りのボードに戻る
+function reviewReplay(hid){
+  const id=S.review, f=FILES.find(x=>x.id===id);
+  hideBoard(); $('#files').classList.add('hidden'); $('#app').classList.remove('menu');
+  $('#loc').textContent=`${f.no}　${f.title}`;
+  startScene(hid,false,{after:()=>{
+    $('#app').classList.add('menu'); $('#files').classList.remove('hidden'); $('#loc').textContent=L.caseFiles;
+    S.mode='files'; openReview(id); B.hyp=hid; renderBoard();
+  }});
+}
+function closeReview(){
+  hideBoard(); AU.sfx('paper');
+  S.review=null; S.mode='files'; B.hyp=null; renderFiles();
+}
 function closeBoard(cancel){
+  if(S.review){closeReview(); return;}
   hideBoard(); S.mode=B.ret||'explore'; AU.sfx('paper');
   for(const id of S.ev) S.seenEv.add(id);
   if(B.pick){ if(cancel){round(B.round); startDialog();} return; }
@@ -27,7 +64,8 @@ function closeBoard(cancel){
 }
 
 function renderBoard(){
-  $('#btitle').textContent=B.pick?L.b.titlePick:L.b.title;
+  const rf=S.review&&FILES.find(x=>x.id===S.review);
+  $('#btitle').textContent=B.pick?L.b.titlePick:rf?L.b.titleReview(rf.no,rf.title):L.b.title;
   $('#bquote').classList.toggle('hidden',!B.pick);
   if(B.pick) $('#bqtext').textContent=ROUNDS[B.round].stmt;
   $('#hypsec').classList.toggle('hidden',B.pick);
@@ -113,12 +151,13 @@ $('#board').addEventListener('click',e=>{
   if(t.dataset.h){B.hyp=t.dataset.h; B.claim=null; B.msg=''; renderBoard(); return;}
   if(t.dataset.c!=null){
     const h=HYPS.find(x=>x.id===B.hyp), i=+t.dataset.c;
-    if(hypStatus(h)!=='open'||S.hyps[h.id].claims[i]) return;
+    if(S.review||hypStatus(h)!=='open'||S.hyps[h.id].claims[i]) return;
     B.claim=B.claim===i?null:i; B.msg=''; renderBoard(); return;
   }
   if(t.dataset.e){B.ev=t.dataset.e; S.seenEv.add(B.ev); if(!B.act||B.pick) B.msg=B.pick?B.msg:''; renderBoard(); return;}
   if(t.hasAttribute('data-present')){B.pick?onPick(B.ev):doPresent(); return;}
   if(t.hasAttribute('data-act')){const f=B.act.fn; B.act=null; f(); return;}
+  if(t.dataset.replay&&S.review){reviewReplay(t.dataset.replay); return;}
   if(t.dataset.replay){hideBoard(); S.mode='explore'; startScene(t.dataset.replay,false); return;}
 });
 
