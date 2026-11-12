@@ -41,12 +41,38 @@ function render(t){
   list.sort((a,b)=>a.y-b.y);
   for(const a of list) drawPerson(ctx,a.x,a.y,a.o,t);
   if(dark){drawDark(ctx,t,px*TS,py*TS,MAPDEF[S.map].lights||[]); sparkles();}
+  if(MAPDEF[S.map].dusk&&CASE.clock) drawDusk(ctx,CASE.clock().dusk);
   for(const a of list){
     if(a.label) drawLabel(ctx,a.label,a.x,a.y-22);
     if(a.npc&&a.npc.alert()) drawBubble(ctx,a.x,a.y-12,t);
     if(a.emo) drawEmoMark(ctx,EMO[a.emo.key].mark,a.x,a.y,t-a.emo.t0);
   }
+  drawCaseClock(t);
   drawTalkMark(t);
+}
+// 夕暮れ：屋外のマップ（MAPDEF の dusk）に、時刻が進むほど赤く、暗く色を重ねる（d：0＝昼下がり〜1＝日暮れ。FILE.07）
+function drawDusk(g,d){
+  g.save();
+  g.globalCompositeOperation='multiply'; g.fillStyle=`rgb(255,${(226-70*d)|0},${(196-90*d)|0})`; g.fillRect(0,0,PW,PH);   // 西日の色
+  g.globalCompositeOperation='source-over'; g.fillStyle=`rgba(40,20,70,${.03+.16*d})`; g.fillRect(0,0,PW,PH);   // 暮れていく
+  g.restore();
+}
+// 時間制限のある事件の時計（CASE.clock()：{main:'16:41',sub:'17時まで あと19分',warn}）。探索中、画面の右上に出す
+function drawCaseClock(t){
+  if(!CASE||!CASE.clock) return;
+  const c=CASE.clock(), g=ctx;
+  g.save();
+  g.font='bold 18px serif'; const w1=g.measureText(c.main).width;
+  g.font='bold 10px sans-serif'; const w2=g.measureText(c.sub).width;
+  const w=Math.max(w1,w2)+22, x=PW-w-8, y=8, pulse=c.warn?.5+.5*Math.sin(t*5):0;
+  RR(g,'rgba(14,10,6,.74)',x,y,w,40,5);
+  g.strokeStyle=c.warn?`rgba(240,90,70,${.55+.45*pulse})`:'rgba(232,207,160,.6)'; g.lineWidth=c.warn?1.6:1;
+  g.beginPath(); g.roundRect(x+.5,y+.5,w-1,39,5); g.stroke();
+  g.textAlign='center';
+  g.font='bold 18px serif'; g.fillStyle=c.warn?'#ffb4a0':'#f0dcb4'; g.fillText(c.main,x+w/2,y+20);
+  g.font='bold 10px sans-serif'; g.fillStyle=c.warn?'#f58a72':'#cdb790'; g.fillText(c.sub,x+w/2,y+34);
+  g.textAlign='start';
+  g.restore();
 }
 /* ---------- 感情（js/ui/dialog.js の EMO） ---------- */
 // 動き：dt は台詞が出てからの秒数。体のずれ（ox,oy）と向きを返す
@@ -148,7 +174,7 @@ function renderScene(t){
   g.globalCompositeOperation='saturation'; g.fillStyle='#808080'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='multiply'; g.fillStyle='#cdb083'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='source-over'; g.fillStyle='rgba(25,15,5,.25)'; g.fillRect(0,0,PW,PH);
-  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{shadow:true,dir:a.dir,walking:a.walking,fallen:a.fallen,carry:a.carry},t);
+  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{shadow:true,dir:a.dir,walking:a.walking,fallen:a.fallen,carry:a.carry,small:a.small},t);
   for(const a of acts) if(a.label) drawLabel(g,a.label,a.x*TS,a.y*TS-(a.fallen?16:22),'#f3d9b0','rgba(40,10,5,.7)');
   for(const f of SCN.fx){
     const p=Math.min(1,f.t/f.dur), X=f.x*TS, Y=f.y*TS;
@@ -199,7 +225,7 @@ function renderScene(t){
 // 監視カメラの映像：白黒＋緑がかった色、走査線とノイズ、カメラ名・時刻・REC
 function renderCctv(g,t,acts){
   const c=SCN.cctv;
-  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{...(a.look||{coat:'#555'}),dir:a.dir,walking:a.walking,carry:a.carry},t);
+  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{...(a.look||{coat:'#555'}),dir:a.dir,walking:a.walking,carry:a.carry,small:a.small},t);
   g.globalCompositeOperation='saturation'; g.fillStyle='#808080'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='multiply'; g.fillStyle='#b4c9b6'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='source-over';

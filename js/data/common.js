@@ -36,6 +36,11 @@ const LOOK={
   goda:     {coat:'#3a4048',coat2:'#2f343b',cap:'#4a3e30'},
   akari:    {coat:'#c8b07a',coat2:'#ad9764',hair:'#3a2418'},
   mashiba:  {coat:'#34404e',coat2:'#2a3440',hair:'#1c1c1e',tie:'#9a8a3a'},
+  // FILE.07
+  kaji:     {coat:'#c84a3a',coat2:'#a83c2f',cap:'#2a3a5a'},
+  toru:     {coat:'#6a7a3a',coat2:'#57652f',hair:'#5a3a24'},
+  haru:     {coat:'#7a6a8a',coat2:'#665872',hair:'#bdb6ac'},
+  asakura:  {coat:'#22262e',coat2:'#1a1d24',hair:'#141416',tie:'#5a2a3a'},
 };
 
 /* ---------- マップ（取調室は全事件で共通。現場のマップは各事件のフォルダで足す） ---------- */

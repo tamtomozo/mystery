@@ -4,6 +4,7 @@
 /* ---------- 人物（見下ろし） ---------- */
 function drawPerson(g,x,y,o,t){
   g.save(); g.translate(x,y);
+  if(o.small) g.scale(.78,.78);   // 子ども（FILE.07 の湊）
   const sh=!!o.shadow;
   if(o.fallen){E(g,sh?'rgba(0,0,0,.25)':'rgba(0,0,0,.3)',0,3,18,9); g.rotate(Math.PI/2);}
   else E(g,'rgba(0,0,0,.35)',0,9,12,5);
@@ -15,7 +16,7 @@ function drawPerson(g,x,y,o,t){
   RR(g,coat,-11,-5,22,15,7);
   if(o.tie&&!sh){R(g,'#eee',-3,-5,6,4); R(g,o.tie,-1,-3,2,7);}
   const dir=o.fallen?'down':(o.dir||'down'), [dx,dy]=DIRV[dir];
-  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒／capsule＝錆びた缶／reel＝16ミリのリール／handle＝シャッターの巻き上げハンドル）
+  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒／capsule＝錆びた缶／reel＝16ミリのリール／handle＝シャッターの巻き上げハンドル／bag＝青いスポーツバッグ）
   if(o.carry){
     g.save(); g.shadowBlur=0; g.globalAlpha=1;
     const cx=dx*10, cy=dy*9+3;
@@ -40,6 +41,9 @@ function drawPerson(g,x,y,o,t){
       g.strokeStyle='#5a5e66'; g.lineWidth=2.4; g.lineCap='round';
       g.beginPath(); g.moveTo(cx-7,cy+3); g.lineTo(cx+5,cy-3); g.lineTo(cx+5,cy+3); g.stroke();
       C(g,'#8a3a2a',cx+5,cy+4,2.2);
+    }else if(o.carry==='bag'){
+      RR(g,'#1f4f9a',cx-9,cy-5,18,11,4); R(g,'#3a6ab8',cx-7,cy-4,14,2); R(g,'#e8e4dc',cx-9,cy,18,1.2);
+      g.strokeStyle='#14305e'; g.lineWidth=1.6; g.beginPath(); g.arc(cx,cy-5,4.5,Math.PI,0); g.stroke();
     }
     g.restore();
   }

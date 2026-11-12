@@ -571,10 +571,13 @@ const VOICE={'滝沢':300,'森':440,'野口':494,'柏木':370,'大河内':262,'�
   '千鶴':466,'寿峰':220,'高梨':311,'宮内':415,'黒田':294,'健太':659,
   '陽太':698,'源さん':233,'大地':349,'ヨミサカ':415,'白川':466,'野々村':294,
   '八重子':349,'郷田':208,'灯':554,'真柴':330,
+  // FILE.07
+  '梶':196,'透':370,'ハル':415,'朝倉':277,'湊':740,
   // 英語版の話し手名
   'Takizawa':300,'Mori':440,'Noguchi':494,'Kashiwagi':370,'Okochi':262,'You':392,'Hayase':523,'Iwata':277,'Kuga':330,'Director':247,'Komatsu':587,
   'Chizuru':466,'Juho':220,'Takanashi':311,'Miyauchi':415,'Kuroda':294,'Kenta':659,
   'Yota':698,'Gen-san':233,'Daichi':349,'Yomisaka':415,'Shirakawa':466,'Nonomura':294,
-  'Yaeko':349,'Goda':208,'Akari':554,'Mashiba':330};
+  'Yaeko':349,'Goda':208,'Akari':554,'Mashiba':330,
+  'Kaji':196,'Toru':370,'Haru':415,'Asakura':277,'Minato':740};
 const voiceOf=name=>{if(!name) return 0; for(const k in VOICE) if(name.startsWith(k)) return VOICE[k]; return 0;};
 

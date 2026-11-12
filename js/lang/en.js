@@ -85,6 +85,8 @@ const L={
       lead:'A week before Tsukikagedai Elementary closes for good, its Seven Mysteries have been “really” happening, night after night. And this morning, the time capsule buried twenty-five years ago was gone. — No one knows the seventh.'},
     file06:{title:'The Projection Room at Dawn',
       lead:'The Ginseiza, an underground cinema, is closing after sixty years. On the night of its last private screening, the power dies, the fire shutter drops, and the emergency exit is chained with a combination lock. Six people — two detectives among them — are trapped until morning. — Why?'},
+    file07:{title:'The Empty Gondola',
+      lead:'At Shiomi Land, a little seaside amusement park, a boy vanishes on his tenth birthday. The ransom: 3,120,000 yen. The bag his father left in a Ferris wheel gondola disappears in midair, right before the detectives’ eyes. — Thirty minutes until five o’clock.'},
   },
 
   /* Takizawa's hints (common.js) */
@@ -162,5 +164,7 @@ const L={
         school:'TSUKIKAGEDAI ELEM.',shoko:'ENTRANCE',yomuin:'CARETAKER',shokuin:'STAFF ROOM',kocho:'PRINCIPAL',ongaku:'MUSIC',
         hoso:'BROADCAST',rika:'SCIENCE',class6:'CLASS 6-1',staffDoor:'STAFF',stairs2:'STAIRS',
         ginsei:'G I N S E I Z A',seats:'THEATER',lobby6:'LOBBY',kikai:'MACHINE',jimu:'OFFICE',eisha:'PROJECTION',baiten:'KIOSK',
-        kitsuen:'SMOKING',kippu:'TICKETS',hikae:'STAFF RM'},
+        kitsuen:'SMOKING',kippu:'TICKETS',hikae:'STAFF RM',
+        shiomi:'SHIOMI LAND',sousa:'CONTROL',noriba:'BOARDING',kanri:'OFFICE',jimu7:'OFFICE',ousetsu:'MEETING RM',maigo:'LOST CHILD',
+        softcream:'SOFT SERVE',toWheel:'TO PLAZA'},
 };
