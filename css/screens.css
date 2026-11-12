@@ -136,3 +136,8 @@
   .pro-catch{letter-spacing:.06em}
   .pro-lead{padding:.9em .4em 0}
 }
+
+/* 縦持ち：FILE選択は縦に余裕があるので、狭い画面で省いていた概要も出す */
+@media (orientation:portrait){
+  .fd-lead,.fd-note{display:block}
+}

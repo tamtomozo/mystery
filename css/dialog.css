@@ -65,3 +65,15 @@
 #toast.on{opacity:1}
 #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .4s}
 #fade.on{opacity:1}
+
+/* 縦持ち：会話ウィンドウはゲーム画面（高さ＝横幅の 3/4＝75cqw）の下の空きに出し、文字も大きくする */
+@media (orientation:portrait){
+  #dlg,#dlg.top{top:calc(75cqw + 1.4em);bottom:auto;left:3%;right:3%;min-height:0;
+    padding:3.4cqw 4cqw 4.2cqw;font-size:clamp(14px,3.9cqw,20px)}
+  #dname{left:4cqw}
+  #dnext{right:3cqw;bottom:1cqw}
+  #dchoices{flex-direction:column}
+  #dchoices .btn{font-size:clamp(14px,3.7cqw,18px);padding:.55em 1em;text-align:left;white-space:normal}
+  #dlg.chonly{padding:3cqw}
+  #bubble{font-size:clamp(12px,3.2cqw,16px);max-width:min(66%,430px)}
+}

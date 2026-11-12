@@ -63,10 +63,12 @@ function showLine(d,scene){
   $('#dchoices').innerHTML=''; $('#dnext').classList.add('hidden');
   blipF=scene?0:voiceOf(d.name);
   // 自キャラ以外で、画面上にいる人物のセリフは吹き出しで表示
-  if(!scene&&d.name&&d.name!==ME&&speakerAnchor(d.name)){
+  // （縦持ちでは画面の下の会話ウィンドウに出し、話し手の頭上に印を付ける。印は render.js の drawTalkMark）
+  const onScreen=!scene&&d.name&&d.name!==ME&&speakerAnchor(d.name);
+  if(onScreen&&!PORTRAIT.matches){
     hideBox(); showBubble(d); return;
   }
-  hideBubble();
+  hideBubble(); talkSpeaker=onScreen?d.name:null;
   dlg.classList.remove('hidden','chonly'); dlg.classList.toggle('scene',!!scene);
   let top=false;
   if(scene&&SCN){const ys=Object.values(SCN.actors).map(a=>a.y); top=ys.length>0&&ys.reduce((a,b)=>a+b,0)/ys.length>7.5;}
@@ -80,6 +82,9 @@ function showLine(d,scene){
 
 /* ---------- 吹き出し ---------- */
 let bubbleSpeaker=null;
+// 縦持ちかどうか（css/base.css の縦持ちレイアウトと同じ条件）と、縦持ちで会話ウィンドウに出しているセリフの話し手
+const PORTRAIT=matchMedia('(orientation:portrait)');
+let talkSpeaker=null;
 // 話し手の頭上(top)と足元(bottom)の位置（キャンバス座標）。画面上にいなければ null
 function speakerAnchor(name){
   if(S.map==='interro'){
@@ -112,7 +117,8 @@ function positionBubble(){
   const b=$('#bubble');
   if(b.classList.contains('hidden')||!bubbleSpeaker) return;
   const a=speakerAnchor(bubbleSpeaker); if(!a) return;
-  const st=$('#stage'), sw=st.clientWidth, sh=st.clientHeight, kx=sw/PW, ky=sh/PH;
+  // ゲーム画面（キャンバス）を基準にする。縦持ちでは #stage がキャンバスより縦に長いため
+  const sw=cv.clientWidth, sh=cv.clientHeight, kx=sw/PW, ky=sh/PH;
   const bw=b.offsetWidth, bh=b.offsetHeight, gap=12;
   const ax=a.x*kx, upTop=a.top*ky-bh-gap;
   const above=upTop>sh*0.02;
@@ -133,7 +139,7 @@ function pickChoice(i){
   if(r==='hold'){hideDlg(); return;}
   if(S.mode==='dialog') nextDialog();
 }
-function hideDlg(){hideBox(); hideBubble();}
+function hideDlg(){hideBox(); hideBubble(); talkSpeaker=null;}
 // rest：まだ表示していない文字を透明で置いておき、吹き出しの大きさを最初から確定させる
 function typeText(el,text,done,rest){
   if(typing) clearInterval(typing.iv);

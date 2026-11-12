@@ -23,6 +23,7 @@ function render(t){
     gr.addColorStop(0,'rgba(0,0,0,0)'); gr.addColorStop(1,'rgba(0,0,0,.8)');
     ctx.fillStyle=gr; ctx.fillRect(0,0,PW,PH);
     glow(ctx,11.4*TS,6.4*TS,80,'rgba(255,225,160,.12)');
+    drawTalkMark(t);
     return;
   }
   const list=[];
@@ -36,6 +37,16 @@ function render(t){
     if(a.label) drawLabel(ctx,a.label,a.x,a.y-22);
     if(a.npc&&a.npc.alert()) drawBubble(ctx,a.x,a.y-12,t);
   }
+  drawTalkMark(t);
+}
+// 縦持ちでセリフを下の会話ウィンドウに出しているとき、話し手の頭上に ▼ を出す（js/ui/dialog.js の talkSpeaker）
+function drawTalkMark(t){
+  if(!talkSpeaker||S.mode!=='dialog') return;
+  const a=speakerAnchor(talkSpeaker); if(!a) return;
+  const g=ctx, y=a.top-14+Math.sin(t*5)*1.5;
+  g.setTransform(SC,0,0,SC,0,0);
+  g.fillStyle='#d6b061'; g.strokeStyle='rgba(0,0,0,.6)'; g.lineWidth=1;
+  g.beginPath(); g.moveTo(a.x-7,y-9); g.lineTo(a.x+7,y-9); g.lineTo(a.x,y); g.closePath(); g.fill(); g.stroke();
 }
 // タイトル背景：灯りの落ちた深夜の書斎。暖炉と卓上ランプがゆらぎ、埃が舞う
 function renderTitle(t){

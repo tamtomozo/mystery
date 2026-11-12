@@ -37,3 +37,15 @@ body{display:flex;justify-content:center}
 #app:not(.menu) #langBtn{display:none}
 /* 推理シーン・映像の再生中は「操作」「捜査ボード」の代わりに「スキップ」を出す（画面に被らないよう、上のバーに置く） */
 #app.scene #helpBtn,#app.scene #boardBtn{display:none}
+
+/* ---------- 縦持ち（スマホ縦向きなど） ----------
+   ゲーム画面（4:3）は横幅いっぱいで上に置き、その下の空きを会話ウィンドウに使う（位置は dialog.css）。
+   タイトル／FILE選択などの重ね画面は、下の空きも含めた画面全体を使う */
+@media (orientation:portrait){
+  #app{width:100vw;height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+  #top{flex:none}
+  #stage{flex:1;min-height:0;aspect-ratio:auto;display:flex;flex-direction:column;background:var(--bg)}
+  #cv{flex:none;height:auto;aspect-ratio:4/3}
+  /* タイトル／FILE選択のあいだは、ゲーム画面を上下の真ん中に */
+  #app.menu #stage{justify-content:center}
+}

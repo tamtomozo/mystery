@@ -24,6 +24,11 @@ cv.addEventListener('pointerdown',e=>{
   const r=cv.getBoundingClientRect();
   onTap(Math.floor((e.clientX-r.left)/r.width*W),Math.floor((e.clientY-r.top)/r.height*H));
 });
+// 縦持ちのとき、ゲーム画面の下の空き（#stage そのもの）をタップしても会話を送れるように
+$('#stage').addEventListener('pointerdown',e=>{
+  if(e.target!==e.currentTarget) return;
+  if(S.mode==='scene') sceneAdvance(); else if(S.mode==='dialog') advance();
+});
 $('#dlg').addEventListener('click',e=>{e.stopPropagation(); advance();});
 $('#bubble').addEventListener('click',e=>{e.stopPropagation(); advance();});
 // 帯が出た直後のクリック（前の会話を送ったクリック）で閉じないよう、少し待つ
