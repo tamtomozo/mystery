@@ -30,3 +30,6 @@ html,body{font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
 .einner h2,.einner h3{letter-spacing:.06em}
 /* 物証のアイコン（英語版は絵文字） */
 .evc .k{font-size:16px}
+.pro-pre span{letter-spacing:.06em}
+.pro-catch{letter-spacing:.03em}
+.pro-next{letter-spacing:.05em}

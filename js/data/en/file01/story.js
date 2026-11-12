@@ -4,6 +4,20 @@
 defCase('file01',{
   saveKey:'hidden-truth-file01-save',
   start:['study',9,2,'left'],
+  // Prologue (shown only when starting the case from the beginning. js/ui/prologue.js)
+  prologue:{
+    prehead:'For those who are no longer satisfied with just guessing whodunit.',
+    catch:'What that locked room was hiding<br>wasn’t the killer.',
+    deck:[
+      'A study locked from the inside. The window latched. The key on the desk.<br>On the floor lay the master of the manor, Soichiro Kurosaki.',
+      'Expose the trick, corner the culprit — and beyond that,<br>you will find <b>another truth</b> that no one knew.',
+    ],
+    lead:[
+      'You step onto the scene as a rookie detective.',
+      'People keep silent. Evidence speaks.<br>Test each deduction that takes shape against the evidence you gather, and break down every contradiction.',
+      'When you answer the final question, you will hold more than the culprit’s name.<br>You will hold the feelings this locked room had kept shut inside.',
+    ],
+  },
   intro(){
     say('Takizawa','There you are, rookie. This is the scene — the study of Soichiro Kurosaki, master of this manor.');
     say('Takizawa','This morning his secretary, Kashiwagi, called it in: “The study door won’t open, and the master isn’t answering.” The door was locked from inside. An officer had to break it down.');

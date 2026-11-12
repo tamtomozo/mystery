@@ -4,6 +4,20 @@
 defCase('file02',{
   saveKey:'hidden-truth-file02-save',
   start:['gallery',9,11,'left'],
+  // Prologue (shown only when starting the case from the beginning. js/ui/prologue.js)
+  prologue:{
+    prehead:'For those who can’t look away from the words “impossible crime.”',
+    catch:'Inside a case no one had opened,<br>the jewel had turned into a fake.',
+    deck:[
+      'The Shirasagi Museum of Art, the night before a special exhibition opens. A sapphire valued at ¥200 million: “The Azure Drop.”<br>No alarm ever sounded, and the case’s lock log ends yesterday evening.',
+      'When was it swapped, and by whom?<br>And why did they <b>swap it rather than steal it</b>?',
+    ],
+    lead:[
+      'You step into the sealed gallery as a rookie detective.',
+      'Time logs, footage, the weight of a jewel. The evidence records the truth down to the second.<br>Miss no discrepancy, however small, and break down each deduction that takes shape.',
+      'When you answer the final question, you will understand<br>what this blue jewel meant to someone.',
+    ],
+  },
   intro(){
     say('Takizawa','There you are, rookie. This is the scene — the gallery at the Shirasagi Museum of Art.');
     say('Takizawa','The special exhibition “The Azure Drop” was supposed to open today. The centerpiece is a sapphire brooch valued at ¥200 million.');

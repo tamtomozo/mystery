@@ -136,6 +136,7 @@ const L={
   endNext:'クリック / Space で次へ ▼',
   resumeInterro:'―― 取調べを再開する。',
   resumed:'前回の続きから再開します',
+  proNext:'クリック / Space で 捜査をはじめる ▼',
 
   /* 背景に描く看板 */
   sign:{security:'警備室',curator:'学芸員室',staffExit:'通用口',gallery:'展示室',lobby:'← ロビー',

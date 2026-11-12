@@ -103,3 +103,36 @@
 .einner{max-width:640px;padding:6% 7%;text-align:left;font-size:clamp(12px,2.2cqw,16px);line-height:1.95}
 .einner h2{color:var(--gold);letter-spacing:.2em;font-size:clamp(16px,3.4cqw,26px);text-align:center;margin:0 0 1em}
 .einner h3{color:var(--gold);font-size:1em;letter-spacing:.2em;margin:1.6em 0 .3em;border-bottom:1px solid var(--line);padding-bottom:.2em}
+
+/* ---------- プロローグ（js/ui/prologue.js） ----------
+   プリヘッド → キャッチコピー → デッキコピー → リード の順に、一段ずつ浮かびあがる */
+#prologue{overflow:auto;cursor:pointer;scrollbar-width:thin;scrollbar-color:rgba(168,134,90,.5) transparent;background:radial-gradient(ellipse at center,rgba(16,13,10,.975),rgba(3,3,5,.995));animation:shadeIn .4s ease-out}
+.pinner{width:min(88%,640px);margin:auto;padding:5cqw 0 6cqw}
+.pinner>*{opacity:0;transform:translateY(10px);transition:opacity 1s ease-out,transform 1s ease-out}
+.pinner>.on{opacity:1;transform:none}
+/* プリヘッド：上下に罫を引いた小さな呼びかけ */
+.pro-pre span{display:inline-block;color:var(--gold);font-size:clamp(11px,2cqw,15px);letter-spacing:.2em;padding:.35em 1.2em;
+  border-top:1px solid rgba(168,134,90,.6);border-bottom:1px solid rgba(168,134,90,.6)}
+/* キャッチコピー：いちばん大きく、ゆっくり沈みこむように */
+.pro-catch{margin:.9em 0 .75em;font-size:clamp(19px,4.6cqw,36px);line-height:1.55;letter-spacing:.14em;font-weight:700;color:#f1e8d6;
+  text-shadow:0 0 26px rgba(214,176,97,.28),0 2px 0 rgba(0,0,0,.6);transform:scale(1.06);filter:blur(3px);
+  transition:opacity 1.6s ease-out,transform 1.6s ease-out,filter 1.6s ease-out}
+.pro-catch.on{transform:none;filter:none}
+/* デッキコピー */
+.pro-deck p{margin:.35em 0;font-size:clamp(12px,2.3cqw,17px);line-height:1.9;color:#cfc4ae}
+.pro-deck b{color:var(--gold);font-weight:700}
+/* リード：手紙の本文のように左寄せで */
+.pro-lead{margin-top:1.5em;padding:1.1em 1.4em 0;border-top:1px solid rgba(168,134,90,.45);text-align:left}
+.pro-lead p{margin:0 0 .7em;font-size:clamp(11px,2.05cqw,15px);line-height:1.95;color:#ddd3bf}
+.pro-lead p:first-child{color:#f1e8d6;font-weight:700}
+.pro-next{margin-top:1.8em;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);letter-spacing:.15em}
+.pro-next.on{animation:blink 1.2s 1.2s infinite}
+/* まだ続きがあるときの「▼」 */
+.pro-tap{position:absolute;right:2.4cqw;bottom:1.6cqw;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);animation:blink 1s infinite}
+#prologue.last .pro-tap{display:none}
+@container (max-width:600px){
+  .pinner{width:92%;padding:3cqw 0 4cqw}
+  .pro-pre span{letter-spacing:.08em;padding:.3em .6em}
+  .pro-catch{letter-spacing:.06em}
+  .pro-lead{padding:.9em .4em 0}
+}

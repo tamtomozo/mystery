@@ -144,6 +144,7 @@ const L={
   endNext:'Click / Space to continue ▼',
   resumeInterro:'— The interrogation resumes.',
   resumed:'Resuming where you left off',
+  proNext:'Click / Space to begin the investigation ▼',
 
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',

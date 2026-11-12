@@ -14,6 +14,7 @@
      ROUNDS / INTERRO_ACTORS             … 取調べの問いと配置
      saveKey  … セーブの保存先
      start    … はじめの位置 [map,x,y,dir]（続きからで位置が壊れていたときもここへ）
+     prologue … （任意）はじめから捜査するとき、intro の前に見せるプロローグ（js/ui/prologue.js）
      intro()  … 捜査開始のセリフ
      hint0 / provenLine / finalIntro     … 滝沢のセリフ（最初・真相確定・最後の推理）
      phaseGuide{段階:fn}                 … 捜査段階が進んだときに出す操作ガイド

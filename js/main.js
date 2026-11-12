@@ -28,7 +28,7 @@ $('#dlg').addEventListener('click',e=>{e.stopPropagation(); advance();});
 $('#bubble').addEventListener('click',e=>{e.stopPropagation(); advance();});
 // 帯が出た直後のクリック（前の会話を送ったクリック）で閉じないよう、少し待つ
 $('#band').addEventListener('click',e=>{e.stopPropagation(); if(performance.now()-bandAt>400) advance();});
-$('#skip').addEventListener('click',e=>{e.stopPropagation(); endScene();});
+$('#skip').addEventListener('click',e=>{e.stopPropagation(); if(S.mode==='prologue') endPrologue(); else endScene();});
 $('#boardBtn').addEventListener('click',()=>{if(S.mode==='explore') openBoard(false);});
 $('#helpBtn').addEventListener('click',()=>{
   if(S.mode!=='explore') return;
@@ -65,9 +65,14 @@ function continueGame(id,d){
 function newGame(id){
   enterCase(id);
   S.mode='explore'; setMap(...CASE.start); updateHud();
-  CASE.intro();
-  guideBasic();
-  startDialog();
+  const begin=()=>{
+    S.mode='explore';
+    CASE.intro();
+    guideBasic();
+    startDialog();
+  };
+  // プロローグのある事件は、捜査の前にプロローグを見せる（js/ui/prologue.js）
+  if(CASE.prologue) startPrologue(CASE.prologue,begin); else begin();
 }
 // タイトル・FILE選択の画面は js/ui/title.js
 
@@ -82,7 +87,7 @@ soundButtons();
 // ブラウザの制約で、最初の操作のあとに音が鳴り始める
 window.addEventListener('pointerdown',()=>AU.init(),{once:true});
 window.addEventListener('keydown',()=>AU.init(),{once:true});
-// BGMはタイトル／FILE選択、回想（推理シーン）、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面は無音
+// BGMはタイトル／FILE選択、回想（推理シーン）、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面（プロローグも）は無音
 function wantedBgm(){
   if(S.mode==='title'||S.mode==='files') return performance.now()<FS.bgmAt?null:'title';   // 解決の判を押した直後は、少し間をおく
   if(SCN) return SCN.cctv?null:'scene';   // 監視カメラの映像は無音
@@ -96,6 +101,11 @@ window.addEventListener('keydown',e=>{
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Tab'].includes(e.key)) e.preventDefault();
   if(S.mode==='title'||S.mode==='files'){if(!e.repeat||e.key.startsWith('Arrow')) menuKey(k); return;}
   if(S.mode==='board'){if(k==='Escape'||k==='b'||k==='Tab') closeBoard(true); return;}
+  if(S.mode==='prologue'){
+    if(e.repeat) return;
+    if(k===' '||k==='Enter'||k==='z') prologueNext(); else if(k==='Escape') endPrologue();
+    return;
+  }
   if(k===' '||k==='Enter'||k==='z'){
     if(e.repeat) return;
     if(S.mode==='explore') keyInteract();

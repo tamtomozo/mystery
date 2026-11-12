@@ -4,6 +4,20 @@
 defCase('file03',{
   saveKey:'hidden-truth-file03-save',
   start:['office',7,5,'up'],
+  // Prologue (shown only when starting the case from the beginning. js/ui/prologue.js)
+  prologue:{
+    prehead:'For those who believe there’s no such thing as a small case.',
+    catch:'All that vanished was one pudding.<br>Every suspect is a police officer.',
+    deck:[
+      'The kitchenette of the Major Crimes Division, Prefectural Police HQ. A baked pudding — only 20 made a day, bought after queuing from 7 a.m. —<br>vanished from its box in the fridge.',
+      'An officer seen with a spoon in his mouth. A forensics tech starving after an all-nighter. There’s no shortage of suspects.<br>But the evidence points to <b>a name you never expected</b>.',
+    ],
+    lead:[
+      'Today, as a rookie detective, you investigate your own workplace.',
+      'A name on a sticky note, a photo’s timestamp, a tiny stain on a document. However laughably small the case, the evidence never cuts corners.<br>Break down each deduction that takes shape, one by one.',
+      'When you answer the final question, you will learn<br>what was left at the bottom of that empty box.',
+    ],
+  },
   intro(){
     say('Takizawa','There you are, rookie. ...No, we’re not heading out today. The scene is right here.');
     say('Okochi','Rookie. We have a case.');
