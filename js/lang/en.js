@@ -7,7 +7,7 @@ const L={
     loc:'Hidden Truth', saved:'✓ Saved', help:'Controls', board:'Case Board', skip:'Skip ▶▶',
     bandHint:'Click / Space to close ▼',
     tseries:'A MYSTERY IN FILES', title:'Hidden Truth', tsub:'— The evidence tells the truth —',
-    tpress:'Click / Space to begin',
+    tpress:'Click / Space to begin', tcredit:'Staff Credits',
     fh:'Case Files', fen:'FILE SELECT', fback:'◀ Title', fhint:'↑↓ Select · Space / Enter Confirm · Esc Back',
     btitle:'Case Board', bclose:'Close ✕', hypsec:'Deductions', evsec:'Evidence',
   },
@@ -169,6 +169,28 @@ const L={
     keys:'←→ Choose a card · Enter Confirm · Esc Cancel',
     seg:(m,min)=>`${m} m · ${min} min`,
     miss:['...This sighting fits with the others.','Nothing wrong here.','This one connects. Keep looking.']},
+
+  /* Staff credits (js/ui/credits.js). cast lists each FILE's characters as [role, name]; only solved FILEs roll. police and staff are [role, name] too */
+  credits:{
+    head:'STAFF CREDITS', castHead:'Cast', staffHead:'Development',
+    // The police roll once, after all the FILEs (not in each FILE's list)
+    policeHead:'Prefectural Police',
+    police:[['Inspector, Major Crimes','Okochi'],['Detective, Major Crimes','Takizawa'],['Forensics','Mori'],['Officer','Noguchi'],['Rookie Detective','You']],
+    staff:[['Planning','tomozo'],['Programming','tomozo'],['Design','tomozo'],['Sound','tomozo'],['Special Thanks','Claude']],
+    thanks:'Thank you for playing.',
+    back:'Click / Space to return to the title',
+    cast:{
+      file01:[['Master of the Manor','Soichiro Kurosaki'],['Secretary','Keisuke Kashiwagi']],
+      file02:[['Curator','Mizuki Hayase'],['Appraiser','Kuga'],['Security Guard','Iwata']],
+      file03:[['Admin','Komatsu']],
+      file04:[['Head of the Bokkokai','Juho Kiryu'],['Juho’s Daughter','Chizuru Kiryu'],['Senior Instructor','Makoto Takanashi'],['Assistant Instructor','Akari Miyauchi'],['Pupil','Kenta'],['Realtor','Kuroda']],
+      file05:[['6th-Grade Teacher','Haruka Shirakawa'],['Caretaker','Shigeru Genda'],['Principal','Nonomura'],['6th Grader','Yota'],['Builder','Daichi'],['Streamer','Yomisaka']],
+      file06:[['Owner of the Ginseiza','Yaeko Hoshino'],['Owner’s Granddaughter','Akari Hoshino'],['Projectionist','Masaru Goda'],['Realtor','Mashiba']],
+      file07:[['Wheel Operator','Shokichi Kaji'],['Father','Kyosuke Asakura'],['The Birthday Boy','Minato Asakura'],['Uncle','Toru Asakura'],['Housekeeper','Haru']],
+      file08:[['Master of the Nib Workshop','Kihei Tatsumi'],['President','Shiho Narumi'],['Chairman','Shuzo Narumi'],['Managing Director','Kusumi'],['Secretary','Mizuhara'],['Nib Grinder','Kuramochi'],['Daito Stationery','Chihaya']],
+      file09:[['The Client','Hinata Kasuga'],['Hinata’s Father','Kohei Kasuga'],['Hinata’s Mother','Satomi Kasuga'],['The Kasugas’ Neighbor','Tetsuji Gondo'],['Vet','Ashida'],['Tail House','Onodera'],['Tofu Shop','Matsui'],['Liquor Store','Omori'],['Paperboy','Segawa'],['The Omoris’ Shiba','Kotetsu'],['The Kasugas’ Shiba','Mugi']],
+    },
+  },
 
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',

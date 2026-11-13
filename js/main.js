@@ -33,7 +33,10 @@ $('#dlg').addEventListener('click',e=>{e.stopPropagation(); advance();});
 $('#bubble').addEventListener('click',e=>{e.stopPropagation(); advance();});
 // 帯が出た直後のクリック（前の会話を送ったクリック）で閉じないよう、少し待つ
 $('#band').addEventListener('click',e=>{e.stopPropagation(); if(performance.now()-bandAt>400) advance();});
-$('#skip').addEventListener('click',e=>{e.stopPropagation(); if(S.mode==='prologue') endPrologue(); else endScene();});
+$('#skip').addEventListener('click',e=>{
+  e.stopPropagation();
+  if(S.mode==='credits') creditsSkip(); else if(S.mode==='prologue') endPrologue(); else endScene();
+});
 $('#boardBtn').addEventListener('click',()=>{if(S.mode==='explore') openBoard(false);});
 $('#helpBtn').addEventListener('click',()=>{
   if(S.mode!=='explore') return;
@@ -95,6 +98,7 @@ window.addEventListener('keydown',()=>AU.init(),{once:true});
 // BGMはタイトル／FILE選択、回想（推理シーン）、考えているとき（捜査ボード／取調べで物証を選ぶとき）だけ。ほかの場面（プロローグも）は無音
 function wantedBgm(){
   if(S.mode==='title'||S.mode==='files') return performance.now()<FS.bgmAt?null:'title';   // 解決の判を押した直後は、少し間をおく
+  if(S.mode==='credits') return 'ending';   // スタッフクレジット（js/ui/credits.js）
   if(SCN) return SCN.cctv?null:'scene';   // 監視カメラの映像は無音
   if(S.mode==='board') return 'think';
   return null;
@@ -105,6 +109,7 @@ window.addEventListener('keydown',e=>{
   const k=e.key.length===1?e.key.toLowerCase():e.key;
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Tab'].includes(e.key)) e.preventDefault();
   if(S.mode==='title'||S.mode==='files'){if(!e.repeat||e.key.startsWith('Arrow')) menuKey(k); return;}
+  if(S.mode==='credits'){creditsKey(k,e.repeat); return;}   // スタッフクレジット（js/ui/credits.js）
   if(S.mode==='board'){if(k==='Escape'||k==='b'||k==='Tab') closeBoard(true); return;}
   if(S.mode==='dial'){if(!e.repeat||e.key.startsWith('Arrow')) dialKey(k); return;}   // 番号錠（js/ui/dial.js）
   if(S.mode==='compare'){if(!e.repeat||e.key.startsWith('Arrow')) compareKey(k); return;}   // 投書と議事録の照合（js/ui/compare.js）
@@ -125,6 +130,9 @@ window.addEventListener('keydown',e=>{
   if((k==='b'||k==='Tab')&&S.mode==='explore'){openBoard(false); return;}
   S.keys.add(k);
 });
-window.addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key; S.keys.delete(k);});
+window.addEventListener('keyup',e=>{
+  const k=e.key.length===1?e.key.toLowerCase():e.key; S.keys.delete(k);
+  if(S.mode==='credits') creditsKeyUp(k);
+});
 window.addEventListener('blur',()=>S.keys.clear());
 

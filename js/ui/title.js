@@ -5,12 +5,21 @@
    タイトル → FILE選択 → 「続きから／はじめから」
    FILE選択は2段：list（ファイルを選ぶ）→ act（続きから／はじめからを選ぶ）
    ========================================================= */
-const FS={sel:0,level:'list',act:0,busy:false,bgmAt:0};   // bgmAt：この時刻（performance.now）まで BGM を待たせる
+const FS={sel:0,level:'list',act:0,busy:false,bgmAt:0,tsel:0};   // bgmAt：この時刻（performance.now）まで BGM を待たせる。tsel：タイトルで選んでいるもの（0 はじめる／1 スタッフクレジット）
 
 function showTitle(){
   S.mode='title';
   $('#files').classList.add('hidden'); $('#title').classList.remove('hidden');
   $('#loc').textContent=L.gameTitle;
+  FS.tsel=0; titleMenu();
+}
+// FILE を一つでも解決したら、タイトルに「スタッフクレジット」を出す（js/ui/credits.js）
+function titleMenu(){
+  const can=creditsUnlocked();
+  if(!can) FS.tsel=0;
+  $('#creditBtn').classList.toggle('hidden',!can);
+  $('#creditBtn').classList.toggle('cur',FS.tsel===1);
+  $('#title .tpress').classList.toggle('dim',FS.tsel===1);
 }
 function openFiles(){
   if(S.mode!=='title') return;
@@ -114,9 +123,13 @@ function startFile(a){
 // タイトル／FILE選択でのキー操作（main.js の keydown から呼ばれる）
 function menuKey(k){
   const ok=k===' '||k==='Enter'||k==='z', back=k==='Escape'||k==='x';
-  if(S.mode==='title'){ if(ok) openFiles(); return; }
-  if(FS.busy) return;
   const up=k==='ArrowUp'||k==='w', dn=k==='ArrowDown'||k==='s';
+  if(S.mode==='title'){
+    if((up||dn)&&creditsUnlocked()){FS.tsel=1-FS.tsel; AU.sfx('blip',520); titleMenu();}
+    else if(ok){ if(FS.tsel===1) openCredits(); else openFiles(); }
+    return;
+  }
+  if(FS.busy) return;
   const lf=k==='ArrowLeft'||k==='a', rt=k==='ArrowRight'||k==='d';
   const acts=fileActs(FILES[FS.sel]);
   if(FS.level==='list'){
@@ -134,6 +147,7 @@ function menuKey(k){
 }
 
 $('#title').addEventListener('click',openFiles);
+$('#creditBtn').addEventListener('click',e=>{e.stopPropagation(); FS.tsel=1; openCredits();});
 
 // 事件を解決してエンディングから戻ってきたら、タイトルを飛ばして FILE選択を開く（解決した事件を選んだ状態で）
 // 初めての解決なら、「解決」の判を押す演出をする。

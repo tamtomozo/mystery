@@ -39,7 +39,7 @@ function saveBoard(){
 /* ---------- セーブ／ロード ---------- */
 let savedT=0;
 function saveGame(){
-  if(!CASE||S.review||S.mode==='title'||S.mode==='files'||S.mode==='end'||S.flags.confess) return;
+  if(!CASE||S.review||S.mode==='title'||S.mode==='files'||S.mode==='credits'||S.mode==='end'||S.flags.confess) return;
   const interro=S.map==='interro';
   const data={v:1,time:Date.now(),ev:S.ev,hyps:S.hyps,flags:S.flags,phaseShown:S.phaseShown,seen:[...S.seenEv],
     map:S.map,x:P.moving?P.tx:P.x,y:P.moving?P.ty:P.y,dir:P.dir,round:interro?(S.round||0):null};

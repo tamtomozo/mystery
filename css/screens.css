@@ -13,6 +13,47 @@
   animation:tFade 3.2s ease-out,blink 1.6s 3.2s infinite}
 @keyframes tFade{0%,40%{opacity:0}to{opacity:1}}
 @keyframes tLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* スタッフクレジットへ（FILE を一つでも解決すると出る）。↑↓ で選ぶと金色になり、「はじめる」の案内は薄くなる */
+.tcredit{display:block;margin:1.8em auto 0;letter-spacing:.24em;padding-left:calc(10px + .24em);color:#b9ad97;opacity:.85;animation:tFade 3.6s ease-out}
+.tcredit.cur{border-color:var(--gold);color:var(--gold);opacity:1}
+.tpress.dim{animation:none;opacity:.35}
+
+/* ---------- スタッフクレジット（js/ui/credits.js） ----------
+   .croll を下から上へ流す（位置は JS で translateY）。上下の端はぼかして消す */
+#credits{overflow:hidden;cursor:pointer;background:radial-gradient(ellipse at center,rgba(16,13,10,.96),rgba(3,3,5,.995));animation:shadeIn .4s ease-out}
+.cview{position:absolute;inset:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+.croll{position:absolute;left:0;right:0;top:0;padding:0 6%;will-change:transform}
+.c-series{color:var(--gold);letter-spacing:.8em;padding-left:.8em;font-size:clamp(10px,1.7cqw,14px);opacity:.85}
+.c-head h1{font-size:clamp(26px,6.6cqw,54px);letter-spacing:.3em;padding-left:.3em;margin:.2em 0 .3em;color:#f1e8d6;
+  text-shadow:0 0 30px rgba(214,176,97,.3),0 2px 0 rgba(0,0,0,.6)}
+.c-sub{color:#b9ad97;letter-spacing:.5em;padding-left:.5em;font-size:clamp(10px,1.8cqw,14px)}
+/* 見出し（登場人物／開発スタッフ）：上下に罫 */
+.c-sec{display:inline-block;margin-top:26cqw;color:var(--gold);font-size:clamp(12px,2.3cqw,18px);letter-spacing:.5em;padding:.35em 1.2em .35em 1.7em;
+  border-top:1px solid rgba(168,134,90,.6);border-bottom:1px solid rgba(168,134,90,.6)}
+.c-file{margin-top:13cqw}
+.c-no{color:var(--gold);letter-spacing:.3em;padding-left:.3em;font-size:clamp(10px,1.7cqw,13px)}
+.c-file h2{margin:.25em 0 .9em;color:#f1e8d6;font-size:clamp(16px,3.4cqw,26px);letter-spacing:.2em;padding-left:.2em}
+.c-file dl{margin:0}
+/* 役は右寄せ、名前は左寄せで、真ん中の線をはさんで向かい合う */
+.c-row{display:grid;grid-template-columns:1fr 1fr;gap:1.6em;align-items:baseline;line-height:2.1}
+.c-row dt{text-align:right;color:var(--muted);font-size:clamp(10px,1.8cqw,14px);letter-spacing:.08em}
+.c-row dd{margin:0;text-align:left;color:var(--text);font-size:clamp(13px,2.5cqw,19px);letter-spacing:.12em}
+.c-police{margin-top:16cqw}
+/* 開発スタッフ：役（小さく）の下に名前。名前は英字なので字間を空けない */
+.c-staff{margin-top:3cqw}
+.c-role{margin-top:5cqw;color:var(--muted);font-size:clamp(10px,1.8cqw,14px);letter-spacing:.3em;padding-left:.3em}
+.c-name{margin-top:.15em;color:#f1e8d6;font-size:clamp(18px,3.8cqw,30px);letter-spacing:.02em;text-shadow:0 0 22px rgba(214,176,97,.25)}
+.c-thanks{margin-top:44cqw;color:#f1e8d6;font-size:clamp(17px,3.8cqw,30px);letter-spacing:.24em;padding-left:.24em;
+  text-shadow:0 0 26px rgba(214,176,97,.35),0 2px 0 rgba(0,0,0,.6)}
+.c-back{position:absolute;left:0;right:0;bottom:7%;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);letter-spacing:.15em;opacity:0;transition:opacity 1s ease-out 1s}
+#credits.done .c-back{opacity:1;animation:blink 1.2s 2s infinite}
+/* 言語の切り替えは、クレジットの間は出さない */
+#app.credits #langBtn{display:none}
+@container (max-width:600px){
+  .c-row{gap:1em;line-height:1.95}
+  .c-row dt{letter-spacing:0}
+}
 
 /* ---------- FILE選択 ---------- */
 #files{align-items:stretch;text-align:left;padding:3.6cqw 4.4cqw 2.6cqw;background:rgba(5,6,9,.62);animation:shadeIn .35s ease-out}
@@ -99,7 +140,12 @@
 
 /* ---------- エンディング ---------- */
 #ending{overflow:auto;align-items:flex-start;cursor:pointer}
-.enext{text-align:center;margin-top:2.4em;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);letter-spacing:.15em;animation:blink 1.2s infinite}
+.enext{text-align:center;margin-top:2.4em;color:var(--gold);font-size:clamp(11px,1.9cqw,14px);letter-spacing:.15em}
+/* 一段ずつ浮かびあがる（interrogation.js の showEnding。プロローグと同じ動き） */
+.einner>*{opacity:0;transform:translateY(10px);transition:opacity 1s ease-out,transform 1s ease-out}
+.einner>.on{opacity:1;transform:none}
+.einner>.enext.on{animation:blink 1.2s 1.2s infinite}
+#ending.last .pro-tap{display:none}
 .einner{max-width:640px;padding:6% 7%;text-align:left;font-size:clamp(12px,2.2cqw,16px);line-height:1.95}
 .einner h2{color:var(--gold);letter-spacing:.2em;font-size:clamp(16px,3.4cqw,26px);text-align:center;margin:0 0 1em}
 .einner h3{color:var(--gold);font-size:1em;letter-spacing:.2em;margin:1.6em 0 .3em;border-bottom:1px solid var(--line);padding-bottom:.2em}

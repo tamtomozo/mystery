@@ -5,7 +5,7 @@
 
 function render(t){
   ctx.setTransform(SC,0,0,SC,0,0);
-  if(S.mode==='title'||S.mode==='files'||(S.review&&!SCN)){renderTitle(t); return;}
+  if(S.mode==='title'||S.mode==='files'||S.mode==='credits'||(S.review&&!SCN)){renderTitle(t); return;}
   if(SCN){renderScene(t); return;}
   ctx.drawImage(getStatic(S.map),0,0,PW,PH);
   if(MAPDEF[S.map].overlay) MAPDEF[S.map].overlay(ctx,t);   // 捜査の進み具合で描き替える部分（FILE.08 の暖炉の上の額）

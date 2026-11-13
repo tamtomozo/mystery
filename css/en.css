@@ -11,6 +11,12 @@ html,body{font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
 #title h1{letter-spacing:.08em;padding-left:.08em}
 .tsub{letter-spacing:.12em;padding-left:.12em}
 .tpress{letter-spacing:.12em;padding-left:.12em}
+.tcredit{letter-spacing:.1em;padding-left:calc(10px + .1em)}
+.c-head h1{letter-spacing:.08em;padding-left:.08em}
+.c-sec{letter-spacing:.24em;padding-left:1.44em}
+.c-file h2,.c-thanks{letter-spacing:.04em;padding-left:.04em}
+.c-role{letter-spacing:.12em;padding-left:.12em}
+.c-row dt,.c-row dd{letter-spacing:.02em}
 .fh{letter-spacing:.12em}
 .fen{letter-spacing:.25em}
 .fcard .no{letter-spacing:.15em}
