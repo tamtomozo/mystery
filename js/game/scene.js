@@ -23,7 +23,9 @@ const toSec=s=>{const [h,m,x]=s.split(':').map(Number); return h*3600+m*60+(x||0
 // opt.after … 再生し終わったとき（スキップしたときも）に呼ぶ
 function startScene(id,isNew,opt){
   P.path=[];P.pending=null;
-  SCN={id,isNew,steps:SCENES[id](),i:-1,actors:{},fx:[],props:{},map:'study',wait:null,timer:0,title:null,clock:null,cctv:null,after:opt&&opt.after};
+  // 最初に描く背景は、手順の中で最初に出てくる {map}（タイトル帯のあいだも、その事件の現場が見えるように）
+  const steps=SCENES[id]();
+  SCN={id,isNew,steps,i:-1,actors:{},fx:[],props:{},map:(steps.find(s=>s.map)||{}).map||S.map,wait:null,timer:0,title:null,clock:null,cctv:null,after:opt&&opt.after};
   S.mode='scene'; $('#skip').classList.remove('hidden'); $('#app').classList.add('scene');
   nextStep();
 }
