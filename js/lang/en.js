@@ -7,7 +7,7 @@ const L={
     loc:'Hidden Truth', saved:'✓ Saved', help:'Controls', board:'Case Board', skip:'Skip ▶▶',
     bandHint:'Click / Space to close ▼',
     tseries:'A MYSTERY IN FILES', title:'Hidden Truth', tsub:'— The evidence tells the truth —',
-    tpress:'Click / Space to begin', tcredit:'Staff Credits',
+    tpress:'Click / Space to begin', tcredit:'Staff Credits', tabout:'About this game ›',
     fh:'Case Files', fen:'FILE SELECT', fback:'◀ Title', fhint:'↑↓ Select · Space / Enter Confirm · Esc Back',
     btitle:'Case Board', bclose:'Close ✕', hypsec:'Deductions', evsec:'Evidence',
   },

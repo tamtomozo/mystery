@@ -17,6 +17,10 @@
 .tcredit{display:block;margin:1.8em auto 0;letter-spacing:.24em;padding-left:calc(10px + .24em);color:#b9ad97;opacity:.85;animation:tFade 3.6s ease-out}
 .tcredit.cur{border-color:var(--gold);color:var(--gold);opacity:1}
 .tpress.dim{animation:none;opacity:.35}
+/* ランディングページ（lp/）へのリンク。右下に控えめに置く */
+.tabout{position:absolute;right:3.2cqw;bottom:3cqw;color:#b9ad97;opacity:.7;text-decoration:none;letter-spacing:.16em;
+  font-size:clamp(11px,1.8cqw,14px);padding:.4em .2em;border-bottom:1px solid transparent;animation:tFade 3.6s ease-out}
+.tabout:hover,.tabout:focus-visible{color:var(--gold);opacity:1;border-color:var(--gold);outline:none}
 
 /* ---------- スタッフクレジット（js/ui/credits.js） ----------
    .croll を下から上へ流す（位置は JS で translateY）。上下の端はぼかして消す */

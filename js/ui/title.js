@@ -148,6 +148,9 @@ function menuKey(k){
 
 $('#title').addEventListener('click',openFiles);
 $('#creditBtn').addEventListener('click',e=>{e.stopPropagation(); FS.tsel=1; openCredits();});
+// ランディングページ（lp/）へ。いまの言語で開く。タイトルのクリック（はじめる）には渡さない
+$('#aboutLink').href='lp/index.html?lang='+LANG;   // file:// で開いても届くよう、index.html まで書く
+$('#aboutLink').addEventListener('click',e=>e.stopPropagation());
 
 // 事件を解決してエンディングから戻ってきたら、タイトルを飛ばして FILE選択を開く（解決した事件を選んだ状態で）
 // 初めての解決なら、「解決」の判を押す演出をする。

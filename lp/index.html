@@ -229,7 +229,7 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
   <a class="brand" href="#top"><span class="ja">隠された真実</span><span class="en">Hidden Truth</span></a>
   <span class="sp"></span>
   <button class="btn small" id="langBtn" type="button"><span class="ja">English</span><span class="en">日本語</span></button>
-  <a class="btn small gold" data-play href="../"><span class="ja">遊ぶ ▶</span><span class="en">Play ▶</span></a>
+  <a class="btn small gold" data-play href="../index.html"><span class="ja">遊ぶ ▶</span><span class="en">Play ▶</span></a>
 </header>
 
 <main id="top">
@@ -250,7 +250,7 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
         <span class="en">An accident? An outsider? Every scene comes with a theory that hangs together perfectly. Guessing the culprit solves nothing here. <b>Show the contradiction — with evidence.</b></span>
       </p>
       <div class="cta">
-        <a class="btn play big" data-play href="../"><span class="ja">捜査をはじめる ▶</span><span class="en">Start the investigation ▶</span></a>
+        <a class="btn play big" data-play href="../index.html"><span class="ja">捜査をはじめる ▶</span><span class="en">Start the investigation ▶</span></a>
         <a class="btn big" href="#files"><span class="ja">事件ファイルを見る</span><span class="en">Browse the case files</span></a>
       </div>
       <div class="meta"><span class="ja">ブラウザで遊べる推理アドベンチャー ・ 全9事件 ・ 無料 ・ スマホ対応</span><span class="en">A detective mystery in your browser · 9 cases · Free · Works on phones</span></div>
@@ -431,14 +431,14 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
     <div class="reveal">
       <h2><span class="ja">真実は、物証の中に。</span><span class="en">The truth is in the evidence.</span></h2>
       <p><span class="ja">最初の現場は、館の主人が死んでいた書斎。</span><span class="en">Your first scene: a study where the master of the manor lies dead.</span></p>
-      <a class="btn play big" data-play href="../"><span class="ja">捜査をはじめる ▶</span><span class="en">Start the investigation ▶</span></a>
+      <a class="btn play big" data-play href="../index.html"><span class="ja">捜査をはじめる ▶</span><span class="en">Start the investigation ▶</span></a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="links">
-    <a data-play href="../"><span class="ja">ゲームを遊ぶ</span><span class="en">Play the game</span></a>
+    <a data-play href="../index.html"><span class="ja">ゲームを遊ぶ</span><span class="en">Play the game</span></a>
     <a href="#how"><span class="ja">捜査の流れ</span><span class="en">How to play</span></a>
     <a href="#files"><span class="ja">事件ファイル</span><span class="en">Case files</span></a>
   </div>
@@ -497,7 +497,7 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
       var t=img.closest('.file'), h=t&&t.querySelector('.'+LANG+' h3');
       img.alt=h?h.textContent:'';
     });
-    document.querySelectorAll('[data-play]').forEach(function(a){a.href='../?lang='+LANG;});
+    document.querySelectorAll('[data-play]').forEach(function(a){a.href='../index.html?lang='+LANG;});
     document.title=LANG==='en'?'Hidden Truth — A detective mystery in your browser':'隠された真実 ― ブラウザで遊べる推理アドベンチャー';
   }
   applyLang();
