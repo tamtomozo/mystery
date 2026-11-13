@@ -195,7 +195,7 @@ function renderScene(t){
   g.globalCompositeOperation='saturation'; g.fillStyle='#808080'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='multiply'; g.fillStyle='#cdb083'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='source-over'; g.fillStyle='rgba(25,15,5,.25)'; g.fillRect(0,0,PW,PH);
-  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{shadow:true,dir:a.dir,walking:a.walking,fallen:a.fallen,carry:a.carry,small:a.small},t);
+  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{shadow:true,dir:a.dir,walking:a.walking,fallen:a.fallen,carry:a.carry,small:a.small,dog:a.dog},t);
   for(const a of acts) if(a.label) drawLabel(g,a.label,a.x*TS,a.y*TS-(a.fallen?16:22),'#f3d9b0','rgba(40,10,5,.7)');
   for(const f of SCN.fx){
     const p=Math.min(1,f.t/f.dur), X=f.x*TS, Y=f.y*TS;
@@ -246,7 +246,7 @@ function renderScene(t){
 // 監視カメラの映像：白黒＋緑がかった色、走査線とノイズ、カメラ名・時刻・REC
 function renderCctv(g,t,acts){
   const c=SCN.cctv;
-  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{...(a.look||{coat:'#555'}),dir:a.dir,walking:a.walking,carry:a.carry,small:a.small},t);
+  for(const a of acts) drawPerson(g,a.x*TS,a.y*TS,{...(a.look||{coat:'#555'}),dir:a.dir,walking:a.walking,carry:a.carry,small:a.small,dog:a.dog},t);
   g.globalCompositeOperation='saturation'; g.fillStyle='#808080'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='multiply'; g.fillStyle='#b4c9b6'; g.fillRect(0,0,PW,PH);
   g.globalCompositeOperation='source-over';

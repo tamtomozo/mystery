@@ -22,4 +22,5 @@ const FILES=[
   caseFile('file06','FILE.06'),
   caseFile('file07','FILE.07'),
   caseFile('file08','FILE.08'),
+  caseFile('file09','FILE.09'),
 ];

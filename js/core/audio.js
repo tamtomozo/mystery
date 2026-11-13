@@ -575,12 +575,15 @@ const VOICE={'滝沢':300,'森':440,'野口':494,'柏木':370,'大河内':262,'�
   '梶':196,'透':370,'ハル':415,'朝倉':277,'湊':740,
   // FILE.08
   '志保':440,'修三':220,'辰巳':185,'水原':523,'久住':262,'倉持':587,'千早':494,
+  // FILE.09
+  'ひなた':698,'里美':466,'航平':294,'権藤':175,'小野寺':523,'松井':440,'大森':233,'瀬川':392,'芦田':349,
   // 英語版の話し手名
   'Takizawa':300,'Mori':440,'Noguchi':494,'Kashiwagi':370,'Okochi':262,'You':392,'Hayase':523,'Iwata':277,'Kuga':330,'Director':247,'Komatsu':587,
   'Chizuru':466,'Juho':220,'Takanashi':311,'Miyauchi':415,'Kuroda':294,'Kenta':659,
   'Yota':698,'Gen-san':233,'Daichi':349,'Yomisaka':415,'Shirakawa':466,'Nonomura':294,
   'Yaeko':349,'Goda':208,'Akari':554,'Mashiba':330,
   'Kaji':196,'Toru':370,'Haru':415,'Asakura':277,'Minato':740,
-  'Shiho':440,'Shuzo':220,'Tatsumi':185,'Mizuhara':523,'Kusumi':262,'Kuramochi':587,'Chihaya':494};
+  'Shiho':440,'Shuzo':220,'Tatsumi':185,'Mizuhara':523,'Kusumi':262,'Kuramochi':587,'Chihaya':494,
+  'Hinata':698,'Satomi':466,'Kohei':294,'Gondo':175,'Onodera':523,'Matsui':440,'Omori':233,'Segawa':392,'Ashida':349};
 const voiceOf=name=>{if(!name) return 0; for(const k in VOICE) if(name.startsWith(k)) return VOICE[k]; return 0;};
 

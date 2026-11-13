@@ -89,6 +89,8 @@ const L={
       lead:'At Shiomi Land, a little seaside amusement park, a boy vanishes on his tenth birthday. The ransom: 3,120,000 yen. The bag his father left in a Ferris wheel gondola disappears in midair, right before the detectives’ eyes. — Thirty minutes until five o’clock.'},
     file08:{title:'Every Word Through the Wall',
       lead:'Narumi Pen, a fountain-pen maker, is seventy years old. Whatever its board says behind closed doors turns up, word for word, in the trade paper the next morning. There is no bug in the room, phones are left at the door, and the minutes sit in a safe. — So how are the voices getting out?'},
+    file09:{title:'The Five-Thirty Walk',
+      lead:'In Sakuragaoka, a hillside town, Mugi — a fourteen-year-old dog — has vanished from her yard. The letter that reached police headquarters came from a ten-year-old girl. And the neighbors say that every dawn, the girl’s grandmother, who died last year, still takes Mugi for her walk. — Where did Mugi go?'},
   },
 
   /* Takizawa's hints (common.js) */
@@ -163,6 +165,10 @@ const L={
     pick:'This one',cancel:'Cancel',
     keys:'←→ Choose a sentence · Enter Confirm · Esc Cancel',
     miss:['...The minutes say the same thing.','This part matches the minutes.','That’s what was said in the meeting. Keep looking.']},
+  route:{title:'THE TRAIL',pick:'This one',cancel:'Cancel',
+    keys:'←→ Choose a card · Enter Confirm · Esc Cancel',
+    seg:(m,min)=>`${m} m · ${min} min`,
+    miss:['...This sighting fits with the others.','Nothing wrong here.','This one connects. Keep looking.']},
 
   /* Signs drawn on the backgrounds */
   sign:{security:'SECURITY',curator:'CURATORS',staffExit:'EXIT',gallery:'GALLERY',lobby:'← LOBBY',
@@ -175,5 +181,8 @@ const L={
         shiomi:'SHIOMI LAND',sousa:'CONTROL',noriba:'BOARDING',kanri:'OFFICE',jimu7:'OFFICE',ousetsu:'MEETING RM',maigo:'LOST CHILD',
         softcream:'SOFT SERVE',toWheel:'TO PLAZA',
         kaigi:'BOARDROOM',shacho:'PRESIDENT',hisho:'SECRETARY',osetsu8:'RECEPTION',kaidan:'↓ COURTYARD',
-        togiba:'NIB WORKSHOP',shuei:'GUARD',uramon:'BACK GATE',honkan:'MAIN BLDG',narumi:'NARUMI PEN'},
+        togiba:'NIB WORKSHOP',shuei:'GUARD',uramon:'BACK GATE',honkan:'MAIN BLDG',narumi:'NARUMI PEN',
+        kasuga:'KASUGA',gondo:'GONDO',tofu:'MATSUI TOFU',sakaya:'OMORI LIQUOR',keiji:'NOTICES',toSaka:'MIHARASHI HILL →',
+        toSakura:'← SAKURAGAOKA',jinja:'SAKURAGAOKA SHRINE',clinic:'ASHIDA ANIMAL HOSPITAL',kyukan:'NIGHT & EARLY EMERGENCIES',mugi:'MUGI',
+        miharashi:'LOOKOUT',bridge:'MIHARASHI BRIDGE',mayoi:'LOST DOG'},
 };

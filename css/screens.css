@@ -196,3 +196,55 @@
   #compare .cwrap{width:100%;max-height:100%;border-radius:0}
   #compare .ccols{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
 }
+
+/* 足取りの地図（FILE.09 の町内会の掲示板。js/ui/route.js） */
+#route{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.62);animation:shadeIn .25s ease-out}
+#route .rwrap{width:96%;height:94%;display:flex;flex-direction:column;background:linear-gradient(#1c1813,#0f0d0a);
+  border:1px solid rgba(214,176,97,.7);border-radius:10px;padding:1.4cqw 2cqw 1.2cqw;box-shadow:0 10px 40px rgba(0,0,0,.75)}
+#route .rtitle{color:var(--gold);font-weight:700;letter-spacing:.24em;text-align:center;font-size:clamp(13px,2.4cqw,18px)}
+#route .rsub{color:var(--muted);text-align:center;font-size:clamp(11px,1.8cqw,14px);margin-top:.2em}
+#route .rcols{display:grid;grid-template-columns:1.2fr 1fr;gap:1.4cqw;margin:1cqw 0;min-height:0;flex:1}
+/* 地図：コルクの掲示板に貼った、町内の地図 */
+#route .rmap{display:flex;flex-direction:column;min-height:0;background:#e8dfc6;border-radius:4px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 3px 10px rgba(0,0,0,.5);overflow:hidden}
+#route .rmap svg{flex:1;min-height:0;width:100%;display:block}
+#route .rlegend{flex:none;font-size:clamp(10px,1.6cqw,12.5px);color:#5a4630;padding:.3em .8em .45em;border-top:1px solid rgba(0,0,0,.12);line-height:1.4}
+#route .rname{font-size:5.4px;fill:#4a3a24;font-weight:700;paint-order:stroke;stroke:#e8dfc6;stroke-width:1.6px}
+#route .rseg{stroke:#b0302a;stroke-width:1.3;stroke-dasharray:3 1.6;opacity:.75}
+#route .rseg.hot{stroke-width:2.2;opacity:1}
+#route .rlen{font-size:5.6px;fill:#7a1e18;text-anchor:middle;font-weight:700;paint-order:stroke;stroke:#f4efe2;stroke-width:1.8px}
+#route .rlen.hot{font-size:6.6px}
+#route .rpin{cursor:pointer}
+#route .rpin circle{fill:#fff8e6;stroke:#7a2a1a;stroke-width:1.2}
+#route .rpin text{font-size:5.6px;font-weight:700;fill:#7a2a1a;text-anchor:middle;pointer-events:none}
+#route .rpin.ref circle{fill:#ece6d6;stroke-dasharray:1.6 1.2}
+#route .rpin.cur circle{fill:#d6b061;stroke:#5a3a10;stroke-width:1.6}
+#route .rpin.bad circle{fill:#e8a090;stroke:#a0301e}
+/* 証言のカード */
+#route .rlist{overflow-y:auto;display:flex;flex-direction:column;gap:.45em;min-height:0;padding:.1em .2em .2em .1em}
+#route .rcard{flex:none;text-align:left;background:#f4efe2;color:#2a2620;border:none;border-radius:4px;padding:.4em .7em .45em;
+  font:inherit;font-size:clamp(11px,1.8cqw,14.5px);line-height:1.5;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.45);transition:background .15s}
+#route .rcard:hover{background:#fbf3dc}
+#route .rcard.ref{background:#dcd7cb}
+#route .rcard.cur{box-shadow:0 0 0 2px rgba(214,176,97,.95),0 2px 6px rgba(0,0,0,.45);background:#fbf0cf}
+#route .rcard.bad{box-shadow:0 0 0 2px rgba(190,70,50,.85);background:#f4ddd4}
+#route .rtop{display:flex;gap:.55em;align-items:center;font-weight:700}
+#route .rnum{flex:none;display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;
+  background:#7a2a1a;color:#fff8e6;font-size:.82em}
+#route .rtime{font-family:ui-monospace,Consolas,monospace;color:#7a2a1a}
+#route .rplace{color:#3a3020}
+#route .rtag{margin-left:auto;font-size:.78em;font-weight:700;color:#5a4a30;border:1px solid rgba(90,74,48,.5);border-radius:3px;padding:0 .4em}
+#route .rsaw{margin-top:.15em}
+#route .rwho{text-align:right;font-size:.84em;color:#6a6054}
+#route .rmsg{min-height:2.6em;text-align:center;font-size:clamp(11px,1.9cqw,15px);color:var(--text);line-height:1.5}
+#route .rhintline{color:var(--gold)}
+#route .racts{display:flex;gap:10px;justify-content:center;margin-top:.4em}
+#route .rhint{margin-top:.7cqw;text-align:center;font-size:clamp(10px,1.6cqw,12px);color:var(--muted)}
+@media (hover:none){#route .rhint{display:none}}
+/* 縦持ち：地図とカードを上下に重ねる */
+@media (orientation:portrait){
+  #route .rwrap{width:100%;height:100%;border-radius:0}
+  #route .rcols{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  #route .rmap svg{flex:none;height:auto;max-height:34vh}
+}

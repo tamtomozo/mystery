@@ -49,6 +49,18 @@ const LOOK={
   kusumi:   {coat:'#2a3040',coat2:'#222735',hair:'#3a3a3a',tie:'#8a6a2a'},
   kuramochi:{coat:'#3a5a7a',coat2:'#2f4a66',hair:'#1a1a1a'},
   chihaya:  {coat:'#6e2a3a',coat2:'#5a2230',hair:'#1a1414'},
+  // FILE.09
+  hinata:   {coat:'#e89a3a',coat2:'#c8802e',hair:'#2a1a12',small:true},
+  satomi:   {coat:'#8aa07a',coat2:'#728764',hair:'#3a2418'},
+  kohei:    {coat:'#4a5668',coat2:'#3c4656',hair:'#1c1c1e'},
+  gondo:    {coat:'#3e4a5a',coat2:'#323c49',cap:'#2a2e36'},
+  onodera:  {coat:'#5a8a6a',coat2:'#4a7258',hair:'#4a3020'},
+  matsui:   {coat:'#e6e2d8',coat2:'#c8c4ba',cap:'#e8eef4'},
+  omori:    {coat:'#2a4a7a',coat2:'#223c64',hair:'#2a2a2a'},
+  segawa:   {coat:'#c84a3a',coat2:'#a83c2f',cap:'#2a3a5a'},
+  ashida:   {coat:'#e8eef2',coat2:'#c8d2da',hair:'#3a2a20'},
+  mugi:     {dog:true,fur:'#c8843a',collar:'#c8302a',bell:true},
+  kotetsu:  {dog:true,fur:'#d08a3c',collar:'#c8302a'},
 };
 
 /* ---------- マップ（取調室は全事件で共通。現場のマップは各事件のフォルダで足す） ---------- */

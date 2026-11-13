@@ -1,8 +1,47 @@
 /* 人物・ラベル・きらめきの描画 */
 'use strict';
 
+/* ---------- 犬（見下ろし。FILE.09 のむぎ・こてつ） ----------
+   look に dog:true を付けると、drawPerson の代わりにこちらで描く。fur＝毛の色、collar＝首輪の色 */
+function drawDog(g,x,y,o,t){
+  g.save(); g.translate(x,y+4);
+  const sh=!!o.shadow, fur=sh?'#07070b':(o.fur||'#c8843a'), cream=sh?'#0e0e14':(o.cream||'#f0e2c4'),
+        dark=sh?'#07070b':shade(fur,-26), col=sh?'#0e0e14':(o.collar||'#c8302a');
+  E(g,'rgba(0,0,0,.3)',0,5,11,4.5);
+  if(sh){g.shadowColor='rgba(190,50,35,.75)'; g.shadowBlur=10; g.globalAlpha=.92;}
+  if(o.walking) g.translate(0,-Math.abs(Math.sin(t*14))*1.2);
+  const [dx,dy]=DIRV[o.fallen?'left':(o.dir||'down')];
+  g.rotate(Math.atan2(dy,dx));   // ここから先は、頭が +x を向く
+  const ear=(s)=>{g.fillStyle=fur; g.beginPath(); g.moveTo(6.4,s*2.2); g.lineTo(8.6,s*6.6); g.lineTo(10,s*2.4); g.closePath(); g.fill();
+                  g.fillStyle=dark; g.beginPath(); g.moveTo(7.3,s*2.8); g.lineTo(8.5,s*5.2); g.lineTo(9.2,s*2.9); g.closePath(); g.fill();};
+  if(o.fallen){
+    // 横たわった姿：脚を投げ出し、しっぽは伸びたまま
+    for(const lx of [-5,3]){R(g,fur,lx,3,2.4,6); R(g,fur,lx+2,3,2.4,5);}
+    E(g,fur,-1,0,9,5.4); E(g,cream,-1,2.4,6,2.2);
+    R(g,fur,-14,-1,5,2.4);
+    R(g,col,4,-3.6,1.8,7.2);
+    C(g,fur,8,0,4.6); E(g,cream,11.4,.8,2.4,1.9); C(g,'#1a1210',13.2,.8,.9); ear(-1);
+    g.restore(); return;
+  }
+  // 巻いたしっぽ
+  C(g,fur,-9.4,0,3.8); C(g,cream,-9.4,0,2); C(g,fur,-9,.4,.9);
+  // 脚（歩くと交互に出る）
+  const st=o.walking?Math.sin(t*14)*1.6:0;
+  for(const [lx,s,k] of [[4,-1,1],[4,1,-1],[-5,-1,-1],[-5,1,1]]) E(g,dark,lx+st*k,s*4.6,2.2,1.5);
+  // 胴と背すじ
+  E(g,fur,-1,0,8,5.4); E(g,dark,-1.5,0,5.6,1.1);
+  // 首輪と鈴
+  R(g,col,4,-3.6,1.8,7.2);
+  if(o.bell&&!sh) C(g,'#e8c46a',5.6,3.2,1.3);
+  // 頭・鼻先・耳
+  C(g,fur,8,0,4.6); E(g,cream,11.4,0,2.4,2); C(g,'#1a1210',13.3,0,.9);
+  ear(-1); ear(1);
+  g.restore();
+}
+
 /* ---------- 人物（見下ろし） ---------- */
 function drawPerson(g,x,y,o,t){
+  if(o.dog){drawDog(g,x,y,o,t); return;}
   g.save(); g.translate(x,y);
   if(o.small) g.scale(.78,.78);   // 子ども（FILE.07 の湊）
   const sh=!!o.shadow;
@@ -16,7 +55,7 @@ function drawPerson(g,x,y,o,t){
   RR(g,coat,-11,-5,22,15,7);
   if(o.tie&&!sh){R(g,'#eee',-3,-5,6,4); R(g,o.tie,-1,-3,2,7);}
   const dir=o.fallen?'down':(o.dir||'down'), [dx,dy]=DIRV[dir];
-  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒／capsule＝錆びた缶／reel＝16ミリのリール／handle＝シャッターの巻き上げハンドル／bag＝青いスポーツバッグ）
+  // 持ち物：体の前に抱える（panel＝布をかけたパネル／flower＝スタンド花／pudding＝プリン／letter＝封筒／capsule＝錆びた缶／reel＝16ミリのリール／handle＝シャッターの巻き上げハンドル／bag＝青いスポーツバッグ／dog＝抱えた犬）
   if(o.carry){
     g.save(); g.shadowBlur=0; g.globalAlpha=1;
     const cx=dx*10, cy=dy*9+3;
@@ -44,6 +83,11 @@ function drawPerson(g,x,y,o,t){
     }else if(o.carry==='bag'){
       RR(g,'#1f4f9a',cx-9,cy-5,18,11,4); R(g,'#3a6ab8',cx-7,cy-4,14,2); R(g,'#e8e4dc',cx-9,cy,18,1.2);
       g.strokeStyle='#14305e'; g.lineWidth=1.6; g.beginPath(); g.arc(cx,cy-5,4.5,Math.PI,0); g.stroke();
+    }else if(o.carry==='dog'){   // 抱えた犬（FILE.09 のむぎ）。シーンの影の姿でも、犬だとわかるように明るく描く
+      const f='#c8843a';
+      E(g,f,cx,cy+1,9,5.5); E(g,'#f0e2c4',cx,cy+3,5,2);
+      C(g,f,cx+(dx||1)*7,cy-2,4.2); E(g,'#f0e2c4',cx+(dx||1)*9.6,cy-1.4,2,1.6);
+      C(g,f,cx-(dx||1)*8,cy-1,2.6); R(g,'#c8302a',cx+(dx||1)*4-1,cy-5,2,6);
     }
     g.restore();
   }

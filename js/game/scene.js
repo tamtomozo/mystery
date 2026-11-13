@@ -4,7 +4,7 @@
 /* =========================================================
    シーンの台本（SCENES[id]() が返す手順の配列）
      {map}                マップを切り替える（人物・効果・小道具はリセット）
-     {spawn,x,y,label,look?,fallen?,carry?,small?}   人物を出す（look があれば影でなく本人の姿で描く。small は子ども）
+     {spawn,x,y,label,look?,fallen?,carry?,small?,dog?}   人物を出す（look があれば影でなく本人の姿で描く。small は子ども、dog は犬）
      {remove}             人物を消す
      {move,to:[[x,y]..]}  人物を歩かせる（歩き終わるまで待つ。nowait:true なら待たずに次へ）
      {text,name?}         台詞（クリックで進む）
@@ -38,7 +38,7 @@ function nextStep(){
   if('clock' in s){SCN.clock=s.clock; return nextStep();}
   if(s.prop){SCN.props[s.prop]={x:s.x,y:s.y}; return nextStep();}
   if(s.unprop){delete SCN.props[s.unprop]; return nextStep();}
-  if(s.spawn){SCN.actors[s.spawn]={x:s.x,y:s.y,label:s.label,look:s.look,carry:s.carry||null,small:!!s.small,fallen:!!s.fallen,path:[],dir:s.dir||'down',walking:false}; return nextStep();}
+  if(s.spawn){SCN.actors[s.spawn]={x:s.x,y:s.y,label:s.label,look:s.look,carry:s.carry||null,small:!!s.small,dog:!!s.dog,fallen:!!s.fallen,path:[],dir:s.dir||'down',walking:false}; return nextStep();}
   if(s.carry){SCN.actors[s.carry].carry=s.item; return nextStep();}
   if(s.remove){delete SCN.actors[s.remove]; return nextStep();}
   if(s.move){const a=SCN.actors[s.move]; a.path=s.to.map(p=>[p[0],p[1]]); if(s.nowait) return nextStep(); SCN.wait='move'; SCN.waitActor=a; return;}
