@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>隠された真実 ― ブラウザで遊べる推理アドベンチャー</title>
+<meta name="description" content="県警本部・捜査一課の新人刑事になって、現場を調べ、物証を集め、推理を一つずつ崩していく推理アドベンチャー。全9事件・無料・ブラウザですぐ遊べる。">
+<meta name="theme-color" content="#0c0d10">
+<meta property="og:type" content="website">
+<meta property="og:title" content="隠された真実 ― その推理、物証で崩せますか。">
+<meta property="og:description" content="現場を調べ、物証を集め、推理を一つずつ崩していく。ブラウザで遊べる推理アドベンチャー。全9事件・無料。">
+<meta property="og:url" content="https://tamtomozo.github.io/mystery/lp/">
+<meta property="og:image" content="https://tamtomozo.github.io/mystery/lp/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap">
+<!--
+  ランディングページ（ゲーム本体は ../index.html）。
+  文言は日本語と英語を並べて書き、<html> の class="en" で出し分ける（.ja / .en）。
+  画像は img/ に日本語版と英語版があり、data-img="名前" の <img> を言語に合わせて差し替える。
+  言語は ?lang= → ゲームと共通の localStorage（hidden-truth-lang）→ ブラウザの言語 の順に決める。
+  img/ の画像はゲーム画面を撮ったもの。ゲームの見た目を変えたら撮り直す。
+-->
+<style>
+:root{
+  --bg:#0c0d10; --bg2:#121419; --panel:#16181d; --panel2:#1e2128; --line:#30343d;
+  --text:#ece6d8; --muted:#9c968a; --gold:#d6b061; --gold-dim:#a8865a; --red:#d65a44; --green:#7db37e;
+  --serif:"Yu Mincho","YuMincho","Hiragino Mincho ProN","Noto Serif JP",serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--serif);line-height:1.9;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+html.en .ja, html:not(.en) .en{display:none!important}
+html.en body{line-height:1.75}
+
+/* ---------- 上のバー ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:12px;
+  padding:10px max(16px,env(safe-area-inset-left));transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(12,13,16,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-color:var(--line)}
+.nav .brand{font-weight:700;letter-spacing:.14em;font-size:15px;text-decoration:none;opacity:0;transition:opacity .3s}
+.nav.solid .brand{opacity:1}
+.nav .sp{flex:1}
+.btn{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;
+  padding:6px 14px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:.5em;line-height:1.5}
+.btn:hover{border-color:var(--gold)}
+.btn.gold{border-color:var(--gold);color:var(--gold)}
+.btn.small{font-size:12px;padding:4px 10px}
+.btn.play{background:var(--gold);color:#17130b;border-color:var(--gold);font-weight:700}
+.btn.play:hover{background:#e6c47a}
+.btn.big{font-size:17px;padding:12px 30px;letter-spacing:.16em}
+html.en .btn.big{letter-spacing:.06em}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ---------- ヒーロー ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;
+  overflow:hidden;padding:96px 16px 72px;isolation:isolate}
+.hero-bg{position:absolute;inset:-4%;z-index:-2;background:url(img/file01-ja.jpg) center/cover;filter:brightness(.42) saturate(.85);
+  animation:drift 40s ease-in-out infinite alternate}
+html.en .hero-bg{background-image:url(img/file01-en.jpg)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(ellipse at center,rgba(10,10,14,.35) 0%,rgba(5,5,8,.92) 75%),linear-gradient(transparent 70%,var(--bg))}
+@keyframes drift{from{transform:scale(1.04) translate(-1%,-1%)}to{transform:scale(1.12) translate(1.5%,1%)}}
+.series{color:var(--gold);letter-spacing:.8em;padding-left:.8em;font-size:clamp(11px,1.6vw,14px);opacity:.9;animation:fade 2.4s ease-out}
+/* ゲームの題名はロゴとして小さめに。いちばん大きく見せるのはキャッチコピー */
+.hero h1{font-size:clamp(26px,4.4vw,40px);letter-spacing:.3em;padding-left:.3em;margin:.15em 0 .35em;color:#f1e8d6;font-weight:700;line-height:1.3;
+  text-shadow:0 0 24px rgba(214,176,97,.3),0 2px 0 rgba(0,0,0,.6);animation:titleIn 1.8s ease-out}
+html.en .hero h1{letter-spacing:.12em;padding-left:.12em}
+.tline{width:min(50vw,320px);height:1px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);animation:line 1.6s ease-out .3s both}
+/* プリヘッド（だれに向けたページか） */
+.prehead{display:inline-flex;align-items:center;gap:.9em;margin-top:2.4em;color:var(--gold);font-size:clamp(13px,1.7vw,16px);
+  letter-spacing:.14em;line-height:1.6;animation:fade 2.4s ease-out}
+html.en .prehead{letter-spacing:.04em}
+.prehead::before,.prehead::after{content:"";flex:none;width:28px;height:1px;background:var(--gold-dim)}
+/* キャッチコピー */
+.catch{margin:.45em 0 0;font-size:clamp(32px,6.6vw,66px);font-weight:700;line-height:1.4;letter-spacing:.08em;color:#f6eedd;
+  text-shadow:0 0 36px rgba(214,176,97,.25),0 2px 0 rgba(0,0,0,.7);animation:fade 2.8s ease-out}
+html.en .catch{letter-spacing:.005em;font-size:clamp(30px,5.4vw,58px);line-height:1.25}
+/* デッキコピー */
+.deck{max-width:31em;margin:1.3em auto 0;color:#d8cfbe;font-size:clamp(14px,1.9vw,17px);line-height:2;animation:fade 3.2s ease-out}
+html.en .deck{max-width:34em;line-height:1.75}
+.deck b{color:var(--text);font-weight:700}
+.hero .meta{word-break:keep-all}   /* 「・」の区切りの空白でだけ折り返す */
+.nw{white-space:nowrap}
+br.sp{display:none}
+@media (max-width:560px){.prehead::before,.prehead::after{display:none} br.sp{display:inline}}
+.hero .cta{margin-top:2.2em;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fade 3.4s ease-out}
+.hero .meta{margin-top:1.4em;color:var(--muted);font-size:13px;letter-spacing:.08em;animation:fade 3.6s ease-out}
+.scroll{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:var(--gold-dim);font-size:12px;letter-spacing:.3em;
+  text-decoration:none;animation:fade 4s ease-out,bob 2.4s 4s ease-in-out infinite}
+@keyframes fade{0%,40%{opacity:0}to{opacity:1}}
+@keyframes titleIn{from{opacity:0;letter-spacing:.6em;filter:blur(6px)}to{opacity:1;filter:blur(0)}}
+@keyframes line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes bob{50%{transform:translate(-50%,5px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ---------- セクション共通 ---------- */
+section{padding:96px 16px}
+.wrap{max-width:1080px;margin:0 auto}
+.sh{text-align:center;margin-bottom:56px}
+.sh .en-l{display:block;color:var(--gold);letter-spacing:.5em;padding-left:.5em;font-size:12px;margin-bottom:.6em}
+.sh h2{margin:0;font-size:clamp(24px,3.6vw,34px);letter-spacing:.2em;padding-left:.2em;font-weight:700}
+html.en .sh h2{letter-spacing:.06em;padding-left:.06em}
+.sh .bar{width:48px;height:1px;background:var(--gold-dim);margin:18px auto 0}
+.sh p{color:var(--muted);margin:18px auto 0;max-width:36em}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- 導入 ---------- */
+.intro{text-align:center;background:var(--bg)}
+.intro .story{font-size:clamp(16px,2.2vw,20px);line-height:2.3;max-width:30em;margin:0 auto;color:#e4dccb}
+html.en .intro .story{line-height:1.9}
+.intro .story em{font-style:normal;color:var(--gold)}
+.leadtxt{max-width:36em;margin:0 auto;text-align:left;font-size:clamp(15px,1.9vw,17px);line-height:2.1;color:#d8cfbe}
+html.en .leadtxt{line-height:1.8}
+.leadtxt p{margin:0 0 1.2em}
+.leadtxt p:last-child{margin-bottom:0}
+.leadtxt em{font-style:normal;color:var(--text);border-bottom:1px solid var(--gold-dim)}
+.intro .divider{width:1px;height:56px;margin:56px auto;background:linear-gradient(transparent,var(--gold-dim),transparent)}
+
+/* ---------- 遊びかた ---------- */
+.how{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.step{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;margin-bottom:88px}
+.step:last-child{margin-bottom:0}
+.step:nth-child(even) .shot{order:2}
+.step .num{font-size:13px;color:var(--gold);letter-spacing:.3em}
+.step h3{font-size:clamp(20px,2.8vw,26px);margin:.2em 0 .6em;letter-spacing:.1em}
+html.en .step h3{letter-spacing:.02em}
+.step p{margin:0;color:#d4ccbb}
+.step .note{margin-top:1em;color:var(--muted);font-size:14px}
+.shot{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#000;
+  box-shadow:0 20px 50px rgba(0,0,0,.55),0 0 0 6px rgba(214,176,97,.05)}
+.shot img{width:100%;height:auto}
+.quote-card{border:1px solid var(--line);border-radius:8px;background:radial-gradient(ellipse at 30% 20%,#221d16,#0d0d10 70%);
+  aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:center;padding:8% 9%;position:relative;overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.55)}
+.quote-card .room{position:absolute;left:0;right:0;top:0;padding:10px 16px;font-size:12px;color:var(--muted);letter-spacing:.2em;border-bottom:1px solid var(--line)}
+.quote-card .lamp{position:absolute;top:-40%;left:50%;width:70%;aspect-ratio:1;transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(214,176,97,.16),transparent 65%);pointer-events:none}
+.quote-card .q{font-size:clamp(15px,2vw,19px);line-height:2;color:#efe6d3}
+.quote-card .q b{display:inline-block;font-size:12px;color:#17130b;background:#c9a46a;padding:0 .8em;border-radius:3px;margin-bottom:.6em;letter-spacing:.1em}
+.quote-card .stamp{position:absolute;right:7%;bottom:9%;border:2px solid var(--red);color:var(--red);padding:.15em .6em;
+  font-weight:700;letter-spacing:.3em;transform:rotate(-8deg);font-size:clamp(14px,2vw,20px);opacity:.85}
+html.en .quote-card .stamp{letter-spacing:.12em}
+
+/* ---------- 事件ファイル ---------- */
+.files{background:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.file{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .3s,border-color .3s,box-shadow .3s}
+.file:hover{transform:translateY(-4px);border-color:var(--gold-dim);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.file .pic{position:relative;aspect-ratio:4/3;overflow:hidden;background:#000}
+.file .pic img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease}
+.file:hover .pic img{transform:scale(1.06)}
+.file .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(22,24,29,.95))}
+.file .no{position:absolute;left:14px;bottom:10px;z-index:1;color:var(--gold);font-size:13px;letter-spacing:.24em}
+.file .body{padding:4px 20px 22px;display:flex;flex-direction:column;flex:1}
+.file h3{margin:.2em 0 .5em;font-size:21px;letter-spacing:.12em}
+html.en .file h3{letter-spacing:.02em;font-size:20px}
+.file p{margin:0;color:#c9c1b1;font-size:14px;line-height:1.95}
+html.en .file p{line-height:1.7}
+.file .tag{margin-top:auto;padding-top:14px;font-size:12px;color:var(--muted);letter-spacing:.06em}
+.file .tag span{display:inline-block;border:1px solid var(--line);border-radius:3px;padding:0 .6em;margin:4px 6px 0 0}
+.files .order{margin-top:36px;text-align:center;color:var(--muted);font-size:14px}
+
+/* ---------- 捜査一課 ---------- */
+.team{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
+.person{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px 18px 22px;text-align:center}
+.person .mark{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;border:2px solid var(--gold);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;background:radial-gradient(circle,#2a2418,#16181d)}
+.person .role{font-size:12px;color:var(--muted);letter-spacing:.1em}
+.person .name{font-size:20px;font-weight:700;letter-spacing:.14em;margin:.1em 0 .5em}
+.person p{margin:0;font-size:13px;color:#c9c1b1;line-height:1.8;text-align:left}
+.person.you{border-color:var(--gold-dim)}
+
+/* ---------- 特徴 ---------- */
+.feat{background:var(--bg)}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.feats div{background:var(--panel);padding:26px 24px}
+.feats h3{margin:0 0 .4em;font-size:17px;color:var(--gold);letter-spacing:.08em}
+.feats p{margin:0;font-size:14px;color:#c9c1b1;line-height:1.85}
+
+/* ---------- 最後の誘い ---------- */
+.final{position:relative;text-align:center;overflow:hidden;isolation:isolate;padding:120px 16px}
+.final .bg{position:absolute;inset:0;z-index:-2;background:url(img/file06-ja.jpg) center/cover;filter:brightness(.35)}
+html.en .final .bg{background-image:url(img/file06-en.jpg)}
+.final::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at center,rgba(10,10,14,.4),rgba(5,5,8,.95) 75%),linear-gradient(var(--bg),transparent 25%,transparent 75%,var(--bg))}
+.final h2{font-size:clamp(24px,4vw,40px);letter-spacing:.24em;padding-left:.24em;margin:0 0 .4em;color:#f1e8d6}
+html.en .final h2{letter-spacing:.06em;padding-left:.06em}
+.final p{color:#cfc6b4;margin:0 0 2em}
+
+footer{border-top:1px solid var(--line);padding:32px 16px 40px;text-align:center;color:var(--muted);font-size:13px}
+footer .links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+footer a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
+
+@media (max-width:900px){.feats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){
+  .feats{grid-template-columns:1fr}
+  section{padding:72px 16px}
+  .sh{margin-bottom:40px}
+  .step{grid-template-columns:1fr;gap:22px;margin-bottom:64px}
+  .step:nth-child(even) .shot{order:0}
+  .grid{grid-template-columns:1fr}
+  .nav .btn.gold{display:none}
+}
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+<script>
+// 言語：?lang= → ゲームと共通の保存（hidden-truth-lang）→ ブラウザの言語
+(function(){
+  var KEY='hidden-truth-lang', l=null, m=/[?&]lang=(ja|en)\b/.exec(location.search);
+  if(m){l=m[1]; try{localStorage.setItem(KEY,l);}catch(e){}}
+  if(!l){try{l=localStorage.getItem(KEY);}catch(e){}}
+  if(!l) l=/^ja\b/i.test(navigator.language||'ja')?'ja':'en';
+  window.LP_LANG=l;
+  if(l==='en') document.documentElement.classList.add('en');
+  document.documentElement.lang=l;
+})();
+</script>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><span class="ja">隠された真実</span><span class="en">Hidden Truth</span></a>
+  <span class="sp"></span>
+  <button class="btn small" id="langBtn" type="button"><span class="ja">English</span><span class="en">日本語</span></button>
+  <a class="btn small gold" data-play href="../"><span class="ja">遊ぶ ▶</span><span class="en">Play ▶</span></a>
+</header>
+
+<main id="top">
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div>
+      <div class="series"><span class="ja">HIDDEN TRUTH</span><span class="en">A MYSTERY IN FILES</span></div>
+      <h1><span class="ja">隠された真実</span><span class="en">Hidden Truth</span></h1>
+      <div class="tline"></div>
+      <!-- プリヘッド -->
+      <p class="prehead"><span class="ja">ミステリーの“解決編”で、<br class="sp">いちばん胸が高鳴るあなたへ</span><span class="en">For everyone who lives for the moment the detective lays out the proof</span></p>
+      <!-- キャッチコピー -->
+      <p class="catch"><span class="ja">その推理、<br>物証で崩せますか。</span><span class="en">That theory sounds right.<br>Can you prove it wrong?</span></p>
+      <!-- デッキコピー -->
+      <p class="deck">
+        <span class="ja">事故か、外部の犯行か――。現場には、いつも筋の通った“もっともらしい推理”が用意されている。勘で犯人を当てても、事件は解決しない。<b>矛盾を、物証で示せ。</b></span>
+        <span class="en">An accident? An outsider? Every scene comes with a theory that hangs together perfectly. Guessing the culprit solves nothing here. <b>Show the contradiction — with evidence.</b></span>
+      </p>
+      <div class="cta">
+        <a class="btn play big" data-play href="../"><span class="ja">捜査をはじめる ▶</span><span class="en">Start the investigation ▶</span></a>
+        <a class="btn big" href="#files"><span class="ja">事件ファイルを見る</span><span class="en">Browse the case files</span></a>
+      </div>
+      <div class="meta"><span class="ja">ブラウザで遊べる推理アドベンチャー ・ 全9事件 ・ 無料 ・ スマホ対応</span><span class="en">A detective mystery in your browser · 9 cases · Free · Works on phones</span></div>
+    </div>
+    <a class="scroll" href="#intro" aria-label="scroll">▼</a>
+  </div>
+
+  <!-- 導入 -->
+  <section class="intro" id="intro">
+    <div class="wrap">
+      <!-- リード（だれに向けたページか／読むと何がわかるか） -->
+      <div class="leadtxt reveal">
+        <p class="ja">推理小説やミステリードラマで、探偵が<em>決定的な証拠</em>を突きつける場面が好きな人。犯人を当てるだけでは物足りず、「なぜそう言えるのか」まで自分の頭で詰めたい人。『隠された真実』は、そんなあなたのための推理アドベンチャーです。</p>
+        <p class="ja">このページでは、新人刑事として体験する<em>捜査の流れ</em>と、全9件の<em>事件ファイル</em>を紹介します。インストールも登録もいりません。読み終えるころには、最初の現場――内側から鍵のかかった書斎の扉を、開けてみたくなっているはずです。</p>
+        <p class="en">If your favorite scene is the one where the detective puts the <em>decisive proof</em> on the table — if naming the culprit isn’t enough and you want to pin down exactly why it has to be them — <i>Hidden Truth</i> was made for you.</p>
+        <p class="en">This page walks you through <em>how an investigation plays out</em> as a rookie detective and introduces all <em>nine case files</em>. Nothing to install, no sign-up. By the end, you’ll want to open the door to the first scene: a study locked from the inside.</p>
+      </div>
+      <div class="divider reveal" aria-hidden="true"></div>
+      <p class="story ja reveal">
+        あなたは、県警本部 捜査一課の<em>新人刑事</em>。<br>
+        密室の書斎、すり替えられた宝石、<span class="nw">消えたプリン――。</span><br>
+        推理を一つずつ<em>物証</em>で崩していけ。<br>
+        最後に残った一つが、隠された真実だ。
+      </p>
+      <p class="story en reveal">
+        You are a <em>rookie detective</em> in the Major Crimes Division.<br>
+        A locked study. A swapped jewel. A missing pudding.<br>
+        Break down each theory with <em>evidence</em>.<br>
+        The one left standing is the hidden truth.
+      </p>
+    </div>
+  </section>
+
+  <!-- 遊びかた -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="sh reveal">
+        <span class="en-l">HOW TO PLAY</span>
+        <h2><span class="ja">捜査の流れ</span><span class="en">How an investigation works</span></h2>
+        <div class="bar"></div>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="shot"><img data-img="dialog" alt="" width="960" height="768" loading="lazy"></div>
+          <div>
+            <div class="num">STEP 01</div>
+            <h3><span class="ja">現場を調べる</span><span class="en">Search the scene</span></h3>
+            <p class="ja">現場を歩き回り、気になる場所を調べ、居合わせた人に話を聞く。見つけた手がかりは「物証」として集まっていく。行き詰まったら、相棒の滝沢がヒントをくれる。</p>
+            <p class="en">Walk the scene, examine anything that catches your eye, and question the people there. What you find becomes evidence. If you get stuck, your partner Takizawa will point you in the right direction.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="shot"><img data-img="scene" alt="" width="960" height="768" loading="lazy"></div>
+          <div>
+            <div class="num">STEP 02</div>
+            <h3><span class="ja">推理が組み上がる</span><span class="en">A theory takes shape</span></h3>
+            <p class="ja">物証がそろうと、そこから「推理」が組み立てられ、現場で再現される。筋は通っている。けれど、それが真実とは限らない。</p>
+            <p class="en">Once enough evidence is in, a theory is built from it and replayed right there at the scene. It all hangs together. That doesn’t make it true.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="shot"><img data-img="board" alt="" width="980" height="680" loading="lazy"></div>
+          <div>
+            <div class="num">STEP 03</div>
+            <h3><span class="ja">捜査ボードで突き合わせる</span><span class="en">Cross-check on the Case Board</span></h3>
+            <p class="ja">推理の主張を、一つずつ物証と突き合わせる。正しい主張には裏付ける物証を、誤った主張には矛盾する物証を。矛盾が見つかれば、その推理は崩れる。崩れた推理に新しい物証が加わり、推理は真実へ近づいていく。</p>
+            <p class="en">Check each claim of the theory against your evidence: back a true claim with supporting evidence, counter a false one with contradicting evidence. One contradiction and the theory falls. New evidence builds a new theory — one step closer to the truth.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="quote-card" aria-hidden="true">
+            <div class="lamp"></div>
+            <div class="room"><span class="ja">取調室</span><span class="en">INTERROGATION ROOM</span></div>
+            <div class="q ja"><b>あなた</b><br>その言い分には、<br>この物証が矛盾しています。</div>
+            <div class="q en"><b>You</b><br>This piece of evidence<br>says otherwise.</div>
+            <div class="stamp"><span class="ja">解決</span><span class="en">SOLVED</span></div>
+          </div>
+          <div>
+            <div class="num">STEP 04</div>
+            <h3><span class="ja">取調室で、突きつける</span><span class="en">Make your case in the interrogation room</span></h3>
+            <p class="ja">最後の推理が物証で裏付けられたら、取調室へ。大河内警部と並んで、容疑者の言い分に物証を突きつけろ。</p>
+            <p class="en">When the final theory is backed by evidence, head to the interrogation room. Sit beside Inspector Okochi and answer every one of the suspect’s claims with evidence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 事件ファイル -->
+  <section class="files" id="files">
+    <div class="wrap">
+      <div class="sh reveal">
+        <span class="en-l">CASE FILES</span>
+        <h2><span class="ja">事件ファイル</span><span class="en">The case files</span></h2>
+        <div class="bar"></div>
+        <p><span class="ja">館の密室から、捜査一課の冷蔵庫まで。事件ごとに、まったく違う現場が待っている。</span><span class="en">From a locked room in a manor to the office fridge at police HQ — every case takes you somewhere new.</span></p>
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="order reveal"><span class="ja">事件は FILE.01 から。一つ解決するごとに、次のファイルがひらきます。</span><span class="en">Start with FILE.01. Each case you solve opens the next file.</span></p>
+    </div>
+  </section>
+
+  <!-- 捜査一課 -->
+  <section class="team" id="team">
+    <div class="wrap">
+      <div class="sh reveal">
+        <span class="en-l">MAJOR CRIMES DIVISION</span>
+        <h2><span class="ja">県警本部 捜査一課</span><span class="en">Your team</span></h2>
+        <div class="bar"></div>
+      </div>
+      <div class="people reveal">
+        <div class="person you">
+          <div class="mark"><span class="ja">新</span><span class="en">Y</span></div>
+          <div class="role"><span class="ja">新人刑事</span><span class="en">Rookie Detective</span></div>
+          <div class="name"><span class="ja">あなた</span><span class="en">You</span></div>
+          <p><span class="ja">捜査一課に配属されたばかり。現場を歩き、物証を拾い、推理を確かめる。</span><span class="en">Fresh to Major Crimes. You walk the scene, collect the evidence, and test every theory.</span></p>
+        </div>
+        <div class="person">
+          <div class="mark"><span class="ja">刑</span><span class="en">T</span></div>
+          <div class="role"><span class="ja">捜査一課 刑事</span><span class="en">Detective</span></div>
+          <div class="name"><span class="ja">滝沢</span><span class="en">Takizawa</span></div>
+          <p><span class="ja">あなたの相棒。現場を案内し、行き詰まったときは次の一手を教えてくれる。</span><span class="en">Your partner. Shows you around the scene and nudges you forward when you’re stuck.</span></p>
+        </div>
+        <div class="person">
+          <div class="mark"><span class="ja">警</span><span class="en">O</span></div>
+          <div class="role"><span class="ja">捜査一課 警部</span><span class="en">Inspector</span></div>
+          <div class="name"><span class="ja">大河内</span><span class="en">Okochi</span></div>
+          <p><span class="ja">取調べではあなたの隣に座る。好物は、1日20個限定のプリン。</span><span class="en">Sits beside you in the interrogation room. Weakness: a pudding limited to 20 a day.</span></p>
+        </div>
+        <div class="person">
+          <div class="mark"><span class="ja">鑑</span><span class="en">M</span></div>
+          <div class="role"><span class="ja">鑑識</span><span class="en">Forensics</span></div>
+          <div class="name"><span class="ja">森</span><span class="en">Mori</span></div>
+          <p><span class="ja">現場の鑑識を担当。物証を、さらに詳しく調べてくれる。</span><span class="en">Handles forensics at the scene. Every piece of evidence gets a closer look.</span></p>
+        </div>
+        <div class="person">
+          <div class="mark"><span class="ja">巡</span><span class="en">N</span></div>
+          <div class="role"><span class="ja">巡査</span><span class="en">Officer</span></div>
+          <div class="name"><span class="ja">野口</span><span class="en">Noguchi</span></div>
+          <p><span class="ja">現場に立ち、捜査を支える制服警官。</span><span class="en">The uniformed officer on site, backing up the investigation.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 特徴 -->
+  <section class="feat" id="features">
+    <div class="wrap">
+      <div class="sh reveal">
+        <span class="en-l">FEATURES</span>
+        <h2><span class="ja">このゲームについて</span><span class="en">About the game</span></h2>
+        <div class="bar"></div>
+      </div>
+      <div class="feats reveal">
+        <div><h3><span class="ja">全9事件・無料</span><span class="en">9 cases, free</span></h3>
+          <p><span class="ja">ブラウザを開けば、すぐに捜査開始。登録もインストールもいりません。</span><span class="en">Open your browser and start investigating. No sign-up, no install.</span></p></div>
+        <div><h3><span class="ja">スマホでも遊べる</span><span class="en">Plays on phones</span></h3>
+          <p><span class="ja">タップで歩いて、調べる。縦持ちにも対応。パソコンではキーボードでも操作できます。</span><span class="en">Tap to walk and examine, even in portrait. On a computer you can use the keyboard too.</span></p></div>
+        <div><h3><span class="ja">自動で保存</span><span class="en">Auto-save</span></h3>
+          <p><span class="ja">途中でやめても、次は続きから。解決した事件の捜査ボードは、あとから振り返れます。</span><span class="en">Stop anytime and pick up where you left off. Look back over the Case Board of any case you’ve solved.</span></p></div>
+        <div><h3><span class="ja">事件ごとの仕掛け</span><span class="en">A twist in every case</span></h3>
+          <p><span class="ja">非常口の番号錠、投書と議事録の照合、証言から追う足取りの地図。その事件だけの謎解きも。</span><span class="en">A combination lock on an emergency exit, letters to cross-check against minutes, a map to trace a walk from witness statements.</span></p></div>
+        <div><h3><span class="ja">日本語 / English</span><span class="en">English / 日本語</span></h3>
+          <p><span class="ja">すべての事件を、英語でも遊べます。</span><span class="en">Every case is fully playable in English and Japanese.</span></p></div>
+        <div><h3><span class="ja">音楽と効果音</span><span class="en">Music &amp; sound</span></h3>
+          <p><span class="ja">推理の再現や捜査ボードには BGM が流れます。音はいつでも ON / OFF できます。</span><span class="en">Music plays during reenactments and on the Case Board. Sound can be switched on or off at any time.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 最後の誘い -->
+  <section class="final">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="reveal">
+      <h2><span class="ja">真実は、物証の中に。</span><span class="en">The truth is in the evidence.</span></h2>
+      <p><span class="ja">最初の現場は、館の主人が死んでいた書斎。</span><span class="en">Your first scene: a study where the master of the manor lies dead.</span></p>
+      <a class="btn play big" data-play href="../"><span class="ja">捜査をはじめる ▶</span><span class="en">Start the investigation ▶</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="links">
+    <a data-play href="../"><span class="ja">ゲームを遊ぶ</span><span class="en">Play the game</span></a>
+    <a href="#how"><span class="ja">捜査の流れ</span><span class="en">How to play</span></a>
+    <a href="#files"><span class="ja">事件ファイル</span><span class="en">Case files</span></a>
+  </div>
+  <div>© 2026 tomozo</div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var LANG=window.LP_LANG;
+  var $=function(s){return document.querySelector(s);};
+
+  // 事件ファイル（題名と導入文は js/lang/ja.js・en.js の files と同じもの）
+  var FILES=[
+    {id:'file01',tag:{ja:['密室','館'],en:['Locked room','Manor']},
+     ja:['密室の書斎','館の主人・黒崎宗一郎が、書斎で死んでいた。ドアは内側から施錠、窓も施錠済み、鍵は机の上。――これは事故か、それとも。'],
+     en:['The Locked Study','Soichiro Kurosaki, master of the manor, lies dead in his study. The door was locked from inside, the window latched, the key on the desk. — An accident? Or something else?']},
+    {id:'file02',tag:{ja:['すり替え','美術館'],en:['Switch','Museum']},
+     ja:['蒼の雫','開幕を翌朝に控えた白鷺美術館。目玉の宝石「蒼の雫」が、ガラスの偽物にすり替えられていた。――いつ、誰が。'],
+     en:['The Azure Drop','The night before its grand opening, the Shirasagi Museum of Art discovers its star jewel, the “Azure Drop,” has been swapped for a glass fake. — When? And who?']},
+    {id:'file03',tag:{ja:['消えたプリン','県警本部'],en:['Missing pudding','Police HQ']},
+     ja:['最後のひと匙','県警本部・捜査一課の冷蔵庫から、大河内警部のプリンが消えた。1日20個限定、朝7時から並んで買ったものだという。――これは、事件だ。'],
+     en:['The Last Spoonful','Inspector Okochi’s pudding has vanished from the fridge in Prefectural Police HQ’s Major Crimes Division. Limited to 20 a day — he queued from 7 a.m. to get it. — This is a case.']},
+    {id:'file04',tag:{ja:['脅迫状','書道教室'],en:['Threat letters','Calligraphy school']},
+     ja:['消印のない手紙','書道教室「墨香会」の主宰・桐生寿峰のもとに、消印のない脅迫状が三通届いた。たどたどしい字と、ある弟子にそっくりな字。――書いたのは、誰の手か。'],
+     en:['The Unstamped Letters','Three threatening letters, with no stamps and no postmarks, reach Juho Kiryu, master of the Bokkokai calligraphy school. One in a child’s clumsy hand, one in the very hand of a pupil. — Whose hand wrote them?']},
+    {id:'file05',tag:{ja:['七不思議','小学校'],en:['Seven Mysteries','School']},
+     ja:['七つ目の不思議','閉校を一週間後に控えた月影台小学校。この二週間、夜ごとに七不思議が“本当に”起きている。そして今朝、二十五年前に埋めたタイムカプセルが消えていた。――七つ目は、誰も知らない。'],
+     en:['The Seventh Mystery','A week before Tsukikagedai Elementary closes for good, its Seven Mysteries have been “really” happening, night after night. And this morning, the time capsule buried twenty-five years ago was gone. — No one knows the seventh.']},
+    {id:'file06',tag:{ja:['閉じ込め','映画館'],en:['Trapped','Cinema']},
+     ja:['夜明けの映写室','六十年の幕を下ろす地下の映画館「銀星座」。最後の試写の夜、停電とともに防火シャッターが下り、非常口には番号錠。刑事二人を含む六人が、朝まで閉じ込められた。――犯人は、何のために。'],
+     en:['The Projection Room at Dawn','The Ginseiza, an underground cinema, is closing after sixty years. On the night of its last private screening, the power dies, the fire shutter drops, and the emergency exit is chained with a combination lock. Six people — two detectives among them — are trapped until morning. — Why?']},
+    {id:'file07',tag:{ja:['誘拐','遊園地'],en:['Kidnapping','Amusement park']},
+     ja:['空のゴンドラ','港町の遊園地「汐見ランド」で、十歳の誕生日の少年が消えた。身代金は三百十二万円。父親が観覧車に残したバッグは、刑事たちの目の前で、空の上から消えた。――17時まで、あと三十分。'],
+     en:['The Empty Gondola','At Shiomi Land, a little seaside amusement park, a boy vanishes on his tenth birthday. The ransom: 3,120,000 yen. The bag his father left in a Ferris wheel gondola disappears in midair, right before the detectives’ eyes. — Thirty minutes until five o’clock.']},
+    {id:'file08',tag:{ja:['情報漏えい','万年筆メーカー'],en:['Leak','Pen maker']},
+     ja:['筒抜けの会議室','創業七十年の万年筆メーカー「鳴海万年筆」。非公開の役員会で話したことが、翌朝には業界紙に一字一句載っている。会議室に盗聴器はなく、携帯電話は入口で預け、議事録は金庫の中。――声は、どこから漏れたのか。'],
+     en:['Every Word Through the Wall','Narumi Pen, a fountain-pen maker, is seventy years old. Whatever its board says behind closed doors turns up, word for word, in the trade paper the next morning. There is no bug in the room, phones are left at the door, and the minutes sit in a safe. — So how are the voices getting out?']},
+    {id:'file09',tag:{ja:['消えた老犬','坂の町'],en:['Missing dog','Hillside town']},
+     ja:['五時半の散歩道','坂の町・桜ヶ丘で、十四歳の老犬「むぎ」が庭から消えた。県警本部に届いたのは、十歳の少女からの手紙。夜明けの町では、去年亡くなったはずの祖母が、毎朝むぎを散歩させていたという。――むぎは、どこへ歩いていったのか。'],
+     en:['The Five-Thirty Walk','In Sakuragaoka, a hillside town, Mugi — a fourteen-year-old dog — has vanished from her yard. The letter that reached police headquarters came from a ten-year-old girl. And the neighbors say that every dawn, the girl’s grandmother, who died last year, still takes Mugi for her walk. — Where did Mugi go?']}
+  ];
+  var esc=function(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  $('#grid').innerHTML=FILES.map(function(f,i){
+    var no='FILE.'+String(i+1).padStart(2,'0');
+    var card=function(l){return '<div class="'+l+'"><h3>'+esc(f[l][0])+'</h3><p>'+esc(f[l][1])+'</p>'+
+      '<div class="tag">'+f.tag[l].map(function(t){return '<span>'+esc(t)+'</span>';}).join('')+'</div></div>';};
+    return '<article class="file reveal"><div class="pic"><img data-img="'+f.id+'" alt="" width="960" height="720" loading="lazy">'+
+      '<span class="no">'+no+'</span></div><div class="body">'+card('ja')+card('en')+'</div></article>';
+  }).join('');
+
+  // 言語に合わせた画像と、遊ぶボタンの行き先
+  function applyLang(){
+    document.querySelectorAll('img[data-img]').forEach(function(img){
+      img.src='img/'+img.dataset.img+'-'+LANG+'.jpg';
+      var t=img.closest('.file'), h=t&&t.querySelector('.'+LANG+' h3');
+      img.alt=h?h.textContent:'';
+    });
+    document.querySelectorAll('[data-play]').forEach(function(a){a.href='../?lang='+LANG;});
+    document.title=LANG==='en'?'Hidden Truth — A detective mystery in your browser':'隠された真実 ― ブラウザで遊べる推理アドベンチャー';
+  }
+  applyLang();
+  $('#langBtn').addEventListener('click',function(){
+    LANG=LANG==='en'?'ja':'en';
+    try{localStorage.setItem('hidden-truth-lang',LANG);}catch(e){}
+    document.documentElement.classList.toggle('en',LANG==='en');
+    document.documentElement.lang=LANG;
+    if(/[?&]lang=/.test(location.search)) history.replaceState(null,'',location.pathname+location.hash);
+    applyLang();
+  });
+
+  // 上のバー：スクロールしたら背景を付ける
+  var nav=$('#nav');
+  var onScroll=function(){nav.classList.toggle('solid',window.scrollY>window.innerHeight*.6);};
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // 見えてきたらふわっと出す
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  }else document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
+})();
+</script>
+</body>
+</html>
