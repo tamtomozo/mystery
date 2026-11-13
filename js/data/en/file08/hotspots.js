@@ -225,7 +225,7 @@ defCase('file08',{PHASE_MSG:{
 }});
 // Takizawa's lines while the final deduction is being checked (used by talkTakizawa in common.js)
 defCase('file08',{finalOpen:[
-  'Back up every claim in Deduction ④ with evidence. Case Board [B].',
+  'Back up every claim in Deduction ④ with evidence. Use the Case Board.',
   '...Before seven. Before tonight’s letter goes in the box.',
 ]});
 

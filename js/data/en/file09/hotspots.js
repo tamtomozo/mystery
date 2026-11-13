@@ -188,12 +188,12 @@ defCase('file09',{PHASE_MSG:{
 }});
 // Takizawa's lines while the final deduction is being checked (used by talkTakizawa in common.js)
 defCase('file09',{finalOpen:[
-  'Back up every claim in Deduction ④ with evidence. Case Board [B].',
+  'Back up every claim in Deduction ④ with evidence. Use the Case Board.',
   '...Before the sun goes down. Our client is waiting.',
 ]});
 
 defCase('file09',{EVHINT:{
-  letter:'You can reread Hinata’s letter on the Case Board [B]. It says something about Mugi’s legs.',
+  letter:'You can reread Hinata’s letter on the Case Board. It says something about Mugi’s legs.',
   theft:'Noguchi on the street got the story on the thefts from community safety.',
   gate:'Look at the yard Mugi vanished from. They say the back gate was open.',
   sighting:'Noguchi’s been asking around about a sighting at the station.',

@@ -36,13 +36,13 @@ const L={
     const MOVE=['Move','Arrow keys / WASD · Tap where to go'];
     const LOOK=['Examine / Talk','Space / Enter · Tap the target'];
     const NEXT=['Advance text','Space / Enter · Click'];
-    const BOARD=['Case Board','B key · Button at top right'];
+    const BOARD=['Case Board','Button at top right'];
     const GLOW='Sparkling spots are clues you haven’t examined yet.';
     return {
       basic:['Investigate the Scene',[MOVE,LOOK,NEXT],GLOW],
       all:['Controls',[MOVE,LOOK,NEXT,BOARD,['Test a deduction','On the Case Board, pick a Claim → a piece of Evidence → “Cross-check”']],GLOW],
       board:['Testing Deductions — The Case Board',[
-        ['Open','B key · “Case Board” at top right'],
+        ['Open','“Case Board” at top right'],
         ['1','Pick one Claim in the deduction'],
         ['2','Pick a piece of Evidence'],
         ['3','Press “Cross-check” to test it'],
@@ -94,10 +94,10 @@ const L={
   },
 
   /* Takizawa's hints (common.js) */
-  takFinal:no=>`Back up every claim in Deduction ${no} with evidence. Open the Case Board [B].`,
+  takFinal:no=>`Back up every claim in Deduction ${no} with evidence. Open the Case Board.`,
   askInterro:'Head to the interrogation room?', goInterro:'To the interrogation room', stayScene:'Keep looking around',
   takOpen:(no,title)=>`Deduction ${no}: “${title}”...`,
-  takReady:'You’ve got the evidence. Open the Case Board [B] and cross-check it against the claims.',
+  takReady:'You’ve got the evidence. Open the Case Board and cross-check it against the claims.',
   takBroken:no=>`Deduction ${no} fell apart. But I can’t see the next thread yet.`,
 
   /* Deduction scenes */
@@ -112,7 +112,7 @@ const L={
   click:'Click',
 
   /* Progress */
-  nudge:'New evidence is in. Test the current deduction on the Case Board [B]',
+  nudge:'New evidence is in. Test the current deduction on the Case Board',
   hypBand:{title:'A Deduction Takes Shape',sub:'— The evidence connects into a single thread'},
   newSpots:'New places to investigate have appeared',
 

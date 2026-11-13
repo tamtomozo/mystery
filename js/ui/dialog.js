@@ -73,7 +73,7 @@ function endDialog(){
 }
 function renderChoices(d){
   d.choices.forEach((c,i)=>{
-    const b=document.createElement('button'); b.className='btn'; b.textContent=`${i+1}. ${c.label}`;
+    const b=document.createElement('button'); b.className='btn'; b.textContent=c.label;
     b.onclick=e=>{e.stopPropagation(); pickChoice(i);}; $('#dchoices').appendChild(b);
   });
 }
