@@ -7,6 +7,9 @@
 
 let shakeT=0;
 function goInterro(){
+  // 暗転のあいだは操作を受け付けない（ここで捜査ボードを開けると、取調べが進まなくなる）
+  // 選択肢から呼ばれても run から呼ばれても、mode が dialog でなくなるので、会話の続きは送られない
+  S.mode='leaving'; hideDlg(); P.path=[]; P.pending=null;
   fade(()=>{
     setMap('interro',10,9,'up'); S.mode='interro';
     $('#loc').textContent=L.interroRoom; $('#boardBtn').classList.add('hidden');
