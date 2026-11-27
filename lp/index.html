@@ -193,6 +193,34 @@ html.en .final .bg{background-image:url(img/file06-en.jpg)}
 html.en .final h2{letter-spacing:.06em;padding-left:.06em}
 .final p{color:#cfc6b4;margin:0 0 2em}
 
+/* ---------- 開発こぼれ話（吹き出し） ---------- */
+.devtalk{display:grid;gap:14px;max-width:40em;margin:72px auto 0;text-align:left}
+.files .devtalk{margin-top:40px}
+.devtalk.lead-talk{margin:0 auto 56px}   /* セクションの頭（HOW TO PLAY の前）に置く吹き出し */
+.talk{display:flex;gap:14px;align-items:flex-start}
+.talk .who{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--gold-dim);background:radial-gradient(circle,#2a2418,#16181d);
+  font-size:11px;font-weight:700;letter-spacing:0;line-height:1;color:var(--gold)}
+.bubble{position:relative;flex:1;min-width:0;margin:0;padding:10px 16px 11px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);font-size:14px;line-height:1.85;color:#d8cfbe}
+html.en .bubble{line-height:1.7}
+.bubble::before{content:"";position:absolute;left:-7px;top:20px;width:12px;height:12px;background:var(--panel);
+  border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+.bubble .k{display:block;font-size:12px;letter-spacing:.14em;color:var(--gold);margin-bottom:2px}
+html.en .bubble .k{letter-spacing:.06em}
+.bubble .tx{display:block}
+/* たたんだ吹き出し：本文は1行まで。「続きを読む」で全文を出す（JS が動かないときは最初から全文） */
+.bubble.fold:not(.open) .tx{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;line-clamp:1;overflow:hidden}
+.bubble .more{display:inline-flex;align-items:center;gap:6px;margin:6px 0 0;padding:4px 0;border:0;background:none;cursor:pointer;
+  font:inherit;font-size:12.5px;font-weight:700;line-height:1.4;color:var(--gold)}
+.bubble .more::after{content:"";width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;
+  transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.bubble.open .more::after{transform:translateY(1px) rotate(-135deg)}
+.bubble .more:hover{text-decoration:underline}
+.bubble .more:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.bubble .more[hidden]{display:none}
+.bubble.open .more .m,.bubble:not(.open) .more .c{display:none}
+
 footer{border-top:1px solid var(--line);padding:32px 16px 40px;text-align:center;color:var(--muted);font-size:13px}
 footer .links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
 footer a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
@@ -287,6 +315,19 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
   <!-- 遊びかた -->
   <section class="how" id="how">
     <div class="wrap">
+      <!-- 開発こぼれ話：作ったきっかけ -->
+      <div class="devtalk lead-talk reveal" aria-label="Dev notes">
+        <div class="talk">
+          <span class="who" aria-hidden="true">tomozo</span>
+          <p class="bubble">
+            <b class="k"><span class="ja">着想</span><span class="en">The idea</span></b>
+            <span class="tx">
+              <span class="ja">ドラマ『CSI』のように、現場の物証から推理を組み立て、その推理を物証と突き合わせていく――そんな捜査をゲームで見てみたくて作りました。</span>
+              <span class="en">I made this because I wanted to see the CSI way of working as a game: build a theory from the evidence at the scene, then hold that theory up against the evidence.</span>
+            </span>
+          </p>
+        </div>
+      </div>
       <div class="sh reveal">
         <span class="en-l">HOW TO PLAY</span>
         <h2><span class="ja">捜査の流れ</span><span class="en">How an investigation works</span></h2>
@@ -340,6 +381,30 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
           </div>
         </div>
       </div>
+
+      <!-- 開発こぼれ話：コミット履歴（2026-11-11 の FILE.01〜11-13）から。f3e7a67・225c24f -->
+      <div class="devtalk reveal" aria-label="Dev notes">
+        <div class="talk">
+          <span class="who" aria-hidden="true">tomozo</span>
+          <p class="bubble">
+            <b class="k"><span class="ja">言葉えらびの手直し</span><span class="en">Finding the right words</span></b>
+            <span class="tx">
+              <span class="ja">最初、崩していく相手は「推理」ではなく「仮定」と呼んでいました。捜査ボードのボタンも「かんがえる」から「突き合わせる」へ。推理を確定・否定するたびに判を「ぽん！」と押す演出は、名前を変えたのと同じ日に足したものです。</span>
+              <span class="en">At first, the theories you knock down were called “assumptions,” and the Case Board button simply said “Think” before it became “Cross-check.” The stamp that thumps down each time a theory is confirmed or refuted was added the same day as the renaming.</span>
+            </span>
+          </p>
+        </div>
+        <div class="talk">
+          <span class="who" aria-hidden="true">tomozo</span>
+          <p class="bubble">
+            <b class="k"><span class="ja">取調べ前の落とし穴</span><span class="en">A trap before the interrogation</span></b>
+            <span class="tx">
+              <span class="ja">取調べへ移る暗転のあいだに B キーを押すと捜査ボードが開けてしまい、閉じたとたん取調室で会話が進まなくなる不具合がありました。このページを公開した日の午後に、暗転中は操作を受け付けないようにして直しています。</span>
+              <span class="en">There was a bug: press B during the fade into the interrogation and the Case Board would open — and the moment you closed it, the conversation in the interrogation room stalled for good. It was fixed the afternoon this page went up, by ignoring all input during the fade.</span>
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -354,6 +419,19 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
       </div>
       <div class="grid" id="grid"></div>
       <p class="order reveal"><span class="ja">事件は FILE.01 から。一つ解決するごとに、次のファイルがひらきます。</span><span class="en">Start with FILE.01. Each case you solve opens the next file.</span></p>
+      <!-- 開発こぼれ話（99a339b・b7170c0・d485f9e〜78731ad・3dee8fa）。真相や犯人がわかることは書かない -->
+      <div class="devtalk reveal">
+        <div class="talk">
+          <span class="who" aria-hidden="true">tomozo</span>
+          <p class="bubble">
+            <b class="k"><span class="ja">九つの事件ができるまで</span><span class="en">How nine cases came together</span></b>
+            <span class="tx">
+              <span class="ja">FILE.01 の最初の記録が11月11日の夕方。その夜に FILE.02・03、翌日に 04〜07、3日目の朝に 08・09 ができました。推理はどの事件も4つですが、物証は FILE.01 の13個から、FILE.07〜09 では20個まで増えました。後半の事件ほど、非常口の番号錠、17時までの時計、投書と議事録の照合、足取りの地図と、その事件だけの仕掛けが増えていきました。最初はどの FILE からでも遊べましたが、途中で FILE.01 から順番に開く形に変えています。</span>
+              <span class="en">FILE.01 was first committed on the evening of November 11. FILE.02 and 03 followed that night, 04–07 the next day, and 08 and 09 the morning after. Every case has four theories, but the evidence grew from 13 pieces in FILE.01 to 20 in FILE.07–09. The later the case, the more it got its own gimmick: a combination lock on an emergency exit, a clock ticking toward five, letters to cross-check against minutes, a map of a walk. At first you could open any file you liked; along the way that changed to opening them one by one from FILE.01.</span>
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -397,6 +475,19 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
           <p><span class="ja">現場に立ち、捜査を支える制服警官。</span><span class="en">The uniformed officer on site, backing up the investigation.</span></p>
         </div>
       </div>
+      <!-- 開発こぼれ話（75185f6・78731ad） -->
+      <div class="devtalk reveal">
+        <div class="talk">
+          <span class="who" aria-hidden="true">tomozo</span>
+          <p class="bubble">
+            <b class="k"><span class="ja">台詞に感情を乗せる</span><span class="en">Putting feeling into the lines</span></b>
+            <span class="tx">
+              <span class="ja">2日目の午後、聞き込みの台詞に感情（驚き・喜び・悲しみ・怒り・動揺・考え中）を付けられるようにしました。頭の横に「！」や汗の印が出て、跳ねたり、背を向けたり、震えたり。文字送りの速さと声の高さも、感情で変わります。まずは FILE.01〜06 の71か所に付けました。FILE.09 のためには、犬も描けるようにしています。</span>
+              <span class="en">On the afternoon of day two, interview lines learned to carry emotion — surprise, joy, sadness, anger, nerves, deep thought. A “!” or a bead of sweat pops up beside the speaker, and they hop, turn away or tremble. Text speed and voice pitch shift with the mood, too. The first pass covered 71 lines across FILE.01–06. And for FILE.09, the game learned to draw a dog.</span>
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -421,6 +512,19 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
           <p><span class="ja">すべての事件を、英語でも遊べます。</span><span class="en">Every case is fully playable in English and Japanese.</span></p></div>
         <div><h3><span class="ja">音楽と効果音</span><span class="en">Music &amp; sound</span></h3>
           <p><span class="ja">推理の再現や捜査ボードには BGM が流れます。音はいつでも ON / OFF できます。</span><span class="en">Music plays during reenactments and on the Case Board. Sound can be switched on or off at any time.</span></p></div>
+      </div>
+      <!-- 開発こぼれ話（f3e7a67・4491aa5・1d370d4） -->
+      <div class="devtalk reveal">
+        <div class="talk">
+          <span class="who" aria-hidden="true">tomozo</span>
+          <p class="bubble">
+            <b class="k"><span class="ja">遊びやすさの手直し</span><span class="en">Making it easier to play</span></b>
+            <span class="tx">
+              <span class="ja">英語版は2日目の朝に追加し、事件のデータも言語ごとに分けました。スマホの縦持ちでは、ゲーム画面を上に、会話ウィンドウを下の空きに出す形に組み直しています。キー操作の表示や選択肢の番号は画面から外しましたが、実は操作はそのまま残っています（数字キーで選択肢、B キーで捜査ボード）。</span>
+              <span class="en">The English version arrived on the morning of day two, with the case data split by language. In portrait on a phone, the layout was rebuilt to put the game on top and the dialogue window in the space below. Key hints and choice numbers came off the screen — but here’s a secret: the keys still work (number keys pick a choice, B opens the Case Board).</span>
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -490,6 +594,32 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
       '<span class="no">'+no+'</span></div><div class="body">'+card('ja')+card('en')+'</div></article>';
   }).join('');
 
+  // 開発こぼれ話の吹き出し：本文を1行にたたみ、「続きを読む」で全文を出す
+  var bubbles=[].slice.call(document.querySelectorAll('.bubble'));
+  bubbles.forEach(function(bb){
+    var btn=document.createElement('button');
+    btn.type='button'; btn.className='more'; btn.setAttribute('aria-expanded','false');
+    btn.innerHTML='<span class="m"><span class="ja">続きを読む</span><span class="en">Read more</span></span>'+
+                  '<span class="c"><span class="ja">閉じる</span><span class="en">Show less</span></span>';
+    btn.addEventListener('click',function(){
+      var open=bb.classList.toggle('open');
+      btn.setAttribute('aria-expanded',String(open));
+    });
+    bb.appendChild(btn);
+    bb.classList.add('fold');
+  });
+  // 1行に収まる吹き出し（広い画面・言語の切り替えで変わる）には「続きを読む」を出さない
+  function fitBubbles(){
+    bubbles.forEach(function(bb){
+      if(bb.classList.contains('open')) return;
+      var tx=bb.querySelector('.tx');
+      bb.querySelector('.more').hidden=tx.scrollHeight<=tx.clientHeight+1;
+    });
+  }
+  var fitTimer=0;
+  window.addEventListener('resize',function(){clearTimeout(fitTimer); fitTimer=setTimeout(fitBubbles,150);});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitBubbles);
+
   // 言語に合わせた画像と、遊ぶボタンの行き先
   function applyLang(){
     document.querySelectorAll('img[data-img]').forEach(function(img){
@@ -499,6 +629,7 @@ footer a:hover{color:var(--gold);border-color:var(--gold-dim)}
     });
     document.querySelectorAll('[data-play]').forEach(function(a){a.href='../index.html?lang='+LANG;});
     document.title=LANG==='en'?'Hidden Truth — A detective mystery in your browser':'隠された真実 ― ブラウザで遊べる推理アドベンチャー';
+    fitBubbles();
   }
   applyLang();
   $('#langBtn').addEventListener('click',function(){
